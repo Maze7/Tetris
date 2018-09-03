@@ -1,0 +1,10 @@
+﻿################################################################################
+# Diese .gitignore-Datei wurde von Microsoft(R) Visual Studio automatisch erstellt.
+################################################################################
+
+/.vs
+/Debug
+/Tetris.sln
+/Tetris.vcxproj
+/Tetris.vcxproj.user
+/Tetris.vcxproj.filters
