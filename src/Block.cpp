@@ -1,8 +1,8 @@
 #include "Block.h"
 
+using namespace TetrisGame;
 
-
-Block::Block()
+Block::Block(Tetromino::TETROMINO_TYPE)
 {
 }
 
