@@ -24,7 +24,6 @@ namespace TetrisGame {
 	public:
 		Playfield() {};
 		~Playfield();
-
 		void addTetromino(TetrisGame::Tetromino& tetromino);
 		std::vector<int> checkForCompletedRows();
 		void deleteRow(uint row);

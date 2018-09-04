@@ -121,7 +121,16 @@ const TetroShape TetrisGame::Tetromino::SHAPE_DATA[TetrisGame::Tetromino::END][4
 	}
 };
 
-const sf::Color TetrisGame::Tetromino::SHAPE_COLORS[TetrisGame::Tetromino::TETROMINO_TYPE::END] =
+/*
+	Defines the tetromino colors according to their shapes.
+	Should be used to get the color of an active tetromino, i.e when drawing
+	it in the Playfield. 
+
+	Example usage:
+	sf::Color color = TetrisGame::Tetromino::SHAPE_COLORS[tetromino.getType()];
+
+*/
+const sf::Color TetrisGame::Tetromino::SHAPE_COLORS[TETROMINO_TYPE::END] =
 {
 	sf::Color::Cyan,				// I
 	sf::Color::Blue,				// J
@@ -131,6 +140,7 @@ const sf::Color TetrisGame::Tetromino::SHAPE_COLORS[TetrisGame::Tetromino::TETRO
 	sf::Color::Magenta,				// T
 	sf::Color::Red					// Z
 };
+
 
 
 TetrisGame::Tetromino::~Tetromino()
