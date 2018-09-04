@@ -121,6 +121,17 @@ const TetroShape TetrisGame::Tetromino::SHAPE_DATA[TetrisGame::Tetromino::END][4
 	}
 };
 
+const sf::Color TetrisGame::Tetromino::SHAPE_COLORS[TetrisGame::Tetromino::TETROMINO_TYPE::END] =
+{
+	sf::Color::Cyan,				// I
+	sf::Color::Blue,				// J
+	sf::Color(255, 165, 0, 255),	// L
+	sf::Color::Yellow,				// O
+	sf::Color::Green,				// S
+	sf::Color::Magenta,				// T
+	sf::Color::Red					// Z
+};
+
 
 TetrisGame::Tetromino::~Tetromino()
 {

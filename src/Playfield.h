@@ -1,10 +1,11 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Tetris.cpp"
 #include "Typedefs.h"
 #include "Tetromino.h"
+#include "Header.h"
 
 namespace TetrisGame {
+
 	class Playfield
 	{
 	public:
@@ -21,9 +22,10 @@ namespace TetrisGame {
 		uint m_BLOCK_SIZE{ (m_HEIGHT - 2 * s_OFFSET) / s_COLUMNS };
 
 	public:
-		Playfield();
+		Playfield() {};
 		~Playfield();
 
+		void addTetromino(TetrisGame::Tetromino& tetromino);
 		std::vector<int> checkForCompletedRows();
 		void deleteRow(uint row);
 		void draw(TetrisGame::Tetromino& tetromino);
