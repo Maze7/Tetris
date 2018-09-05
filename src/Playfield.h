@@ -29,5 +29,9 @@ namespace TetrisGame {
 		void deleteRow(uint row);
 		void draw(TetrisGame::Tetromino& tetromino);
 
+	private:
+		void drawGrid();
+		void drawTetromino(TetrisGame::Tetromino& tetromino);
+
 	};
 }

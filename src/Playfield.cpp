@@ -106,6 +106,15 @@ void TetrisGame::Playfield::deleteRow(uint row)
 */
 void TetrisGame::Playfield::draw(TetrisGame::Tetromino& tetromino)
 {
+	drawGrid();
+	drawTetromino(tetromino);
+}
+
+/*
+	(Private) Sub-function of Playfield::draw. Draws the Playfield's grid.
+*/
+void TetrisGame::Playfield::drawGrid()
+{
 	// Draw grid
 	for (int y = 0; y < s_ROWS; y++)
 	{
@@ -115,11 +124,18 @@ void TetrisGame::Playfield::draw(TetrisGame::Tetromino& tetromino)
 			sf::RectangleShape block(sf::Vector2f(m_BLOCK_SIZE, m_BLOCK_SIZE));
 			block.setFillColor(m_grid[y][x]);
 			block.setPosition(x * m_BLOCK_SIZE + s_OFFSET, y * m_BLOCK_SIZE + s_OFFSET);
+
 			// Call draw-function of window
 			TetrisGame::m_window->draw(block);
 		}
 	}
+}
 
+/*
+	(Private) Sub-function of Playfield::draw. Draws the tetromino.
+*/
+void TetrisGame::Playfield::drawTetromino(TetrisGame::Tetromino & tetromino)
+{
 	// Draw tetromino
 	// Get tetromino shape
 	const TetroShape* tetroShape = &TetrisGame::Tetromino::SHAPE_DATA[tetromino.getType()][tetromino.getRotation()];
@@ -143,7 +159,7 @@ void TetrisGame::Playfield::draw(TetrisGame::Tetromino& tetromino)
 				tetrominoBlockPosition.x = (tetromino.getPosition().x * m_BLOCK_SIZE) + (x * m_BLOCK_SIZE) + s_OFFSET;
 				tetrominoBlockPosition.y = (tetromino.getPosition().y * m_BLOCK_SIZE) + (y * m_BLOCK_SIZE) + s_OFFSET;
 
-				// Set the position on the block
+				// Set the position of the block
 				tetroBlock.setPosition(tetrominoBlockPosition.x, tetrominoBlockPosition.y);
 
 				// Call draw-function of window
