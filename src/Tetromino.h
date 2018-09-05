@@ -47,9 +47,9 @@ namespace TetrisGame {
 		Tetromino(TETROMINO_TYPE& type, int position[2]) : m_type(type), m_position(position[0], position[1]), m_rotation(0) {};
 		~Tetromino();
 
-		inline TETROMINO_TYPE getType() const { return m_type; }
-		inline sf::Vector2i getPosition() const { return m_position; }
-		inline int getRotation() const { return m_rotation; }
+		TETROMINO_TYPE& getType() const { return m_type; }
+		sf::Vector2i& getPosition() const { return m_position; }
+		int& getRotation() const { return m_rotation; }
 
 
 		void rotate(ROTATION_ACTION action);
