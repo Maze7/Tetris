@@ -125,6 +125,26 @@ const TetrisGame::Tetromino::TetroShape TetrisGame::Tetromino::SHAPE_DATA[Tetris
 };
 
 /*
+	Defines the tetromino colors according to their shapes.
+	Should be used to get the color of an active tetromino, i.e when drawing
+	it in the Playfield. 
+
+	Example usage:
+	sf::Color color = TetrisGame::Tetromino::SHAPE_COLORS[tetromino.getType()];
+
+*/
+const sf::Color TetrisGame::Tetromino::SHAPE_COLORS[TETROMINO_TYPE::END] =
+{
+	sf::Color::Cyan,				// I
+	sf::Color::Blue,				// J
+	sf::Color(255, 165, 0, 255),	// L
+	sf::Color::Yellow,				// O
+	sf::Color::Green,				// S
+	sf::Color::Magenta,				// T
+	sf::Color::Red					// Z
+};
+
+/*
 	Defines the number of different rotations of one Tetromino type.
 	The defined number has to be equal to the size of the different arrays
 	of one shape. Use this method if you want to know, how many 
@@ -147,7 +167,6 @@ const int TetrisGame::Tetromino::SHAPE_SIZE[TetrisGame::Tetromino::END] =
 	4,	// T
 	2	// Z
 };
-
 
 TetrisGame::Tetromino::~Tetromino()
 {
@@ -199,4 +218,3 @@ void TetrisGame::Tetromino::move(MOVE_ACTION action)
 		this->m_position.y++;
 	}
 }
-

@@ -28,6 +28,12 @@ namespace TetrisGame {
 
 		// TODO 
 		static const int SHAPE_SIZE[TETROMINO_TYPE::END];
+    
+    //
+    static const TetroShape SHAPE_DATA[TETROMINO_TYPE::END][4];
+    
+    //
+		static const sf::Color SHAPE_COLORS[TETROMINO_TYPE::END];
 
 	private:
 
@@ -36,14 +42,18 @@ namespace TetrisGame {
 		int m_rotation;
 
 	public:
+   
 
 		Tetromino(TETROMINO_TYPE& type, int position[2]) : m_type(type), m_position(position[0], position[1]), m_rotation(0) {};
 		~Tetromino();
+
+		TETROMINO_TYPE& getType() const { return m_type; }
+		sf::Vector2i& getPosition() const { return m_position; }
+		int& getRotation() const { return m_rotation; }
 
 
 		void rotate(ROTATION_ACTION action);
 		void move(MOVE_ACTION action);
 
 	};
-
 }
