@@ -1,6 +1,4 @@
 #include "TetrisGame.h"
-#include "Playfield.h"
-#include "Tetromino.h"
 
 int main()
 {

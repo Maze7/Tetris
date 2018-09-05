@@ -1,7 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "TetrisGame.h"
-#include "Typedefs.h"
+#include "TetrisWindow.h"
 #include "Tetromino.h"
 
 namespace TetrisGame 
