@@ -17,7 +17,7 @@ TetrisGame::Playfield::~Playfield()
 void TetrisGame::Playfield::addTetromino(TetrisGame::Tetromino& tetromino)
 {
 	// Get the shape of the tetromino
-	const TetroShape* tetroShape = &TetrisGame::Tetromino::SHAPE_DATA[tetromino.getType()][tetromino.getRotation()];
+	const TetrisGame::Tetromino::TetroShape* tetroShape = &TetrisGame::Tetromino::SHAPE_DATA[tetromino.getType()][tetromino.getRotation()];
 	sf::Vector2i gridPosition;
 
 	for (int y = 0; y < 4; y++) 
@@ -120,13 +120,15 @@ void TetrisGame::Playfield::drawGrid()
 	{
 		for (int x = 0; x < s_COLUMNS; x++)
 		{
-			// Create the blocks as sf::RectangleShape's and assign color and position
-			sf::RectangleShape block(sf::Vector2f(m_BLOCK_SIZE, m_BLOCK_SIZE));
-			block.setFillColor(m_grid[y][x]);
-			block.setPosition(x * m_BLOCK_SIZE + s_OFFSET, y * m_BLOCK_SIZE + s_OFFSET);
+			if (m_grid[y][x] != sf::Color::Black) {
+				// Create the blocks as sf::RectangleShape's and assign color and position
+				sf::RectangleShape block(sf::Vector2f(m_BLOCK_SIZE * s_COLUMNS, m_BLOCK_SIZE * s_ROWS));
+				block.setFillColor(m_grid[y][x]);
+				block.setPosition(x * m_BLOCK_SIZE + s_OFFSET, y * m_BLOCK_SIZE + s_OFFSET);
 
-			// Call draw-function of window
-			TetrisGame::m_window->draw(block);
+				// Call draw-function of window
+				TetrisGame::getSFWindow()->draw(block);
+			}
 		}
 	}
 }
@@ -138,7 +140,7 @@ void TetrisGame::Playfield::drawTetromino(TetrisGame::Tetromino & tetromino)
 {
 	// Draw tetromino
 	// Get tetromino shape
-	const TetroShape* tetroShape = &TetrisGame::Tetromino::SHAPE_DATA[tetromino.getType()][tetromino.getRotation()];
+	const TetrisGame::Tetromino::TetroShape* tetroShape = &TetrisGame::Tetromino::SHAPE_DATA[tetromino.getType()][tetromino.getRotation()];
 	sf::Vector2i tetrominoBlockPosition;
 
 	// Iterate over the corresponding SHAPE_DATA (sub)array
@@ -163,7 +165,7 @@ void TetrisGame::Playfield::drawTetromino(TetrisGame::Tetromino & tetromino)
 				tetroBlock.setPosition(tetrominoBlockPosition.x, tetrominoBlockPosition.y);
 
 				// Call draw-function of window
-				TetrisGame::m_window->draw(tetroBlock);
+				TetrisGame::getSFWindow()->draw(tetroBlock);
 			}
 		}
 	}

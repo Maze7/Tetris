@@ -1,10 +1,11 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "TetrisGame.h"
 #include "Typedefs.h"
 #include "Tetromino.h"
-#include "Header.h"
 
-namespace TetrisGame {
+namespace TetrisGame 
+{
 
 	class Playfield
 	{
@@ -13,8 +14,8 @@ namespace TetrisGame {
 		static constexpr int s_COLUMNS = 10;
 		static constexpr int s_OFFSET = 10;
 
-		const uint m_WIDTH{ TetrisGame::getWindow()->getSize().x };
-		const uint m_HEIGHT{ TetrisGame::getWindow()->getSize().y };
+		const uint m_WIDTH{ TetrisGame::getSFWindow()->getSize().x };
+		const uint m_HEIGHT{ TetrisGame::getSFWindow()->getSize().y };
 
 	private:
 
@@ -22,7 +23,7 @@ namespace TetrisGame {
 		uint m_BLOCK_SIZE{ (m_HEIGHT - 2 * s_OFFSET) / s_COLUMNS };
 
 	public:
-		Playfield() {};
+		Playfield() : m_grid(s_ROWS, std::vector<sf::Color>(s_COLUMNS, sf::Color::Black)) {};
 		~Playfield();
 		void addTetromino(TetrisGame::Tetromino& tetromino);
 		std::vector<int> checkForCompletedRows();
