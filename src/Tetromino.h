@@ -8,6 +8,8 @@ namespace TetrisGame {
 	{
 
 	public:
+		typedef int TetroShape[4][4];
+
 		// END is used for black color
 		enum TETROMINO_TYPE { I = 0, J = 1, L = 2, O = 3, S = 4, T = 5, Z = 6, END = 7 };
 
@@ -21,6 +23,18 @@ namespace TetrisGame {
 		static constexpr int PREVIEW_POS[2] = { 1, 1 };
 		static constexpr int PLAYFIELD_POS[2] = { 3, 0 };
 
+		// TODO
+		static const TetroShape SHAPE_DATA[TETROMINO_TYPE::END][4];
+
+		// TODO 
+		static const int SHAPE_SIZE[TETROMINO_TYPE::END];
+    
+    //
+    static const TetroShape SHAPE_DATA[TETROMINO_TYPE::END][4];
+    
+    //
+		static const sf::Color SHAPE_COLORS[TETROMINO_TYPE::END];
+
 	private:
 
 		TETROMINO_TYPE m_type;
@@ -28,10 +42,7 @@ namespace TetrisGame {
 		int m_rotation;
 
 	public:
-
-		// TODO
-		static const TetroShape SHAPE_DATA[TETROMINO_TYPE::END][4];
-		static const sf::Color SHAPE_COLORS[TETROMINO_TYPE::END];
+   
 
 		Tetromino(TETROMINO_TYPE& type, int position[2]) : m_type(type), m_position(position[0], position[1]), m_rotation(0) {};
 		~Tetromino();
@@ -45,5 +56,4 @@ namespace TetrisGame {
 		void move(MOVE_ACTION action);
 
 	};
-
 }
