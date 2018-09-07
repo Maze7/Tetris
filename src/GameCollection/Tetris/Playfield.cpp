@@ -25,7 +25,7 @@ void TetrisGame::Playfield::addTetromino(TetrisGame::Tetromino& tetromino)
 		for (int x = 0; x < 4; x++)
 		{
 			// If the block is visible (== 1), add the corresponding color to the m_grid
-			if (*tetroShape[y][x] == 1)
+			if (tetroShape[0][y][x] == 1)
 			{
 				gridPosition.x = tetromino.getPosition().x + x;
 				gridPosition.y = tetromino.getPosition().y + y;
@@ -104,11 +104,11 @@ void TetrisGame::Playfield::deleteRow(uint row)
 	playfield.draw(tetromino);
 	window.diplay();
 */
-void TetrisGame::Playfield::draw(TetrisGame::Tetromino& tetromino)
+/*void TetrisGame::Playfield::draw(TetrisGame::Tetromino& tetromino)
 {
 	drawGrid();
 	drawTetromino(tetromino);
-}
+}*/
 
 /*
 	(Private) Sub-function of Playfield::draw. Draws the Playfield's grid.
@@ -122,12 +122,12 @@ void TetrisGame::Playfield::drawGrid()
 		{
 			if (m_grid[y][x] != sf::Color::Black) {
 				// Create the blocks as sf::RectangleShape's and assign color and position
-				sf::RectangleShape block(sf::Vector2f(m_BLOCK_SIZE * s_COLUMNS, m_BLOCK_SIZE * s_ROWS));
+				sf::RectangleShape block(sf::Vector2f(m_BLOCK_SIZE, m_BLOCK_SIZE));
 				block.setFillColor(m_grid[y][x]);
 				block.setPosition(x * m_BLOCK_SIZE + s_OFFSET, y * m_BLOCK_SIZE + s_OFFSET);
 
 				// Call draw-function of window
-				TetrisGame::getSFWindow()->draw(block);
+				m_window->draw(block);
 			}
 		}
 	}
@@ -149,23 +149,23 @@ void TetrisGame::Playfield::drawTetromino(TetrisGame::Tetromino & tetromino)
 		for (int x = 0; x < 4; x++)
 		{
 			// If a block is visible (== 1), draw it
-			if (*tetroShape[y][x] == 1)
+			if (tetroShape[0][y][x] == 1)
 			{
 				// Create the blocks as sf::RectangleShape'
-				sf::RectangleShape tetroBlock(sf::Vector2f(m_BLOCK_SIZE, m_BLOCK_SIZE));
+				sf::RectangleShape tetroBlock(sf::Vector2f(38, 38));
 
 				// Assign the respective color to the shape
 				tetroBlock.setFillColor(TetrisGame::Tetromino::SHAPE_COLORS[tetromino.getType()]);
 
 				// Calculate the on-screen position of the block
-				tetrominoBlockPosition.x = (tetromino.getPosition().x * m_BLOCK_SIZE) + (x * m_BLOCK_SIZE) + s_OFFSET;
-				tetrominoBlockPosition.y = (tetromino.getPosition().y * m_BLOCK_SIZE) + (y * m_BLOCK_SIZE) + s_OFFSET;
+				tetrominoBlockPosition.x = (tetromino.getPosition().x + x) * m_BLOCK_SIZE + s_OFFSET;
+				tetrominoBlockPosition.y = (tetromino.getPosition().y + y) * m_BLOCK_SIZE + s_OFFSET;
 
 				// Set the position of the block
 				tetroBlock.setPosition(tetrominoBlockPosition.x, tetrominoBlockPosition.y);
 
 				// Call draw-function of window
-				TetrisGame::getSFWindow()->draw(tetroBlock);
+				m_window->draw(tetroBlock);
 			}
 		}
 	}
