@@ -189,7 +189,10 @@ void TetrisGame::Tetromino::rotate(ROTATION_ACTION action)
 		break;
 	
 	case Tetromino::BACKWARD: // left rotation => m_rotation - 1
-		this->m_rotation = --m_rotation % SHAPE_SIZE[m_type];
+		if (m_rotation == 0)
+			m_rotation = SHAPE_SIZE[m_type] - 1;
+		else
+			this->m_rotation = --m_rotation;
 		break;
 	}
 
