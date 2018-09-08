@@ -121,6 +121,8 @@ void TetrisGame::Playfield::drawGrid(sf::RenderWindow* window)
 				// Create the blocks as sf::RectangleShape's and assign color and position
 				sf::RectangleShape block(sf::Vector2f(m_BLOCK_SIZE, m_BLOCK_SIZE));
 				block.setFillColor(m_grid[y][x]);
+				block.setOutlineColor(sf::Color::Black);
+				block.setOutlineThickness(1);
 				block.setPosition(x * m_BLOCK_SIZE + s_OFFSET, y * m_BLOCK_SIZE + s_OFFSET);
 
 				// Call draw-function of window
