@@ -2,6 +2,13 @@
 #include <iostream>
 #include <string>
 
+/*
+	Sets up the font and sf::Text's, so they can be displayed on screen
+
+	Example usage:
+	TetrisGame::Game tetrisGame = TetrisGame::Game
+	tetrisGame.init();
+*/
 void TetrisGame::Game::init()
 {
 	if (!m_font.loadFromFile("big_noodle_titling.ttf"))
@@ -123,6 +130,7 @@ void TetrisGame::Game::handleCollision()
 			m_playfield->deleteRow(completedRows[i]);
 		}
 
+		// Update the score system
 		updateScoreSystem(completedRows.size());
 	}
 	
@@ -260,8 +268,10 @@ bool TetrisGame::Game::isPosValid(Tetromino* tetromino)
 */
 void TetrisGame::Game::updateScoreSystem(uint completedRowCount)
 {
+	// Update the line count
 	m_lineCount += completedRowCount;
 
+	// Increase the score depending on rows completed
 	switch (completedRowCount)
 	{
 	case 1:
@@ -280,6 +290,7 @@ void TetrisGame::Game::updateScoreSystem(uint completedRowCount)
 		break;
 	}
 
+	// Update the sf::Text's that are displayed on screen
 	m_scoreText.setString("Score: " + std::to_string(m_score));
 	m_levelText.setString("Level: " + std::to_string(m_level));
 	m_lineCountText.setString("Lines: " + std::to_string(m_lineCount));
