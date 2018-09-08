@@ -208,3 +208,35 @@ bool TetrisGame::Game::isPosValid(Tetromino* tetromino)
 	// return true if no if-condition is true
 	return true;
 }
+
+/*
+	Updates the score, line count and level depending on rows completed.
+	Should be called everytime rows are completed.
+
+	Example usage:
+	std::vector<int> completedRows = m_playfield->checkForCompletedRows();
+	updateScoreSystem(completedRows.size());
+
+*/
+void TetrisGame::Game::updateScoreSystem(uint completedRowCount)
+{
+	m_lineCount += completedRowCount;
+
+	switch (completedRowCount)
+	{
+	case 1:
+		m_score += 40 * (m_level + 1);
+		break;
+	case 2:
+		m_score += 100 * (m_level + 1);
+		break;
+	case 3:
+		m_score += 300 * (m_level + 1);
+		break;
+	case 4:
+		m_score += 1200 * (m_level + 1);
+		break;
+	default:
+		break;
+	}
+}
