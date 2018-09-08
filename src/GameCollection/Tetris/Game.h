@@ -23,14 +23,12 @@ namespace TetrisGame
 		Game() : m_state(Game::PLAYING), m_currentTetromino(generateRandom(), TetrisGame::Tetromino::PLAYFIELD_POS), m_previewTetromino(generateRandom(), TetrisGame::Tetromino::PREVIEW_POS) {}
 		~Game() {}
 
-		void handleTime();
-		void draw();
-		void handleEvent(sf::Event sfevent);
+		void handleTime() {};
+		void draw(sf::RenderWindow* window);
+		void handleEvent(const sf::Event sfevent);
 
 		bool isPosValid();
 		Tetromino::TETROMINO_TYPE generateRandom();
 	};
 
 }
-
-
