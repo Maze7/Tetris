@@ -142,7 +142,7 @@ void TetrisGame::Playfield::drawGrid(sf::RenderWindow* window)
 		// in this specific case, the playfield should contain other offsets
 		// so they will be drawn alongsite eachother
 */
-void TetrisGame::Playfield::drawTetromino(sf::RenderWindow* window, TetrisGame::Tetromino & tetromino)
+void TetrisGame::Playfield::drawTetromino(sf::RenderWindow* window, TetrisGame::Tetromino & tetromino, bool transparency)
 {
 	// Draw tetromino
 	// Get tetromino shape
@@ -161,7 +161,14 @@ void TetrisGame::Playfield::drawTetromino(sf::RenderWindow* window, TetrisGame::
 				sf::RectangleShape tetroBlock(sf::Vector2f(38, 38));
 
 				// Assign the respective color to the shape
-				tetroBlock.setFillColor(TetrisGame::Tetromino::SHAPE_COLORS[tetromino.getType()]);
+				if (transparency) {
+					tetroBlock.setFillColor(sf::Color::Transparent);
+					tetroBlock.setOutlineColor(sf::Color::White);
+					tetroBlock.setOutlineThickness(1);
+				} 
+				else {
+					tetroBlock.setFillColor(TetrisGame::Tetromino::SHAPE_COLORS[tetromino.getType()]);
+				}
 
 				// Calculate the on-screen position of the block
 				tetrominoBlockPosition.x = (tetromino.getPosition().x + x) * m_BLOCK_SIZE + s_OFFSET;

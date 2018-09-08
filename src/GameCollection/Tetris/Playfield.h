@@ -29,7 +29,7 @@ namespace TetrisGame
 		sf::Color getColorOfField(uint y, uint x);
 
 		void drawGrid(sf::RenderWindow* window);
-		void drawTetromino(sf::RenderWindow* window, TetrisGame::Tetromino& tetromino);
+		void drawTetromino(sf::RenderWindow* window, TetrisGame::Tetromino& tetromino, bool transparency);
 
 
 	};
