@@ -3,7 +3,19 @@
 
 void TetrisGame::Game::handleTime()
 {
+	if (m_clock.getElapsedTime().asMilliseconds() > 500)
+	{
+		m_currentTetromino.move(Tetromino::DOWN);
 
+		// Handle the game mechanics, if a tetromino hit the ground or a block after moving down
+		if (!isPosValid())
+		{
+			handleCollision();
+		}
+
+		// Start a new tick
+		m_clock.restart();
+	}
 }
 
 /*
@@ -32,6 +44,55 @@ TetrisGame::Tetromino::TETROMINO_TYPE TetrisGame::Game::generateRandom()
 	return randomTetrominoType;
 }
 
+/*
+	Updates the position of the collisionPreview-Tetromino.
+	Has to be called after the player moved the tetromino or a new one spawned.
+
+	Example usage:
+	tetromino.move(Tetromino::Right);
+	// check if valid
+	updateCollisionPreview();
+*/
+void TetrisGame::Game::updateCollisionPreview()
+{
+	m_collisionPreview = m_currentTetromino;
+
+	// Move the preview until it collides with the ground or a block
+	do
+		m_collisionPreview.move(Tetromino::DOWN);
+	while (isPosValid(&m_collisionPreview));
+	m_collisionPreview.move(Tetromino::UP); // Move tetromino back into a valid position
+}
+
+/*
+	
+*/
+void TetrisGame::Game::handleCollision()
+{
+	// Move it back into a valid position
+	m_currentTetromino.move(Tetromino::UP);
+	// Add the tetromino to the grid
+	m_playfield->addTetromino(m_currentTetromino);
+
+	// Check for completed rows and delete them
+	std::vector<int> completedRows = m_playfield->checkForCompletedRows();
+	for (int i = 0; i < completedRows.size(); i++)
+	{
+		m_playfield->deleteRow(completedRows[i]);
+	}
+
+	// TODO add completedRows.size() to score
+	// TODO play delete animation
+		
+	// Spawn a new tetromino
+	m_currentTetromino = Tetromino(generateRandom(), Tetromino::PLAYFIELD_POS);
+	// Update the collision preview for the freshly spawned tetromino
+	updateCollisionPreview();
+
+	// Start a new tick
+	m_clock.restart();
+}
+
 
 void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 {
@@ -40,7 +101,7 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 		return;
 
 	switch (sfevent.key.code) {
-	case sf::Keyboard::Space:
+	case sf::Keyboard::W:
 		m_currentTetromino.rotate(Tetromino::FORWARD);
 		if (!isPosValid())
 			m_currentTetromino.rotate(Tetromino::BACKWARD);
@@ -56,6 +117,9 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 			m_currentTetromino.move(Tetromino::LEFT);
 		break;
 	case sf::Keyboard::S:
+		m_currentTetromino.move(Tetromino::DOWN);
+		break;
+	case sf::Keyboard::Space:
 		do
 			m_currentTetromino.move(Tetromino::DOWN);
 		while (isPosValid());
@@ -69,19 +133,14 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 		break;
 	}
 
-	// If the tetromino is in an invalid position, move it back and spawn a new tetromino
-	if (!isPosValid()) {
-		m_currentTetromino.move(Tetromino::UP);
-		m_playfield->addTetromino(m_currentTetromino);
-		m_currentTetromino = Tetromino(Tetromino::Z, Tetromino::PLAYFIELD_POS);
+	// Update the position of the preview tetromino
+	updateCollisionPreview();
+
+	// Handle the game mechanics, if a tetromino hit the ground or a block after moving down
+	if (!isPosValid())
+	{
+		handleCollision();
 	}
-
-	m_collisionPreview = m_currentTetromino;
-
-	do
-		m_collisionPreview.move(Tetromino::DOWN);
-	while (isPosValid(&m_collisionPreview));
-	m_collisionPreview.move(Tetromino::UP); // Move tetromino back into a valid position
 }
 
 /*
