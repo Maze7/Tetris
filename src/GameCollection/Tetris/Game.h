@@ -13,14 +13,16 @@ namespace TetrisGame
 
 	private:
 		GAME_STATE m_state;
-		TetrisGame::Tetromino m_currentTetromino;
-		TetrisGame::Tetromino m_previewTetromino;
-		Playfield* m_playfield;
+		Tetromino m_currentTetromino;
+		Tetromino m_previewTetromino;
+		Tetromino m_collisionPreview;
+		Playfield * m_playfield;
+		
 		int m_level;
 		sf::Clock m_clock;
 
 	public:
-		Game() : m_state(Game::PLAYING), m_currentTetromino(generateRandom(), TetrisGame::Tetromino::PLAYFIELD_POS), m_previewTetromino(generateRandom(), TetrisGame::Tetromino::PREVIEW_POS) {}
+		Game() : m_state(Game::PLAYING), m_currentTetromino(generateRandom(), Tetromino::PLAYFIELD_POS), m_previewTetromino(generateRandom(), Tetromino::PREVIEW_POS), m_collisionPreview(m_currentTetromino) {}
 		~Game() {}
 
 		void handleTime() {};
@@ -28,6 +30,7 @@ namespace TetrisGame
 		void handleEvent(const sf::Event sfevent);
 
 		bool isPosValid();
+		bool isPosValid(Tetromino* tetromino);
 		Tetromino::TETROMINO_TYPE generateRandom();
 	};
 
