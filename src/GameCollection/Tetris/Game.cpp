@@ -124,6 +124,7 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 		break;
 	case sf::Keyboard::S:
 		m_currentTetromino.move(Tetromino::DOWN);
+		m_clock.restart(); // Start a new tick
 		break;
 	case sf::Keyboard::Space:
 		do
