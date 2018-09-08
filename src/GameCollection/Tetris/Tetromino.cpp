@@ -219,5 +219,9 @@ void TetrisGame::Tetromino::move(MOVE_ACTION action)
 		break;
 	case DOWN:
 		this->m_position.y++;
+		break;
+	case UP:
+		this->m_position.y--;
+		break;
 	}
 }

@@ -1,6 +1,11 @@
 #include "Game.h"
 #include <iostream>
 
+void TetrisGame::Game::handleTime()
+{
+
+}
+
 /*
 Draws the blocks of the Playfield grid and the tetromino.
 Creates sf::RectangleShape's, assigns them the colors saved in the
@@ -14,7 +19,8 @@ window.diplay();
 void TetrisGame::Game::draw(sf::RenderWindow* window)
 {
 	m_playfield->drawGrid(window);
-	m_playfield->drawTetromino(window, m_currentTetromino);
+	m_playfield->drawTetromino(window, m_currentTetromino, false);
+	m_playfield->drawTetromino(window, m_collisionPreview, true);
 }
 
 /*
@@ -32,13 +38,6 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 
 	if (m_state == GAMEOVER)
 		return;
-	
-	if (!isPosValid()) {
-		m_playfield->addTetromino(m_currentTetromino);
-		m_currentTetromino = Tetromino(Tetromino::Z, Tetromino::PLAYFIELD_POS);
-		return;
-	}
-
 
 	switch (sfevent.key.code) {
 	case sf::Keyboard::Space:
@@ -60,7 +59,7 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 		do
 			m_currentTetromino.move(Tetromino::DOWN);
 		while (isPosValid());
-		
+
 		break;
 	case sf::Keyboard::P:
 		m_state = GAME_STATE::PAUSED;
@@ -69,13 +68,51 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 	default:
 		break;
 	}
-	
+
+	// If the tetromino is in an invalid position, move it back and spawn a new tetromino
+	if (!isPosValid()) {
+		m_currentTetromino.move(Tetromino::UP);
+		m_playfield->addTetromino(m_currentTetromino);
+		m_currentTetromino = Tetromino(Tetromino::Z, Tetromino::PLAYFIELD_POS);
+	}
+
+	m_collisionPreview = m_currentTetromino;
+
+	do
+		m_collisionPreview.move(Tetromino::DOWN);
+	while (isPosValid(&m_collisionPreview));
+	m_collisionPreview.move(Tetromino::UP); // Move tetromino back into a valid position
 }
 
-bool TetrisGame::Game::isPosValid() 
+/*
+	Calls the method isPosValid(Tetromino* tetromino with the member variable
+	m_currentTetromino. This method is just for clarity and defines the default 
+	tetromino if someone want to know if the position is valid.
+*/
+bool TetrisGame::Game::isPosValid()
 {
-	const sf::Vector2i* pos = &m_currentTetromino.getPosition();
-	const Tetromino::TetroShape* currentShape = &TetrisGame::Tetromino::SHAPE_DATA[m_currentTetromino.getType()][m_currentTetromino.getRotation()];
+	return isPosValid(&m_currentTetromino);
+}
+
+/*
+	Returns a boolean if the position of the given tetromino-pointer
+	is valid or not. Invalid means, the tetromino is somewhere where it
+	should not be (outside the field or inside an another tetromino => collision).
+	If this method returns true, everything is fine. 
+
+	Example Usage: 
+		Tetromino currentTetromino = Tetromino(...);
+		currentTetromino.move(Tetromino::RIGHT);
+		if (game.isPosValid(&tetromino))
+			// ok
+		else
+			currentTetromino.move(Tetromino::LEFT);
+			// position invalid! left wall? or something?
+*/
+bool TetrisGame::Game::isPosValid(Tetromino* tetromino) 
+{
+	const sf::Vector2i* pos = &tetromino->getPosition();
+	const Tetromino::TetroShape* currentShape = &TetrisGame::Tetromino::SHAPE_DATA[tetromino->getType()][tetromino->getRotation()];
 
 	// other tetrominos
 	// iterate the 4x4 tetroshape

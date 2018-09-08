@@ -14,7 +14,7 @@ namespace TetrisGame {
 		enum TETROMINO_TYPE { I = 0, J = 1, L = 2, O = 3, S = 4, T = 5, Z = 6, END = 7 };
 
 		// 
-		enum MOVE_ACTION { RIGHT = 0, LEFT = 1, DOWN = 2 };
+		enum MOVE_ACTION { RIGHT = 0, LEFT = 1, DOWN = 2, UP = 3 };
 
 		//
 		enum ROTATION_ACTION { FORWARD = 0, BACKWARD = 1 };
