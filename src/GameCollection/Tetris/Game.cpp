@@ -65,7 +65,13 @@ void TetrisGame::Game::updateCollisionPreview()
 }
 
 /*
-	
+	Handles the game mechanics following a collision of tetromino with the ground or a block.
+	Includes adding it to the grid, deleting the completed row, increasing the score and 
+	spawns a new tetromino.
+
+	Example usage:
+	if (!isPosValid())
+		handleCollision();
 */
 void TetrisGame::Game::handleCollision()
 {
