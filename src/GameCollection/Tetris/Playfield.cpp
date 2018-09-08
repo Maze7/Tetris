@@ -86,7 +86,7 @@ void TetrisGame::Playfield::deleteRow(uint row)
 	// Start at the completed row and move one row up every iteration (decrease y-index)
 	for (int y = row; y > 0; y--)
 	{
-		for (int x = 0; s_COLUMNS; x++)
+		for (int x = 0; x < s_COLUMNS; x++)
 		{
 			// Set current block color to the color of the block above it
 			m_grid[y][x] = m_grid[y - 1][x];
