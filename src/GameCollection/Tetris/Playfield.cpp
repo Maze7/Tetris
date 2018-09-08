@@ -94,28 +94,25 @@ void TetrisGame::Playfield::deleteRow(uint row)
 	}
 }
 
-/*
-	Draws the blocks of the Playfield grid and the tetromino.
-	Creates sf::RectangleShape's, assigns them the colors saved in the 
-	Playfield's grid / shape colors and sets them to their corresponding position.
-
-	Example usage:
-	window.clear();
-	playfield.draw(tetromino);
-	window.diplay();
-*/
-/*void TetrisGame::Playfield::draw(TetrisGame::Tetromino& tetromino)
+sf::Color TetrisGame::Playfield::getColorOfField(uint y, uint x)
 {
-	drawGrid();
-	drawTetromino(tetromino);
-}*/
+	return m_grid[y][x];
+}
 
 /*
-	(Private) Sub-function of Playfield::draw. Draws the Playfield's grid.
+	Draws the Playfield's grid => m_grid to m_window
 */
-void TetrisGame::Playfield::drawGrid()
+void TetrisGame::Playfield::drawGrid(sf::RenderWindow* window)
 {
-	// Draw grid
+	// build ""Fancy"" grid which shows the end of the playfield
+	sf::RectangleShape grid(sf::Vector2f(m_BLOCK_SIZE * s_COLUMNS, m_HEIGHT - 2 * s_OFFSET));
+	grid.setOutlineColor(sf::Color::White);
+	grid.setOutlineThickness(3);
+	grid.setFillColor(sf::Color::Black);
+	grid.setPosition(s_OFFSET, s_OFFSET);
+	window->draw(grid);
+
+	// Draw color  grid
 	for (int y = 0; y < s_ROWS; y++)
 	{
 		for (int x = 0; x < s_COLUMNS; x++)
@@ -127,16 +124,25 @@ void TetrisGame::Playfield::drawGrid()
 				block.setPosition(x * m_BLOCK_SIZE + s_OFFSET, y * m_BLOCK_SIZE + s_OFFSET);
 
 				// Call draw-function of window
-				m_window->draw(block);
+				window->draw(block);
 			}
 		}
 	}
 }
 
 /*
-	(Private) Sub-function of Playfield::draw. Draws the tetromino.
+	Draws the given tetromino into the current playfield. 
+	Example Usage:
+		Playfield field(..);
+		Playfield field2(..);
+		Tetromino tetro(..);
+		field.drawTetromino(tetro);
+		field2.drawTetromino(tetro);
+		// now both fields contains a visible tetromino
+		// in this specific case, the playfield should contain other offsets
+		// so they will be drawn alongsite eachother
 */
-void TetrisGame::Playfield::drawTetromino(TetrisGame::Tetromino & tetromino)
+void TetrisGame::Playfield::drawTetromino(sf::RenderWindow* window, TetrisGame::Tetromino & tetromino)
 {
 	// Draw tetromino
 	// Get tetromino shape
@@ -165,7 +171,7 @@ void TetrisGame::Playfield::drawTetromino(TetrisGame::Tetromino & tetromino)
 				tetroBlock.setPosition(tetrominoBlockPosition.x, tetrominoBlockPosition.y);
 
 				// Call draw-function of window
-				m_window->draw(tetroBlock);
+				window->draw(tetroBlock);
 			}
 		}
 	}
