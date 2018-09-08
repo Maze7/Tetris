@@ -38,13 +38,6 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 
 	if (m_state == GAMEOVER)
 		return;
-	
-	if (!isPosValid()) {
-		m_playfield->addTetromino(m_currentTetromino);
-		m_currentTetromino = Tetromino(Tetromino::Z, Tetromino::PLAYFIELD_POS);
-		return;
-	}
-
 
 	switch (sfevent.key.code) {
 	case sf::Keyboard::Space:
@@ -66,7 +59,7 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 		do
 			m_currentTetromino.move(Tetromino::DOWN);
 		while (isPosValid());
-		
+
 		break;
 	case sf::Keyboard::P:
 		m_state = GAME_STATE::PAUSED;
@@ -76,11 +69,19 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 		break;
 	}
 
+	// If the tetromino is in an invalid position, move it back and spawn a new tetromino
+	if (!isPosValid()) {
+		m_currentTetromino.move(Tetromino::UP);
+		m_playfield->addTetromino(m_currentTetromino);
+		m_currentTetromino = Tetromino(Tetromino::Z, Tetromino::PLAYFIELD_POS);
+	}
+
 	m_collisionPreview = m_currentTetromino;
 
 	do
 		m_collisionPreview.move(Tetromino::DOWN);
 	while (isPosValid(&m_collisionPreview));
+	m_collisionPreview.move(Tetromino::UP); // Move tetromino back into a valid position
 }
 
 /*
@@ -129,7 +130,7 @@ bool TetrisGame::Game::isPosValid(Tetromino* tetromino)
 					return false;
 				else if (pos->x + x > Playfield::s_COLUMNS - 1)
 					return false;
-				else if (pos->y + y > Playfield::s_ROWS - 2)
+				else if (pos->y + y > Playfield::s_ROWS - 1)
 					return false;
 
 				if (m_playfield->getColorOfField(pos->y + y, pos->x + x) != sf::Color::Black)
