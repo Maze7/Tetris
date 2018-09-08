@@ -1,9 +1,38 @@
 #include "Game.h"
 #include <iostream>
+#include <string>
+
+void TetrisGame::Game::init()
+{
+	if (!m_font.loadFromFile("big_noodle_titling.ttf"))
+	{
+		std::cout << "Couldn't load font." << std::endl;
+	}
+
+	m_levelText.setFont(m_font);
+	m_scoreText.setFont(m_font);
+	m_lineCountText.setFont(m_font);
+
+	m_levelText.setCharacterSize(32);
+	m_scoreText.setCharacterSize(32);
+	m_lineCountText.setCharacterSize(32);
+
+	m_levelText.setFillColor(sf::Color::White);
+	m_scoreText.setFillColor(sf::Color::White);
+	m_lineCountText.setFillColor(sf::Color::White);
+
+	m_levelText.setPosition(500, 400);
+	m_scoreText.setPosition(500, 500);
+	m_lineCountText.setPosition(500, 600);
+
+	m_scoreText.setString("Score: " + std::to_string(m_score));
+	m_levelText.setString("Level: " + std::to_string(m_level));
+	m_lineCountText.setString("Lines: " + std::to_string(m_lineCount));
+}
 
 void TetrisGame::Game::handleTime()
 {
-	if (m_clock.getElapsedTime().asMilliseconds() > 500)
+	if (m_clock.getElapsedTime().asMilliseconds() > m_tickInterval)
 	{
 		m_currentTetromino.move(Tetromino::DOWN);
 
@@ -33,6 +62,10 @@ void TetrisGame::Game::draw(sf::RenderWindow* window)
 	m_playfield->drawGrid(window);
 	m_playfield->drawTetromino(window, m_currentTetromino, false);
 	m_playfield->drawTetromino(window, m_collisionPreview, true);
+
+	window->draw(m_scoreText);
+	window->draw(m_levelText);
+	window->draw(m_lineCountText);
 }
 
 /*
@@ -82,12 +115,19 @@ void TetrisGame::Game::handleCollision()
 
 	// Check for completed rows and delete them
 	std::vector<int> completedRows = m_playfield->checkForCompletedRows();
-	for (int i = 0; i < completedRows.size(); i++)
-	{
-		m_playfield->deleteRow(completedRows[i]);
-	}
 
-	// TODO add completedRows.size() to score
+	if (completedRows.size() > 0)
+	{
+		for (int i = 0; i < completedRows.size(); i++)
+		{
+			m_playfield->deleteRow(completedRows[i]);
+		}
+
+		updateScoreSystem(completedRows.size());
+	}
+	
+
+	
 	// TODO play delete animation
 		
 	// Spawn a new tetromino
@@ -225,18 +265,22 @@ void TetrisGame::Game::updateScoreSystem(uint completedRowCount)
 	switch (completedRowCount)
 	{
 	case 1:
-		m_score += 40 * (m_level + 1);
+		m_score += 40 * m_level;
 		break;
 	case 2:
-		m_score += 100 * (m_level + 1);
+		m_score += 100 * m_level;
 		break;
 	case 3:
-		m_score += 300 * (m_level + 1);
+		m_score += 300 * m_level;
 		break;
 	case 4:
-		m_score += 1200 * (m_level + 1);
+		m_score += 1200 * m_level;
 		break;
 	default:
 		break;
 	}
+
+	m_scoreText.setString("Score: " + std::to_string(m_score));
+	m_levelText.setString("Level: " + std::to_string(m_level));
+	m_lineCountText.setString("Lines: " + std::to_string(m_lineCount));
 }

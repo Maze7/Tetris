@@ -18,13 +18,21 @@ namespace TetrisGame
 		Tetromino m_collisionPreview;
 		Playfield * m_playfield;
 		
-		uint m_level;
+		uint m_level; 
+		sf::Text m_levelText;
+
 		uint m_score;
+		sf::Text m_scoreText;
+
 		uint m_lineCount;
+		sf::Text m_lineCountText;
+
 		uint m_tickInterval;
 
 		sf::Clock m_totalTime;
 		sf::Clock m_clock;
+
+		sf::Font m_font;
 
 	public:
 		Game() 
@@ -42,6 +50,7 @@ namespace TetrisGame
 		
 		~Game() {}
 
+		void init();
 		void handleTime();
 		void draw(sf::RenderWindow* window);
 		void handleEvent(const sf::Event sfevent);
