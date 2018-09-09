@@ -20,7 +20,7 @@ namespace TetrisGame {
 		enum ROTATION_ACTION { FORWARD = 0, BACKWARD = 1 };
 
 		//
-		static constexpr int PREVIEW_POS[2] = { 1, 1 };
+		static constexpr int PREVIEW_POS[2] = { 11, 1 };
 		static constexpr int PLAYFIELD_POS[2] = { 3, 0 };
 
 		// TODO
