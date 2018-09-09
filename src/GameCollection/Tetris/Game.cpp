@@ -1,25 +1,17 @@
 #include "Game.h"
-#include <iostream>
 #include <string>
 
 /*
-	Sets up the font and sf::Text's, so they can be displayed on screen
+	Sets the text lables inside the window to the correct
+	positions. This method is used to initialize the game. 
+	It's advised to call this method inside constructor. Without it
+	there will be no text lines. 
 
 	Example usage:
-	TetrisGame::Game tetrisGame = TetrisGame::Game
-	tetrisGame.init();
+	TetrisGame::Game tetrisGame = TetrisGame::Game();
 */
 void TetrisGame::Game::init()
 {
-	if (!m_font.loadFromFile("big_noodle_titling.ttf"))
-	{
-		std::cout << "Couldn't load font." << std::endl;
-	}
-
-	m_levelText.setFont(m_font);
-	m_scoreText.setFont(m_font);
-	m_lineCountText.setFont(m_font);
-
 	m_levelText.setCharacterSize(32);
 	m_scoreText.setCharacterSize(32);
 	m_lineCountText.setCharacterSize(32);
@@ -59,21 +51,25 @@ void TetrisGame::Game::handleTime()
 }
 
 /*
-Draws the blocks of the Playfield grid and the tetromino.
-Creates sf::RectangleShape's, assigns them the colors saved in the
-Playfield's grid / shape colors and sets them to their corresponding position.
+	Draw method will be called directly before the next frame will
+	displayed. It needs the actual window and font. Both are pointers.
+	From here, all other components will be drawn (playfield, tetromino, text, etc).
 
-Example usage:
-window.clear();
-playfield.draw(tetromino);
-window.diplay();
+	Example usage:
+	window.clear();
+	CollectionEntry.draw(&currentWindow, &currentFont);
+	window.diplay();
 */
-void TetrisGame::Game::draw(sf::RenderWindow* window)
+void TetrisGame::Game::draw(sf::RenderWindow* window, sf::Font* font)
 {
-	m_playfield->drawGrid(window);
-	m_playfield->drawTetromino(window, m_currentTetromino, false);
-	m_playfield->drawTetromino(window, m_previewTetromino, false);
-	m_playfield->drawTetromino(window, m_collisionPreview, true);
+	m_playfield.drawGrid(window);
+	m_playfield.drawTetromino(window, m_currentTetromino, false);
+	m_playfield.drawTetromino(window, m_previewTetromino, false);
+	m_playfield.drawTetromino(window, m_collisionPreview, true);
+
+	m_levelText.setFont(*font);
+	m_scoreText.setFont(*font);
+	m_lineCountText.setFont(*font);
 
 	window->draw(m_scoreText);
 	window->draw(m_levelText);
@@ -121,16 +117,16 @@ void TetrisGame::Game::updateCollisionPreview()
 void TetrisGame::Game::handleCollision()
 {
 	// Add the tetromino to the grid
-	m_playfield->addTetromino(m_currentTetromino);
+	m_playfield.addTetromino(m_currentTetromino);
 
 	// Check for completed rows and delete them
-	std::vector<int> completedRows = m_playfield->checkForCompletedRows();
+	std::vector<int> completedRows = m_playfield.checkForCompletedRows();
 
 	if (completedRows.size() > 0)
 	{
 		for (int rowId : completedRows)
 		{
-			m_playfield->deleteRow(rowId);
+			m_playfield.deleteRow(rowId);
 		}
 
 		// Update the score system
@@ -256,7 +252,7 @@ bool TetrisGame::Game::isPosValid(Tetromino* tetromino)
 				else if (pos->y + y > Playfield::s_ROWS - 1)
 					return false;
 
-				if (m_playfield->getColorOfField(pos->y + y, pos->x + x) != sf::Color::Black)
+				if (m_playfield.getColorOfField(pos->y + y, pos->x + x) != sf::Color::Black)
 					return false;
 			}
 		}

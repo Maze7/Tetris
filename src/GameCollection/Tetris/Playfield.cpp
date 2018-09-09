@@ -104,8 +104,12 @@ sf::Color TetrisGame::Playfield::getColorOfField(uint y, uint x)
 */
 void TetrisGame::Playfield::drawGrid(sf::RenderWindow* window)
 {
+	const uint WIDTH = window->getSize().x;
+	const uint HEIGHT = window->getSize().y;
+	const uint BLOCK_SIZE{ (HEIGHT - 2 * s_OFFSET) / s_ROWS };
+
 	// build ""Fancy"" grid which shows the end of the playfield
-	sf::RectangleShape grid(sf::Vector2f(m_BLOCK_SIZE * s_COLUMNS, m_HEIGHT - 2 * s_OFFSET));
+	sf::RectangleShape grid(sf::Vector2f(BLOCK_SIZE * s_COLUMNS, HEIGHT - 2 * s_OFFSET));
 	grid.setOutlineColor(sf::Color::White);
 	grid.setOutlineThickness(3);
 	grid.setFillColor(sf::Color::Black);
@@ -119,11 +123,11 @@ void TetrisGame::Playfield::drawGrid(sf::RenderWindow* window)
 		{
 			if (m_grid[y][x] != sf::Color::Black) {
 				// Create the blocks as sf::RectangleShape's and assign color and position
-				sf::RectangleShape block(sf::Vector2f(m_BLOCK_SIZE, m_BLOCK_SIZE));
+				sf::RectangleShape block(sf::Vector2f(BLOCK_SIZE, BLOCK_SIZE));
 				block.setFillColor(m_grid[y][x]);
 				block.setOutlineColor(sf::Color::Black);
 				block.setOutlineThickness(1);
-				block.setPosition(x * m_BLOCK_SIZE + s_OFFSET, y * m_BLOCK_SIZE + s_OFFSET);
+				block.setPosition(x * BLOCK_SIZE + s_OFFSET, y * BLOCK_SIZE + s_OFFSET);
 
 				// Call draw-function of window
 				window->draw(block);
@@ -146,6 +150,10 @@ void TetrisGame::Playfield::drawGrid(sf::RenderWindow* window)
 */
 void TetrisGame::Playfield::drawTetromino(sf::RenderWindow* window, TetrisGame::Tetromino & tetromino, bool transparency)
 {
+
+	const uint HEIGHT = window->getSize().y;
+	const uint BLOCK_SIZE{ (HEIGHT - 2 * s_OFFSET) / s_ROWS };
+
 	// Draw tetromino
 	// Get tetromino shape
 	const TetrisGame::Tetromino::TetroShape* tetroShape = &TetrisGame::Tetromino::SHAPE_DATA[tetromino.getType()][tetromino.getRotation()];
@@ -173,8 +181,8 @@ void TetrisGame::Playfield::drawTetromino(sf::RenderWindow* window, TetrisGame::
 				}
 
 				// Calculate the on-screen position of the block
-				tetrominoBlockPosition.x = (tetromino.getPosition().x + x) * m_BLOCK_SIZE + s_OFFSET;
-				tetrominoBlockPosition.y = (tetromino.getPosition().y + y) * m_BLOCK_SIZE + s_OFFSET;
+				tetrominoBlockPosition.x = (tetromino.getPosition().x + x) * BLOCK_SIZE + s_OFFSET;
+				tetrominoBlockPosition.y = (tetromino.getPosition().y + y) * BLOCK_SIZE + s_OFFSET;
 
 				// Set the position of the block
 				tetroBlock.setPosition(tetrominoBlockPosition.x, tetrominoBlockPosition.y);

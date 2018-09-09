@@ -7,21 +7,18 @@ namespace TetrisGame
 
 	class Playfield
 	{
+
+	private:
+		std::vector<std::vector<sf::Color>> m_grid;
+
 	public:
 		static constexpr int s_ROWS = 20;
 		static constexpr int s_COLUMNS = 10;
 		static constexpr int s_OFFSET = 10;
 
-		uint m_WIDTH;
-		uint m_HEIGHT;
-
-	private:
-
-		std::vector<std::vector<sf::Color>> m_grid;
-		uint m_BLOCK_SIZE{ (m_HEIGHT - 2 * s_OFFSET) / s_ROWS };
-
 	public:
-		Playfield(sf::RenderWindow* window) : m_grid(s_ROWS, std::vector<sf::Color>(s_COLUMNS, sf::Color::Black)), m_WIDTH(window->getSize().x), m_HEIGHT(window->getSize().y) {};
+		Playfield() : m_grid(s_ROWS, std::vector<sf::Color>(s_COLUMNS, sf::Color::Black)) {};
+
 		~Playfield();
 		void addTetromino(TetrisGame::Tetromino& tetromino);
 		std::vector<int> checkForCompletedRows();

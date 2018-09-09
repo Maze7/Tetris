@@ -16,7 +16,7 @@ namespace TetrisGame
 		Tetromino m_currentTetromino;
 		Tetromino m_previewTetromino;
 		Tetromino m_collisionPreview;
-		Playfield * m_playfield;
+		Playfield m_playfield;
 	
 		uint m_level; 
 		sf::Text m_levelText;
@@ -30,8 +30,6 @@ namespace TetrisGame
 		sf::Clock m_clock;
 		uint m_tickInterval;
 
-		sf::Font m_font;
-
 	public:
 		Game()
 			: m_state(Game::PLAYING)
@@ -42,13 +40,14 @@ namespace TetrisGame
 			, m_score(0)
 			, m_lineCount(0)
 			, m_tickInterval(500)
-		{}
+			, m_playfield(Playfield())
+		{ init(); }
 		
 		~Game() {}
 
 		void init();
 		void handleTime();
-		void draw(sf::RenderWindow* window);
+		void draw(sf::RenderWindow* window, sf::Font* font);
 		void handleEvent(const sf::Event sfevent);
 
 		bool isPosValid();
