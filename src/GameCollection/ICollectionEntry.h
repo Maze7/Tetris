@@ -34,19 +34,22 @@ namespace GameCollection
 		
 		/*
 			This method will directly called after "handleEvent" outside the window.pollEvent loop.
-			It should handle something like time/tick or other game rythmics. It will be called every
+			It should handle something like time/tick or other game behaviors. It will be called every
 			loop right before the draw-method and before window.display(). There is no need to 
 			override this method if its not needed (in a case like "Menu" entry, where is no need
-			for any time/game rythmic). 
+			for any time/game behaviors).
 		*/
 		virtual void handleTime() {}
 		
 		/*
 			--PureVirtual -- 
 			Since this project is based on SFML, this method should draw every needed item/object 
-			to the given window. This method will be called every frime right before displaying the window.  
+			to the given window. This method will be called every frame right before displaying the window.
+			The font and window are only available in this method. It should draw all the necessary components
+			(like game objects or menu entries).
+
 		*/
-		virtual void draw(sf::RenderWindow* window) = 0;
+		virtual void draw(sf::RenderWindow* window, sf::Font* font) = 0;
 	};
 }
 

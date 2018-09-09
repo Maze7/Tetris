@@ -30,8 +30,6 @@ namespace TetrisGame
 		sf::Clock m_clock;
 		uint m_tickInterval;
 
-		sf::Font m_font;
-
 	public:
 		Game()
 			: m_state(Game::PLAYING)
@@ -42,13 +40,13 @@ namespace TetrisGame
 			, m_score(0)
 			, m_lineCount(0)
 			, m_tickInterval(500)
-		{}
+		{ init(); }
 		
 		~Game() {}
 
 		void init();
 		void handleTime();
-		void draw(sf::RenderWindow* window);
+		void draw(sf::RenderWindow* window, sf::Font* font);
 		void handleEvent(const sf::Event sfevent);
 
 		bool isPosValid();
