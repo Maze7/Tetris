@@ -172,6 +172,23 @@ TetrisGame::Tetromino::~Tetromino()
 {
 }
 
+
+const TetrisGame::Tetromino::TETROMINO_TYPE& TetrisGame::Tetromino::getType()
+{
+	return m_type;
+}
+
+const sf::Vector2i& TetrisGame::Tetromino::getPosition()
+{
+	return m_position;
+}
+
+const int& TetrisGame::Tetromino::getRotation()
+{
+	return m_rotation;
+}
+
+
 /*
 	Rotate the current Tetromino depending on the given "action".
 	This Method sets the m_rotation index. 
