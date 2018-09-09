@@ -1,15 +1,55 @@
 #include "Game.h"
 #include <iostream>
+#include <string>
+
+/*
+	Sets up the font and sf::Text's, so they can be displayed on screen
+
+	Example usage:
+	TetrisGame::Game tetrisGame = TetrisGame::Game
+	tetrisGame.init();
+*/
+void TetrisGame::Game::init()
+{
+	if (!m_font.loadFromFile("big_noodle_titling.ttf"))
+	{
+		std::cout << "Couldn't load font." << std::endl;
+	}
+
+	m_levelText.setFont(m_font);
+	m_scoreText.setFont(m_font);
+	m_lineCountText.setFont(m_font);
+
+	m_levelText.setCharacterSize(32);
+	m_scoreText.setCharacterSize(32);
+	m_lineCountText.setCharacterSize(32);
+
+	m_levelText.setFillColor(sf::Color::White);
+	m_scoreText.setFillColor(sf::Color::White);
+	m_lineCountText.setFillColor(sf::Color::White);
+
+	m_levelText.setPosition(500, 400);
+	m_scoreText.setPosition(500, 500);
+	m_lineCountText.setPosition(500, 600);
+
+	m_scoreText.setString("Score: " + std::to_string(m_score));
+	m_levelText.setString("Level: " + std::to_string(m_level));
+	m_lineCountText.setString("Lines: " + std::to_string(m_lineCount));	
+}
 
 void TetrisGame::Game::handleTime()
 {
-	if (m_clock.getElapsedTime().asMilliseconds() > 500)
+	if (m_clock.getElapsedTime().asMilliseconds() > m_tickInterval)
 	{
 		m_currentTetromino.move(Tetromino::DOWN);
 
-		// Handle the game mechanics, if a tetromino hit the ground or a block after moving down
+		// If the tetromino hit the ground or a block after moving down
 		if (!isPosValid())
 		{
+			// Move it back into a valid position
+			m_currentTetromino.move(Tetromino::UP);
+
+			// Handle the game mechanics following the collision
 			handleCollision();
 		}
 
@@ -32,7 +72,12 @@ void TetrisGame::Game::draw(sf::RenderWindow* window)
 {
 	m_playfield->drawGrid(window);
 	m_playfield->drawTetromino(window, m_currentTetromino, false);
+	m_playfield->drawTetromino(window, m_previewTetromino, false);
 	m_playfield->drawTetromino(window, m_collisionPreview, true);
+
+	window->draw(m_scoreText);
+	window->draw(m_levelText);
+	window->draw(m_lineCountText);
 }
 
 /*
@@ -75,23 +120,31 @@ void TetrisGame::Game::updateCollisionPreview()
 */
 void TetrisGame::Game::handleCollision()
 {
-	// Move it back into a valid position
-	m_currentTetromino.move(Tetromino::UP);
 	// Add the tetromino to the grid
 	m_playfield->addTetromino(m_currentTetromino);
 
 	// Check for completed rows and delete them
 	std::vector<int> completedRows = m_playfield->checkForCompletedRows();
-	for (int i = 0; i < completedRows.size(); i++)
-	{
-		m_playfield->deleteRow(completedRows[i]);
-	}
 
-	// TODO add completedRows.size() to score
+	if (completedRows.size() > 0)
+	{
+		for (int rowId : completedRows)
+		{
+			m_playfield->deleteRow(rowId);
+		}
+
+		// Update the score system
+		updateScoreSystem(completedRows.size());
+	}
+	
+
+	
 	// TODO play delete animation
 		
-	// Spawn a new tetromino
-	m_currentTetromino = Tetromino(generateRandom(), Tetromino::PLAYFIELD_POS);
+	// Spawn a new tetromino with the shape of the preview
+	m_currentTetromino = Tetromino(m_previewTetromino.getType(), Tetromino::PLAYFIELD_POS);
+	// Generate a new preview tetromino
+	m_previewTetromino = Tetromino(generateRandom(), Tetromino::PREVIEW_POS);
 	// Update the collision preview for the freshly spawned tetromino
 	updateCollisionPreview();
 
@@ -143,9 +196,13 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 	// Update the position of the preview tetromino
 	updateCollisionPreview();
 
-	// Handle the game mechanics, if a tetromino hit the ground or a block after moving down
+	// If the tetromino hit the ground or a block after moving down
 	if (!isPosValid())
 	{
+		// Move it back into a valid position
+		m_currentTetromino.move(Tetromino::UP);
+
+		// Handle the game mechanics following the collision
 		handleCollision();
 	}
 }
@@ -207,4 +264,43 @@ bool TetrisGame::Game::isPosValid(Tetromino* tetromino)
 
 	// return true if no if-condition is true
 	return true;
+}
+
+/*
+	Updates the score, line count and level depending on rows completed.
+	Should be called everytime rows are completed.
+
+	Example usage:
+	std::vector<int> completedRows = m_playfield->checkForCompletedRows();
+	updateScoreSystem(completedRows.size());
+
+*/
+void TetrisGame::Game::updateScoreSystem(uint completedRowCount)
+{
+	// Update the line count
+	m_lineCount += completedRowCount;
+
+	// Increase the score depending on rows completed
+	switch (completedRowCount)
+	{
+	case 1:
+		m_score += 40 * m_level;
+		break;
+	case 2:
+		m_score += 100 * m_level;
+		break;
+	case 3:
+		m_score += 300 * m_level;
+		break;
+	case 4:
+		m_score += 1200 * m_level;
+		break;
+	default:
+		break;
+	}
+
+	// Update the sf::Text's that are displayed on screen
+	m_scoreText.setString("Score: " + std::to_string(m_score));
+	m_levelText.setString("Level: " + std::to_string(m_level));
+	m_lineCountText.setString("Lines: " + std::to_string(m_lineCount));
 }
