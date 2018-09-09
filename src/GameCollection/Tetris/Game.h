@@ -33,12 +33,10 @@ namespace TetrisGame
 		sf::Font m_font;
 
 	public:
-		Game() 
+		Game()
 			: m_state(Game::PLAYING)
-			, m_currentTetromino(generateRandom()
-			, Tetromino::PLAYFIELD_POS)
-			, m_previewTetromino(generateRandom()
-			, Tetromino::PREVIEW_POS)
+			, m_currentTetromino(generateRandom(), Tetromino::PLAYFIELD_POS)
+			, m_previewTetromino(generateRandom(), Tetromino::PREVIEW_POS)
 			, m_collisionPreview(m_currentTetromino)
 			, m_level(1)
 			, m_score(0)

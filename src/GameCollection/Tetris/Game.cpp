@@ -34,7 +34,7 @@ void TetrisGame::Game::init()
 
 	m_scoreText.setString("Score: " + std::to_string(m_score));
 	m_levelText.setString("Level: " + std::to_string(m_level));
-	m_lineCountText.setString("Lines: " + std::to_string(m_lineCount));
+	m_lineCountText.setString("Lines: " + std::to_string(m_lineCount));	
 }
 
 void TetrisGame::Game::handleTime()
@@ -43,9 +43,13 @@ void TetrisGame::Game::handleTime()
 	{
 		m_currentTetromino.move(Tetromino::DOWN);
 
-		// Handle the game mechanics, if a tetromino hit the ground or a block after moving down
+		// If the tetromino hit the ground or a block after moving down
 		if (!isPosValid())
 		{
+			// Move it back into a valid position
+			m_currentTetromino.move(Tetromino::UP);
+
+			// Handle the game mechanics following the collision
 			handleCollision();
 		}
 
@@ -68,6 +72,7 @@ void TetrisGame::Game::draw(sf::RenderWindow* window)
 {
 	m_playfield->drawGrid(window);
 	m_playfield->drawTetromino(window, m_currentTetromino, false);
+	m_playfield->drawTetromino(window, m_previewTetromino, false);
 	m_playfield->drawTetromino(window, m_collisionPreview, true);
 
 	window->draw(m_scoreText);
@@ -115,8 +120,6 @@ void TetrisGame::Game::updateCollisionPreview()
 */
 void TetrisGame::Game::handleCollision()
 {
-	// Move it back into a valid position
-	m_currentTetromino.move(Tetromino::UP);
 	// Add the tetromino to the grid
 	m_playfield->addTetromino(m_currentTetromino);
 
@@ -125,9 +128,9 @@ void TetrisGame::Game::handleCollision()
 
 	if (completedRows.size() > 0)
 	{
-		for (int i = 0; i < completedRows.size(); i++)
+		for (int rowId : completedRows)
 		{
-			m_playfield->deleteRow(completedRows[i]);
+			m_playfield->deleteRow(rowId);
 		}
 
 		// Update the score system
@@ -138,8 +141,10 @@ void TetrisGame::Game::handleCollision()
 	
 	// TODO play delete animation
 		
-	// Spawn a new tetromino
-	m_currentTetromino = Tetromino(generateRandom(), Tetromino::PLAYFIELD_POS);
+	// Spawn a new tetromino with the shape of the preview
+	m_currentTetromino = Tetromino(m_previewTetromino.getType(), Tetromino::PLAYFIELD_POS);
+	// Generate a new preview tetromino
+	m_previewTetromino = Tetromino(generateRandom(), Tetromino::PREVIEW_POS);
 	// Update the collision preview for the freshly spawned tetromino
 	updateCollisionPreview();
 
@@ -191,9 +196,13 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 	// Update the position of the preview tetromino
 	updateCollisionPreview();
 
-	// Handle the game mechanics, if a tetromino hit the ground or a block after moving down
+	// If the tetromino hit the ground or a block after moving down
 	if (!isPosValid())
 	{
+		// Move it back into a valid position
+		m_currentTetromino.move(Tetromino::UP);
+
+		// Handle the game mechanics following the collision
 		handleCollision();
 	}
 }
