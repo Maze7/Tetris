@@ -24,7 +24,10 @@ namespace GameCollection
 	*/
 	class ICollectionEntry
 	{
+
 	public:
+		enum EXIT_CODE{ GOOD=0, ERROR=1 };
+
 		/*
 			-- PureVirtual -- 
 			Every entry have to handle keyboard and/or mouse events. 
@@ -50,6 +53,17 @@ namespace GameCollection
 
 		*/
 		virtual void draw(sf::RenderWindow* window, sf::Font* font) = 0;
+
+
+		/*
+		 *
+		 */
+		virtual int close() { return EXIT_CODE::GOOD; }
+
+		/*
+		 * Avoid compiler warning
+		 */
+		virtual ~ICollectionEntry() {};
 	};
 }
 

@@ -76,6 +76,12 @@ void TetrisGame::Game::draw(sf::RenderWindow* window, sf::Font* font)
 	window->draw(m_lineCountText);
 }
 
+int TetrisGame::Game::close()
+{
+	// todo write highscore and/or do cleanup
+	return this->EXIT_CODE::GOOD;
+}
+
 /*
 	Generates a random tetromino type out of Tetromino::TETROMINO_TYPE and returns it.
 */
