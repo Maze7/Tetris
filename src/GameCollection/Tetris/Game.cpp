@@ -62,10 +62,10 @@ void TetrisGame::Game::handleTime()
 */
 void TetrisGame::Game::draw(sf::RenderWindow* window, sf::Font* font)
 {
-	m_playfield->drawGrid(window);
-	m_playfield->drawTetromino(window, m_currentTetromino, false);
-	m_playfield->drawTetromino(window, m_previewTetromino, false);
-	m_playfield->drawTetromino(window, m_collisionPreview, true);
+	m_playfield.drawGrid(window);
+	m_playfield.drawTetromino(window, m_currentTetromino, false);
+	m_playfield.drawTetromino(window, m_previewTetromino, false);
+	m_playfield.drawTetromino(window, m_collisionPreview, true);
 
 	m_levelText.setFont(*font);
 	m_scoreText.setFont(*font);
@@ -117,16 +117,16 @@ void TetrisGame::Game::updateCollisionPreview()
 void TetrisGame::Game::handleCollision()
 {
 	// Add the tetromino to the grid
-	m_playfield->addTetromino(m_currentTetromino);
+	m_playfield.addTetromino(m_currentTetromino);
 
 	// Check for completed rows and delete them
-	std::vector<int> completedRows = m_playfield->checkForCompletedRows();
+	std::vector<int> completedRows = m_playfield.checkForCompletedRows();
 
 	if (completedRows.size() > 0)
 	{
 		for (int rowId : completedRows)
 		{
-			m_playfield->deleteRow(rowId);
+			m_playfield.deleteRow(rowId);
 		}
 
 		// Update the score system
@@ -252,7 +252,7 @@ bool TetrisGame::Game::isPosValid(Tetromino* tetromino)
 				else if (pos->y + y > Playfield::s_ROWS - 1)
 					return false;
 
-				if (m_playfield->getColorOfField(pos->y + y, pos->x + x) != sf::Color::Black)
+				if (m_playfield.getColorOfField(pos->y + y, pos->x + x) != sf::Color::Black)
 					return false;
 			}
 		}

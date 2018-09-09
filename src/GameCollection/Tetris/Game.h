@@ -16,7 +16,7 @@ namespace TetrisGame
 		Tetromino m_currentTetromino;
 		Tetromino m_previewTetromino;
 		Tetromino m_collisionPreview;
-		Playfield * m_playfield;
+		Playfield m_playfield;
 	
 		uint m_level; 
 		sf::Text m_levelText;
@@ -40,6 +40,7 @@ namespace TetrisGame
 			, m_score(0)
 			, m_lineCount(0)
 			, m_tickInterval(500)
+			, m_playfield(Playfield())
 		{ init(); }
 		
 		~Game() {}
