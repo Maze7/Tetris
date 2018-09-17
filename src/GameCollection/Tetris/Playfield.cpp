@@ -193,3 +193,56 @@ void TetrisGame::Playfield::drawTetromino(sf::RenderWindow* window, TetrisGame::
 		}
 	}
 }
+
+/*
+	Sets the color of all blocks in the Playfield's m_grid to white.
+
+	Example usage:
+	if ( // gameover)
+		m_playfield.gameover();
+*/
+void TetrisGame::Playfield::gameover()
+{
+	for (int y = 0; y < s_ROWS; y++)
+	{
+		for (int x = 0; x < s_COLUMNS; x++)
+		{
+			m_grid[y][x] = sf::Color::White;
+		}
+	}
+}
+
+/*
+	Changes the color of the completed rows.
+
+	Example usage:
+	m_completedRows = m_playfield.checkForCompletedRows();
+	if (m_completedRows.size() > 0)
+		m_playfield.markCompletedRows(&m_completedRows, sf::Color::White);
+*/
+void TetrisGame::Playfield::markCompletedRows(std::vector<int>* completedRows, sf::Color color)
+{
+	for (int rowId : *completedRows) 
+	{
+		for (int x = 0; x < 10; x++)
+		{
+			m_grid[rowId][x] = color;
+		}
+	}
+	
+}
+
+/*
+	Clears the whole Playfield.
+	Currently unused.
+*/
+void TetrisGame::Playfield::resetPlayfield()
+{
+	for (int y = 0; y < s_ROWS; y++)
+	{
+		for (int x = 0; x < s_COLUMNS; x++)
+		{
+			m_grid[y][x] = sf::Color::Black;
+		}
+	}
+}
