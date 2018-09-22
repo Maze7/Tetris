@@ -2,6 +2,7 @@
 #include "../ScreenManager.h"
 #include "../Collection.h"
 #include <iostream>
+#include "TetrisLoader.h"
 
 /*
 	Allows to switch through the menu.
@@ -80,6 +81,8 @@ int TetrisGame::TetrisMenu::close()
 		break;
 	case MAINMENU:
 		return ICollectionEntry::MAIN_MENU;
+	case SETTINGS:
+		return TetrisLoader::SETTINGS;
 	default:
 		return m_hover;
 	}
