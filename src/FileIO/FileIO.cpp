@@ -16,6 +16,7 @@ std::vector<std::string> FileIO::readFile(std::string filename)
 {
 	std::vector<std::string> v_input;
 	std::string line;
+
 	std::ifstream fileIn(filename);
 
 	if (fileIn.is_open())
@@ -30,7 +31,7 @@ std::vector<std::string> FileIO::readFile(std::string filename)
 	}
 	else
 	{
-		throw FileNotFoundException();
+		throw Exceptions::FileExceptions::FileNotFoundException("FileNotFoundException");
 	}
 
 	return v_input;
@@ -42,8 +43,15 @@ std::vector<std::string> FileIO::readFile(std::string filename)
 void FileIO::writeFile(std::string output, std::string filename)
 {
 	std::ofstream fileOut;
+	fileOut.exceptions(std::ofstream::failbit | std::ofstream::badbit);
 
-	fileOut.open(filename);
-	fileOut << output;
-	fileOut.close();
+	try {
+		fileOut.open(filename);
+		fileOut << output;
+		fileOut.close();
+	}
+	catch (std::ofstream::failure const &e) {
+		throw Exceptions::FileExceptions::FileWriteException("FileWriteException");
+	}
+
 }
