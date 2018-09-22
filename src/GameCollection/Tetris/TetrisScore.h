@@ -31,6 +31,10 @@ namespace TetrisGame
 		void update(int completedRowCount);
 		const std::vector<Highscore>* getHighscoreList() { return &m_highscoreList; }
 
+		const int getScore();
+		const int getLevel();
+		const int getLineCount();
+
 		bool isNewHighscore();
 		void addToHighscoreList();
 
