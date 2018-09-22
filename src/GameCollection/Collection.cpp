@@ -45,6 +45,7 @@ int GameCollection::Collection::run(sf::RenderWindow& window, sf::Font& font)
 				entrysOfModule = s_entrys.at(mainMenu.getCurrentName());
 				currentScreen = entrysOfModule[0][screenIndex];
 				currentScreen->setRunning();
+				break;
 			}
 		}
 

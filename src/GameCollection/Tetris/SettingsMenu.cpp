@@ -74,15 +74,16 @@ void TetrisGame::SettingsMenu::draw(sf::RenderWindow* window, sf::Font* font)
 int TetrisGame::SettingsMenu::close()
 {
 	std::vector<ICollectionEntry*>* modulScreens = GameCollection::Collection::getEntrys()->at(TetrisLoader::MODUL_NAME);
-	TetrisGame::Game* game = dynamic_cast<Game*>(modulScreens[0][1]);
+	TetrisGame::Game* game = dynamic_cast<Game*>(modulScreens[0][TetrisLoader::GAME]);
 	// game->setVolume or smth like this.
+	// game set startlevel
 	switch (m_hover)
 	{
 	case CONTINUE:
-		return 1; // GAME
+		return TetrisLoader::GAME;
 		break;
 	case BACK:
-		return 0; // Menu
+		return TetrisLoader::MENU;
 		break;
 	}
 }
