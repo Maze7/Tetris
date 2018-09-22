@@ -1,14 +1,5 @@
 #include "FileIO.h"
 
-FileIO::FileIO()
-{
-}
-
-
-FileIO::~FileIO()
-{
-}
-
 /*
 	Returns a string-vector containing the content of the given file.
 */
