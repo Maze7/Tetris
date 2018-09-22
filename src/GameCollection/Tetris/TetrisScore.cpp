@@ -32,16 +32,23 @@ TetrisGame::TetrisScore::~TetrisScore()
 */
 void TetrisGame::TetrisScore::readHighscoreListFromFile()
 {
-	std::vector<std::string> v_input = FileIO::readFile("Highscores.txt");
-
-	for (int i = 0; i < m_highscoreList.size(); i++)
+	try
 	{
-		for (int j = 0; j < m_highscoreList.size() - 3; j += 3)
+		std::vector<std::string> v_input = FileIO::readFile("Highscores.txt");
+
+		for (int i = 0; i < m_highscoreList.size(); i++)
 		{
-			m_highscoreList[i].score = std::stoi(v_input[j]);
-			m_highscoreList[i].level = std::stoi(v_input[j + 1]);
-			m_highscoreList[i].lineCount = std::stoi(v_input[j + 2]);
+			for (int j = 0; j < m_highscoreList.size() - 3; j += 3)
+			{
+				m_highscoreList[i].score = std::stoi(v_input[j]);
+				m_highscoreList[i].level = std::stoi(v_input[j + 1]);
+				m_highscoreList[i].lineCount = std::stoi(v_input[j + 2]);
+			}
 		}
+	}
+	catch (FileNotFoundException fnfe)
+	{
+		// highscoreList is already initialised in constructor	
 	}
 }
 
@@ -107,6 +114,21 @@ void TetrisGame::TetrisScore::update(int completedRowCount)
 	m_scoreText.setString("Score: " + std::to_string(m_score));
 	m_levelText.setString("Level: " + std::to_string(m_level));
 	m_lineCountText.setString("Lines: " + std::to_string(m_lineCount));
+}
+
+const int TetrisGame::TetrisScore::getScore()
+{
+	return m_score;
+}
+
+const int TetrisGame::TetrisScore::getLevel()
+{
+	return m_level;
+}
+
+const int TetrisGame::TetrisScore::getLineCount()
+{
+	return m_lineCount;
 }
 
 /*

@@ -28,6 +28,10 @@ std::vector<std::string> FileIO::readFile(std::string filename)
 
 		fileIn.close();
 	}
+	else
+	{
+		throw FileNotFoundException();
+	}
 
 	return v_input;
 }

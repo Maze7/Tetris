@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include "../Exceptions/FileNotFoundException.h"
 
 class FileIO
 {
