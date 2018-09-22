@@ -8,7 +8,7 @@ struct HighscoreSorter
 {
 	bool operator()(TetrisGame::Highscore& lhs, TetrisGame::Highscore& rhs) const
 	{
-		return lhs.score > rhs.score;
+		return lhs.getScore() > rhs.getScore();
 	}
 } sortByScore;
 
@@ -40,15 +40,13 @@ void TetrisGame::TetrisScore::readHighscoreListFromFile()
 		{
 			for (int j = 0; j < m_highscoreList.size() - 3; j += 3)
 			{
-				m_highscoreList[i].score = std::stoi(v_input[j]);
-				m_highscoreList[i].level = std::stoi(v_input[j + 1]);
-				m_highscoreList[i].lineCount = std::stoi(v_input[j + 2]);
+				m_highscoreList[i] = Highscore(std::stoi(v_input[j]), std::stoi(v_input[j + 1]), std::stoi(v_input[j + 2]));
 			}
 		}
 	}
-	catch (FileNotFoundException fnfe)
+	catch (Exceptions::FileExceptions::FileNotFoundException const &e)
 	{
-		// highscoreList is already initialised in constructor	
+		std::cout << e.what() << std::endl;
 	}
 }
 
@@ -62,11 +60,16 @@ void TetrisGame::TetrisScore::writeHighscoreListToFile()
 
 	for (Highscore highscore : m_highscoreList)
 	{
-		output = std::to_string(highscore.score) + "\n" + std::to_string(highscore.level) + "\n" + std::to_string(highscore.lineCount) + "\n";
+		output += std::to_string(highscore.getScore()) + "\n" + std::to_string(highscore.getLevel()) + "\n" + std::to_string(highscore.getLineCount()) + "\n";
 	}
 
 	// Write to file
+	try {
 	FileIO::writeFile(output, "Highscores.txt");
+	}
+	catch (Exceptions::FileExceptions::FileWriteException const &e) {
+		std::cout << e.what() << std::endl;
+	}
 }
 
 /*
@@ -141,7 +144,7 @@ const int TetrisGame::TetrisScore::getLineCount()
 */
 bool TetrisGame::TetrisScore::isNewHighscore()
 {
-	return m_score > m_highscoreList[m_highscoreList.size() - 1].score;
+	return m_score > m_highscoreList[m_highscoreList.size() - 1].getScore();
 }
 
 /*
