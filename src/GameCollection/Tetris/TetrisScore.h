@@ -15,7 +15,12 @@ namespace TetrisGame
 			, level(level)
 			, lineCount(lineCount)
 		{}
+		
+		const int getScore() { return score; }
+		const int getLevel() { return level; }
+		const int getLineCount() { return lineCount; }
 
+	private:
 		int score;
 		int level;
 		int lineCount;
