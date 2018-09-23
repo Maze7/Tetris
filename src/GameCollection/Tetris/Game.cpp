@@ -56,9 +56,7 @@ void TetrisGame::Game::draw(sf::RenderWindow* window, sf::Font* font)
 int TetrisGame::Game::close()
 {
 	// todo write highscore and/or do cleanup
-	m_score.writeHighscoreListToFile();
-
-	return this->EXIT_CODE::GOOD;
+	return 0;
 }
 
 /*
