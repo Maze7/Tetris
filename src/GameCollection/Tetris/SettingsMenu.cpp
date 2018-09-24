@@ -24,7 +24,7 @@ void TetrisGame::SettingsMenu::handleEvent(const sf::Event sfevent)
 
 	case sf::Keyboard::Return:
 		//TODO
-		if (m_hover == BACK || m_hover == CONTINUE)
+		if (m_hover == BACK)
 			m_running = false;
 		break;
 
@@ -79,9 +79,6 @@ int TetrisGame::SettingsMenu::close()
 	// game set startlevel
 	switch (m_hover)
 	{
-	case CONTINUE:
-		return TetrisLoader::GAME;
-		break;
 	case BACK:
 		return TetrisLoader::MENU;
 		break;

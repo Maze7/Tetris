@@ -15,8 +15,8 @@ namespace TetrisGame
 		 * Specify the menu entrys.
 		 *
 		 */
-		enum ENTRYS { CONTINUE=0, DIFFICULTY = 1, SOUND_VOLUME = 2, BACK = 3, END = 4 };
-		const std::string entryNames[END] = {"CONTINUE", "Difficulty", "Sound Volume", "Back"};
+		enum ENTRYS {DIFFICULTY = 0, SOUND_VOLUME = 1, BACK = 2, END = 3 };
+		const std::string entryNames[END] = {"Difficulty", "Sound Volume", "Back"};
 		ENTRYS m_currentState;
 
 		/*
