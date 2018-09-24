@@ -1,5 +1,6 @@
 #include "Game.h"
 #include <string>
+#include "TetrisLoader.h"
 
 /*
 	Sets the text lables inside the window to the correct
@@ -79,7 +80,7 @@ void TetrisGame::Game::draw(sf::RenderWindow* window, sf::Font* font)
 int TetrisGame::Game::close()
 {
 	// todo write highscore and/or do cleanup
-	return 0;
+	return m_nextScreen;
 }
 
 /*
@@ -162,21 +163,25 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 		return;
 
 	switch (sfevent.key.code) {
+	case sf::Keyboard::Up:
 	case sf::Keyboard::W:
 		m_currentTetromino.rotate(Tetromino::FORWARD);
 		if (!isPosValid())
 			m_currentTetromino.rotate(Tetromino::BACKWARD);
 		break;
+	case sf::Keyboard::Left:
 	case sf::Keyboard::A:
 		m_currentTetromino.move(Tetromino::LEFT);
 		if (!isPosValid())
 			m_currentTetromino.move(Tetromino::RIGHT);
 		break;
+	case sf::Keyboard::Right:
 	case sf::Keyboard::D:
 		m_currentTetromino.move(Tetromino::RIGHT);
 		if (!isPosValid())
 			m_currentTetromino.move(Tetromino::LEFT);
 		break;
+	case sf::Keyboard::Down:
 	case sf::Keyboard::S:
 		m_currentTetromino.move(Tetromino::DOWN);
 		m_clock.restart(); // Start a new tick
@@ -188,9 +193,17 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 
 		break;
 	case sf::Keyboard::P:
-		m_state = GAME_STATE::PAUSED;
+		if (m_state == PAUSED) {
+			m_state = GAME_STATE::PAUSED;
+		}
+		else {
+			m_state = PLAYING;
+		}
 		break;
-
+	case sf::Keyboard::Escape:
+		m_state == PAUSED;
+		m_running = false;
+		m_nextScreen = TetrisGame::TetrisLoader::MENU;
 	default:
 		break;
 	}
@@ -266,6 +279,16 @@ bool TetrisGame::Game::isPosValid(Tetromino* tetromino)
 
 	// return true if no if-condition is true
 	return true;
+}
+
+TetrisGame::Game::GAME_STATE& TetrisGame::Game::getGameState()
+{
+	return m_state;
+}
+
+void TetrisGame::Game::setGameState(TetrisGame::Game::GAME_STATE state)
+{
+	m_state = state;
 }
 
 /*

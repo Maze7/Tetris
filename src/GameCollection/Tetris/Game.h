@@ -30,9 +30,10 @@ namespace TetrisGame
 		sf::Clock m_clock;
 		uint m_tickInterval;
 
+		int m_nextScreen = -1;
 	public:
 		Game()
-			: m_state(Game::PLAYING)
+			: m_state(Game::PAUSED)
 			, m_currentTetromino(generateRandom(), Tetromino::PLAYFIELD_POS)
 			, m_previewTetromino(generateRandom(), Tetromino::PREVIEW_POS)
 			, m_collisionPreview(m_currentTetromino)
@@ -56,7 +57,8 @@ namespace TetrisGame
 		Tetromino::TETROMINO_TYPE generateRandom();
 		void updateCollisionPreview();
 		void handleCollision();
-
+		GAME_STATE& const getGameState();
+		void setGameState(GAME_STATE state);
 		void updateScoreSystem(uint completedRows);
 	};
 
