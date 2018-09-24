@@ -28,6 +28,8 @@ namespace TetrisGame
 		unsigned int m_volume = 5;
 		static constexpr unsigned int MAX_VOLUME = 10;
 
+		sf::Texture m_background;
+
 	public:
 		SettingsMenu();
 		~SettingsMenu() {};

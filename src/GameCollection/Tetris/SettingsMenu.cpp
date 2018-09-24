@@ -1,8 +1,15 @@
 #include "SettingsMenu.h"
 #include "TetrisLoader.h"
+#include <iostream>
 
 TetrisGame::SettingsMenu::SettingsMenu()
 {
+	// Load Background picture. Use same as tetris menu.
+	m_background = sf::Texture();
+	if (!m_background.loadFromFile(TetrisGame::TetrisMenu::s_BACKGROUND_PATH))
+	{
+		std::cerr << "[ERROR] [TetrisGame::SettingsMenu] loading bg picture failed" << std::endl;
+	}
 }
 
 void TetrisGame::SettingsMenu::handleEvent(const sf::Event sfevent)
@@ -10,6 +17,7 @@ void TetrisGame::SettingsMenu::handleEvent(const sf::Event sfevent)
 	int newHover;
 	switch (sfevent.key.code)
 	{
+	case sf::Keyboard::W:
 	case sf::Keyboard::Up:
 		if (m_hover == 0)
 			m_hover = ENTRYS(END - 1);
@@ -17,22 +25,27 @@ void TetrisGame::SettingsMenu::handleEvent(const sf::Event sfevent)
 			m_hover = ENTRYS(m_hover - 1);
 		break;
 
+	case sf::Keyboard::S:
 	case sf::Keyboard::Down:
 		newHover = (m_hover + 1) % END;
 		m_hover = ENTRYS(newHover);
 		break;
 
+	case sf::Keyboard::Escape:
+		m_hover = BACK;
 	case sf::Keyboard::Return:
 		//TODO
 		if (m_hover == BACK)
 			m_running = false;
 		break;
-
+	
+	case sf::Keyboard::A:
 	case sf::Keyboard::Left:
 		if (m_hover == SOUND_VOLUME && m_volume > 0)
 			m_volume--;
 		break;
 
+	case sf::Keyboard::D:
 	case sf::Keyboard::Right:
 		if (m_hover == SOUND_VOLUME && m_volume < MAX_VOLUME)
 			m_volume++;
@@ -69,6 +82,10 @@ void TetrisGame::SettingsMenu::draw(sf::RenderWindow* window, sf::Font* font)
 		}
 		window->draw(menus[i]);
 	}
+	sf::Sprite sprite;
+	sprite.setTexture(m_background);
+	sprite.setColor(sf::Color(255, 255, 255, 150));
+	window->draw(sprite); // background opacity
 }
 
 int TetrisGame::SettingsMenu::close()
