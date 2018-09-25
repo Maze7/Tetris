@@ -24,7 +24,7 @@ public:
 
 	void handleEvent(const sf::Event sfevent);
 	void draw(sf::RenderWindow* window, sf::Font* font);
-	const std::string& const getCurrentName() { return m_currentName; }
+	const std::string& getCurrentName() { return m_currentName; } // todo: put in cpp file
 	int close();
 };
 

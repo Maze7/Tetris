@@ -57,7 +57,7 @@ namespace TetrisGame
 		Tetromino::TETROMINO_TYPE generateRandom();
 		void updateCollisionPreview();
 		void handleCollision();
-		GAME_STATE& const getGameState();
+		const GAME_STATE& getGameState();
 		void setGameState(GAME_STATE state);
 		void updateScoreSystem(uint completedRows);
 	};

@@ -3,6 +3,8 @@
 #include <iostream>
 #include "TetrisLoader.h"
 
+constexpr char TetrisGame::TetrisMenu::s_BACKGROUND_PATH[];
+
 TetrisGame::TetrisMenu::TetrisMenu() 
 {
 	//Load background. Dont do it inside the draw loop!
@@ -82,16 +84,9 @@ void TetrisGame::TetrisMenu::draw(sf::RenderWindow* window, sf::Font* font)
 	menus[EXIT].setString("Exit");
 	menus[EXIT].setPosition({ 280.f, 460.f });
 
-	//Local struct
-	struct TextPos {
-		float x;
-		float y;
-		sf::Vector2f v = { x, y  - 50};
-	};
-
 	sf::Text helpNote("Press <H> for help text", *font, 35);
-	TextPos pos = { 280.f, window->getSize().y };
-	helpNote.setPosition(pos.v);
+	std::cout << window->getSize().y;
+	helpNote.setPosition( 280.f, (window->getSize().y - 50) * 1.f);
 	window->draw(helpNote);
 
 	sprite.setTexture(m_background);

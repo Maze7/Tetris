@@ -281,7 +281,7 @@ bool TetrisGame::Game::isPosValid(Tetromino* tetromino)
 	return true;
 }
 
-TetrisGame::Game::GAME_STATE& TetrisGame::Game::getGameState()
+const TetrisGame::Game::GAME_STATE& TetrisGame::Game::getGameState()
 {
 	return m_state;
 }
