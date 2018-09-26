@@ -1,5 +1,5 @@
 #pragma once
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <algorithm>
 #include <iostream>
 #include <fstream>
@@ -30,7 +30,7 @@ namespace TetrisGame
 	{
 	public:
 		TetrisScore();
-		~TetrisScore();
+		~TetrisScore() {};
 
 		void draw(sf::RenderWindow* window, sf::Font* font);
 		void update(int completedRowCount);

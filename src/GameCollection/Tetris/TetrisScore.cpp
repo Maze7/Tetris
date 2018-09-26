@@ -22,10 +22,6 @@ TetrisGame::TetrisScore::TetrisScore()
 	readHighscoreListFromFile();
 }
 
-TetrisGame::TetrisScore::~TetrisScore()
-{
-}
-
 /*
 	Reads the highscores from the file and saves them in the m_highscoreList
 	Should be called in the constructor of this class (TetrisScore).

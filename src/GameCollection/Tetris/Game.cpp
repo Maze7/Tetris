@@ -7,7 +7,7 @@ void TetrisGame::Game::handleTime()
 	{
 		if (m_completedRows.size() > 0)
 		{
-			for (int rowId : m_completedRows)
+			for (int& rowId : m_completedRows)
 			{
 				m_playfield.deleteRow(rowId);
 			}
@@ -246,7 +246,7 @@ bool TetrisGame::Game::isPosValid(Tetromino* tetromino)
 */
 void TetrisGame::Game::checkForGameOver()
 {
-	for (int x = 0; x < 10; x++)
+	for (int x = 0; x < Playfield::s_COLUMNS; x++)
 	{
 		if (m_playfield.getColorOfField(1, x) != sf::Color::Black)
 		{
