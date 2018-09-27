@@ -118,17 +118,17 @@ void TetrisGame::TetrisScore::update(int completedRowCount)
 	m_lineCountText.setString("Lines: " + std::to_string(m_lineCount));
 }
 
-const int TetrisGame::TetrisScore::getScore()
+const int& TetrisGame::TetrisScore::getScore()
 {
 	return m_score;
 }
 
-const int TetrisGame::TetrisScore::getLevel()
+const int& TetrisGame::TetrisScore::getLevel()
 {
 	return m_level;
 }
 
-const int TetrisGame::TetrisScore::getLineCount()
+const int& TetrisGame::TetrisScore::getLineCount()
 {
 	return m_lineCount;
 }
