@@ -2,48 +2,32 @@
 #include <string>
 #include "TetrisLoader.h"
 
-/*
-	Sets the text lables inside the window to the correct
-	positions. This method is used to initialize the game. 
-	It's advised to call this method inside constructor. Without it
-	there will be no text lines. 
-
-	Example usage:
-	TetrisGame::Game tetrisGame = TetrisGame::Game();
-*/
-void TetrisGame::Game::init()
-{
-	m_levelText.setCharacterSize(32);
-	m_scoreText.setCharacterSize(32);
-	m_lineCountText.setCharacterSize(32);
-
-	m_levelText.setFillColor(sf::Color::White);
-	m_scoreText.setFillColor(sf::Color::White);
-	m_lineCountText.setFillColor(sf::Color::White);
-
-	m_levelText.setPosition(500, 400);
-	m_scoreText.setPosition(500, 500);
-	m_lineCountText.setPosition(500, 600);
-
-	m_scoreText.setString("Score: " + std::to_string(m_score));
-	m_levelText.setString("Level: " + std::to_string(m_level));
-	m_lineCountText.setString("Lines: " + std::to_string(m_lineCount));	
-}
-
 void TetrisGame::Game::handleTime()
 {
 	if (m_clock.getElapsedTime().asMilliseconds() > m_tickInterval)
 	{
-		m_currentTetromino.move(Tetromino::DOWN);
-
-		// If the tetromino hit the ground or a block after moving down
-		if (!isPosValid())
+		if (m_completedRows.size() > 0)
 		{
-			// Move it back into a valid position
-			m_currentTetromino.move(Tetromino::UP);
+			for (int& rowId : m_completedRows)
+			{
+				m_playfield.deleteRow(rowId);
+			}
 
-			// Handle the game mechanics following the collision
-			handleCollision();
+			m_completedRows.clear();
+		}
+		else
+		{
+			m_currentTetromino.move(Tetromino::DOWN);
+
+			// If the tetromino hit the ground or a block after moving down
+			if (!isPosValid())
+			{
+				// Move it back into a valid position
+				m_currentTetromino.move(Tetromino::UP);
+
+				// Handle the game mechanics following the collision
+				handleCollision();
+			}
 		}
 
 		// Start a new tick
@@ -67,14 +51,7 @@ void TetrisGame::Game::draw(sf::RenderWindow* window, sf::Font* font)
 	m_playfield.drawTetromino(window, m_currentTetromino, false);
 	m_playfield.drawTetromino(window, m_previewTetromino, false);
 	m_playfield.drawTetromino(window, m_collisionPreview, true);
-
-	m_levelText.setFont(*font);
-	m_scoreText.setFont(*font);
-	m_lineCountText.setFont(*font);
-
-	window->draw(m_scoreText);
-	window->draw(m_levelText);
-	window->draw(m_lineCountText);
+	m_score.draw(window, font);
 }
 
 int TetrisGame::Game::close()
@@ -126,35 +103,30 @@ void TetrisGame::Game::handleCollision()
 	// Add the tetromino to the grid
 	m_playfield.addTetromino(m_currentTetromino);
 
-	// Check for completed rows and delete them
-	std::vector<int> completedRows = m_playfield.checkForCompletedRows();
+	// Check if gameover
+	checkForGameOver();
 
-	if (completedRows.size() > 0)
+	// Check for completed rows
+	m_completedRows = m_playfield.checkForCompletedRows();
+
+	if (m_completedRows.size() > 0)
 	{
-		for (int rowId : completedRows)
-		{
-			m_playfield.deleteRow(rowId);
-		}
+		m_playfield.markCompletedRows(&m_completedRows, sf::Color::White);
 
-		// Update the score system
-		updateScoreSystem(completedRows.size());
-	}
-	
+		// Update the score (includes counting completed lines and level)
+		m_score.update(m_completedRows.size());
+	} 
 
+	// Start a new tick
+	m_clock.restart();
 	
-	// TODO play delete animation
-		
 	// Spawn a new tetromino with the shape of the preview
 	m_currentTetromino = Tetromino(m_previewTetromino.getType(), Tetromino::PLAYFIELD_POS);
 	// Generate a new preview tetromino
 	m_previewTetromino = Tetromino(generateRandom(), Tetromino::PREVIEW_POS);
 	// Update the collision preview for the freshly spawned tetromino
 	updateCollisionPreview();
-
-	// Start a new tick
-	m_clock.restart();
 }
-
 
 void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 {
@@ -292,40 +264,23 @@ void TetrisGame::Game::setGameState(TetrisGame::Game::GAME_STATE state)
 }
 
 /*
-	Updates the score, line count and level depending on rows completed.
-	Should be called everytime rows are completed.
-
-	Example usage:
-	std::vector<int> completedRows = m_playfield->checkForCompletedRows();
-	updateScoreSystem(completedRows.size());
-
+	Checks for gameover.
+	Should be called in the handleCollison()-function.
 */
-void TetrisGame::Game::updateScoreSystem(uint completedRowCount)
+void TetrisGame::Game::checkForGameOver()
 {
-	// Update the line count
-	m_lineCount += completedRowCount;
-
-	// Increase the score depending on rows completed
-	switch (completedRowCount)
+	for (int x = 0; x < Playfield::s_COLUMNS; x++)
 	{
-	case 1:
-		m_score += 40 * m_level;
-		break;
-	case 2:
-		m_score += 100 * m_level;
-		break;
-	case 3:
-		m_score += 300 * m_level;
-		break;
-	case 4:
-		m_score += 1200 * m_level;
-		break;
-	default:
-		break;
-	}
+		if (m_playfield.getColorOfField(1, x) != sf::Color::Black)
+		{
+			m_state = Game::GAMEOVER;
+			m_playfield.gameover();
 
-	// Update the sf::Text's that are displayed on screen
-	m_scoreText.setString("Score: " + std::to_string(m_score));
-	m_levelText.setString("Level: " + std::to_string(m_level));
-	m_lineCountText.setString("Lines: " + std::to_string(m_lineCount));
+			if (m_score.isNewHighscore())
+			{
+				m_score.addToHighscoreList();
+			}
+		}
+	}
 }
+
