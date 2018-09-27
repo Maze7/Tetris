@@ -140,7 +140,7 @@ void TetrisGame::TetrisScore::addToHighscoreList()
 	// Add new highscore as last element to the list
 	m_highscoreList[m_highscoreList.size() - 1] = Highscore{m_score, m_level, m_lineCount};
 
-	// Custom sort algorithm - sorts by score 
+	// Custom sort algorithm - Sorts by score 
 	auto sortByScore = [](Highscore& left, Highscore& right) { return left.score > right.score; };
 
 	// Sort the list with the custom sort algorithm
