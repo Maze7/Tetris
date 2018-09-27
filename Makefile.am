@@ -11,7 +11,7 @@ GameCollection_SOURCES = src/Exceptions/FileExceptions.h\
 						src/GameCollection/GameCollection.cpp\
 						src/GameCollection/ICollectionEntry.h\
 						src/GameCollection/Menu/MenuEntry.cpp\
-						src/GameCollection/Menu/MenuEntry.h  
+						src/GameCollection/Menu/MenuEntry.h\
 						src/GameCollection/Tetris/Game.cpp\
 						src/GameCollection/Tetris/Game.h\
 						src/GameCollection/Tetris/Playfield.cpp\
