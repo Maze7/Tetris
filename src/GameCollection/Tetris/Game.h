@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "Playfield.h"
 #include "Tetromino.h"
+#include "TetrisScore.h"
 #include "../ICollectionEntry.h"
 
 namespace TetrisGame
@@ -17,18 +18,11 @@ namespace TetrisGame
 		Tetromino m_previewTetromino;
 		Tetromino m_collisionPreview;
 		Playfield m_playfield;
-	
-		uint m_level; 
-		sf::Text m_levelText;
 
-		uint m_score;
-		sf::Text m_scoreText;
-
-		uint m_lineCount;
-		sf::Text m_lineCountText;
-
+		TetrisScore m_score;
 		sf::Clock m_clock;
 		uint m_tickInterval;
+		std::vector<int> m_completedRows;
 
 	public:
 		Game()
@@ -36,16 +30,13 @@ namespace TetrisGame
 			, m_currentTetromino(generateRandom(), Tetromino::PLAYFIELD_POS)
 			, m_previewTetromino(generateRandom(), Tetromino::PREVIEW_POS)
 			, m_collisionPreview(m_currentTetromino)
-			, m_level(1)
-			, m_score(0)
-			, m_lineCount(0)
 			, m_tickInterval(500)
 			, m_playfield(Playfield())
-		{ init(); }
+		{
+		}
 		
 		~Game() {}
 
-		void init();
 		void handleEvent(const sf::Event sfevent);
 		void handleTime();
 		void draw(sf::RenderWindow* window, sf::Font* font);
@@ -56,8 +47,7 @@ namespace TetrisGame
 		Tetromino::TETROMINO_TYPE generateRandom();
 		void updateCollisionPreview();
 		void handleCollision();
-
-		void updateScoreSystem(uint completedRows);
+		void checkForGameOver();
 	};
 
 }
