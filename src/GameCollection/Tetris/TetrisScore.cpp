@@ -61,7 +61,7 @@ void TetrisGame::TetrisScore::writeHighscoreListToFile()
 
 	// Write to file
 	try {
-	FileIO::writeFile(output, "Highscores.txt");
+		FileIO::writeFile(output, "Highscores.txt");
 	}
 	catch (Exceptions::FileExceptions::FileWriteException const &e) {
 		std::cout << e.what() << std::endl;

@@ -222,9 +222,9 @@ void TetrisGame::Playfield::gameover()
 */
 void TetrisGame::Playfield::markCompletedRows(std::vector<int>* completedRows, sf::Color color)
 {
-	for (int rowId : *completedRows) 
+	for (int& rowId : *completedRows) 
 	{
-		for (int x = 0; x < 10; x++)
+		for (int x = 0; x < s_COLUMNS; x++)
 		{
 			m_grid[rowId][x] = color;
 		}
