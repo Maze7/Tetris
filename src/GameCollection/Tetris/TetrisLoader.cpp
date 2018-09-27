@@ -1,6 +1,6 @@
 #include "TetrisLoader.h"
 
-
+constexpr char TetrisGame::TetrisLoader::MODUL_NAME[];
 
 TetrisGame::TetrisLoader::TetrisLoader()
 {

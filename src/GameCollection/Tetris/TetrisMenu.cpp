@@ -3,6 +3,19 @@
 #include <iostream>
 #include "TetrisLoader.h"
 
+constexpr char TetrisGame::TetrisMenu::s_BACKGROUND_PATH[];
+
+TetrisGame::TetrisMenu::TetrisMenu() 
+{
+	//Load background. Dont do it inside the draw loop!
+	// Use the defined path to the background picture
+	m_background = sf::Texture();
+	if (!m_background.loadFromFile(s_BACKGROUND_PATH))
+	{
+		std::cerr << "[ERROR] [TetrisGame::SettingsMenu] loading bg picture failed" << std::endl;
+	}
+}
+
 /*
 	Allows to switch through the menu.
 */
@@ -11,6 +24,10 @@ void TetrisGame::TetrisMenu::handleEvent(const sf::Event sfevent)
 	int entryIndex;
 	switch (sfevent.key.code)
 	{
+	case sf::Keyboard::H:
+		if(OS_Windows)
+			system("notepad.exe Tetris\\helptext_Tetris.txt");
+		break;
 	case sf::Keyboard::Up:
 		if (m_hover == 0)
 			m_hover = ENTRYS(END - 1);
@@ -25,6 +42,12 @@ void TetrisGame::TetrisMenu::handleEvent(const sf::Event sfevent)
 		m_currentState = ENTRYS(m_hover);
 		m_running = false; // will invoke close()
 		break;
+	case sf::Keyboard::Delete:
+		if (m_hover == PLAY) {
+			m_currentState = ENTRYS(m_hover);
+			getGame()->setGameState(Game::GAMEOVER);
+		}
+		break;
 	default:
 		break;
 	}
@@ -35,16 +58,21 @@ void TetrisGame::TetrisMenu::draw(sf::RenderWindow* window, sf::Font* font)
 {
 	sf::Text menus[END];
 	sf::Sprite sprite; // used for background and text rendering
-	sf::Texture texture;
 
-	// todo => ioutils
-	if (!texture.loadFromFile("bg.png"))
-	{
-		std::cerr << "[ERROR] [TetrisGame::TetrisMenu] loading bg picture failed" << std::endl;
-	}
 	menus[m_hover].setFillColor(sf::Color(255, 0, 0, 255));
 	
-	menus[PLAY].setString("Start game!");
+	if (getGame()->getGameState() == Game::PLAYING) {
+		menus[PLAY].setString("Continue");
+		sf::Text text;
+		text.setPosition({ 440.f, 180.f });
+		text.setFont(*font);
+		text.setCharacterSize(20);
+		text.setString("(press <DELETE> for reset)");
+		window->draw(text);
+	}
+	else {
+		menus[PLAY].setString("Start game!");
+	}
 	menus[PLAY].setPosition({ 280.f, 160.f });
 
 	menus[SETTINGS].setString("Settings");
@@ -56,7 +84,12 @@ void TetrisGame::TetrisMenu::draw(sf::RenderWindow* window, sf::Font* font)
 	menus[EXIT].setString("Exit");
 	menus[EXIT].setPosition({ 280.f, 460.f });
 
-	sprite.setTexture(texture);
+	sf::Text helpNote("Press <H> for help text", *font, 35);
+	std::cout << window->getSize().y;
+	helpNote.setPosition( 280.f, (window->getSize().y - 50) * 1.f);
+	window->draw(helpNote);
+
+	sprite.setTexture(m_background);
 	sprite.setColor(sf::Color(255, 255, 255, 150));
 
 	for (auto &menu : menus) {
@@ -73,6 +106,7 @@ void TetrisGame::TetrisMenu::draw(sf::RenderWindow* window, sf::Font* font)
 */
 int TetrisGame::TetrisMenu::close()
 {
+	Game* game = getGame();
 	switch (m_currentState)
 	{
 	case EXIT:
@@ -80,9 +114,28 @@ int TetrisGame::TetrisMenu::close()
 		break;
 	case MAINMENU:
 		return ICollectionEntry::MAIN_MENU;
+		break;
 	case SETTINGS:
 		return TetrisLoader::SETTINGS;
+		break;
+	case PLAY:
+		// if game is not running right now, create a new one and starts to play
+		if (game->getGameState() != Game::PLAYING) {
+			*game = Game(); // new game
+			game->setGameState(Game::PLAYING);
+		}
+		return TetrisLoader::GAME;
+		break;
 	default:
 		return m_hover;
+		break;
 	}
 }
+
+TetrisGame::Game* TetrisGame::TetrisMenu::getGame()
+{
+	std::vector<ICollectionEntry*>* modulScreens = GameCollection::Collection::getEntrys()->at(TetrisLoader::MODUL_NAME);
+	Game* game = dynamic_cast<Game*>(modulScreens[0][TetrisLoader::GAME]);
+	return game;
+}
+

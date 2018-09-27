@@ -3,6 +3,17 @@
 #include <SFML/Graphics.hpp>
 #include "Game.h"
 
+/*
+ * Check the platform and define it to OS_Windows.
+ * OS_Windows = 1 if platform is windows
+ * OS_Windows = 0 if platform is unix (like Linux)
+ */
+#ifdef __unix__                   
+	constexpr bool OS_Windows = 0;
+#elif defined(_WIN32) || defined(WIN32)
+	constexpr bool OS_Windows = 1;
+#endif
+
 namespace TetrisGame
 {
 	class TetrisMenu : public GameCollection::ICollectionEntry
@@ -24,12 +35,18 @@ namespace TetrisGame
 		 */
 		ENTRYS m_hover = ENTRYS::PLAY;
 
+		sf::Texture m_background;
+
 	public:
-		TetrisMenu() {};
+		static constexpr char s_BACKGROUND_PATH[] = "test.jpeg";
+
+		TetrisMenu();
 		~TetrisMenu() {};
 
 		void handleEvent(const sf::Event sfevent);
 		void draw(sf::RenderWindow* window, sf::Font* font);
 		int close();
+
+		Game* getGame();
 	};
 }
