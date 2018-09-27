@@ -1,20 +1,5 @@
 #include "TetrisScore.h"
 
-
-namespace { // local-translation-unit
-	/*
-		Custom sort function.
-		Sorts the m_highscoreList by score.
-	*/
-	struct HighscoreSorter
-	{
-		bool operator()(TetrisGame::TetrisScore::Highscore& lhs, TetrisGame::TetrisScore::Highscore& rhs) const
-		{
-			return lhs.score > rhs.score;
-		}
-	} sortByScore;
-}
-
 TetrisGame::TetrisScore::TetrisScore()
 	: m_highscoreList(5, Highscore{0, 0, 0})
 	, m_score(0)
@@ -154,7 +139,11 @@ void TetrisGame::TetrisScore::addToHighscoreList()
 {
 	// Add new highscore as last element to the list
 	m_highscoreList[m_highscoreList.size() - 1] = Highscore{m_score, m_level, m_lineCount};
-	// Sort the list 
+
+	// Custom sort algorithm - sorts by score 
+	auto sortByScore = [](Highscore& left, Highscore& right) { return left.score > right.score; };
+
+	// Sort the list with the custom sort algorithm
 	std::sort(m_highscoreList.begin(), m_highscoreList.end(), sortByScore);
 }
 
