@@ -8,33 +8,20 @@
 
 namespace TetrisGame 
 {
-	struct Highscore
-	{
-		Highscore(int score, int level, int lineCount)
-			: score(score)
-			, level(level)
-			, lineCount(lineCount)
-		{}
-		
-		const int getScore() { return score; }
-		const int getLevel() { return level; }
-		const int getLineCount() { return lineCount; }
-
-	private:
-		int score;
-		int level;
-		int lineCount;
-	};
-
 	class TetrisScore
 	{
 	public:
+		struct Highscore
+		{
+			int score, level, lineCount;
+		};
+		
 		TetrisScore();
 		~TetrisScore() {};
 
 		void draw(sf::RenderWindow* window, sf::Font* font);
 		void update(int completedRowCount);
-		const std::vector<Highscore>* getHighscoreList() { return &m_highscoreList; }
+		const std::vector<Highscore>* const getHighscoreList() { return &m_highscoreList; }
 
 		const int getScore();
 		const int getLevel();

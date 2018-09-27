@@ -1,19 +1,22 @@
 #include "TetrisScore.h"
 
-/*
-	Custom sort function.
-	Sorts the m_highscoreList by score.
-*/
-struct HighscoreSorter
-{
-	bool operator()(TetrisGame::Highscore& lhs, TetrisGame::Highscore& rhs) const
+
+namespace { // local-translation-unit
+	/*
+		Custom sort function.
+		Sorts the m_highscoreList by score.
+	*/
+	struct HighscoreSorter
 	{
-		return lhs.getScore() > rhs.getScore();
-	}
-} sortByScore;
+		bool operator()(TetrisGame::TetrisScore::Highscore& lhs, TetrisGame::TetrisScore::Highscore& rhs) const
+		{
+			return lhs.score > rhs.score;
+		}
+	} sortByScore;
+}
 
 TetrisGame::TetrisScore::TetrisScore()
-	: m_highscoreList(5, Highscore(0, 0, 0))
+	: m_highscoreList(5, Highscore{0, 0, 0})
 	, m_score(0)
 	, m_level(1)
 	, m_lineCount(0)
@@ -36,7 +39,7 @@ void TetrisGame::TetrisScore::readHighscoreListFromFile()
 		{
 			for (int j = 0; j < m_highscoreList.size() - 3; j += 3)
 			{
-				m_highscoreList[i] = Highscore(std::stoi(v_input[j]), std::stoi(v_input[j + 1]), std::stoi(v_input[j + 2]));
+				m_highscoreList[i] = Highscore {std::stoi(v_input[j]), std::stoi(v_input[j + 1]), std::stoi(v_input[j + 2])};
 			}
 		}
 	}
@@ -56,7 +59,7 @@ void TetrisGame::TetrisScore::writeHighscoreListToFile()
 
 	for (Highscore highscore : m_highscoreList)
 	{
-		output += std::to_string(highscore.getScore()) + "\n" + std::to_string(highscore.getLevel()) + "\n" + std::to_string(highscore.getLineCount()) + "\n";
+		output += std::to_string(highscore.score) + "\n" + std::to_string(highscore.level) + "\n" + std::to_string(highscore.lineCount) + "\n";
 	}
 
 	// Write to file
@@ -140,7 +143,7 @@ const int TetrisGame::TetrisScore::getLineCount()
 */
 bool TetrisGame::TetrisScore::isNewHighscore()
 {
-	return m_score > m_highscoreList[m_highscoreList.size() - 1].getScore();
+	return m_score > m_highscoreList[m_highscoreList.size() - 1].score;
 }
 
 /*
@@ -150,7 +153,7 @@ bool TetrisGame::TetrisScore::isNewHighscore()
 void TetrisGame::TetrisScore::addToHighscoreList()
 {
 	// Add new highscore as last element to the list
-	m_highscoreList[m_highscoreList.size() - 1] = Highscore(m_score, m_level, m_lineCount);
+	m_highscoreList[m_highscoreList.size() - 1] = Highscore{m_score, m_level, m_lineCount};
 	// Sort the list 
 	std::sort(m_highscoreList.begin(), m_highscoreList.end(), sortByScore);
 }
