@@ -71,6 +71,11 @@ void MenuEntry::draw(sf::RenderWindow* window, sf::Font* font)
 	window->draw(sprite);
 }
 
+const std::string& MenuEntry::getCurrentName()
+{
+	return m_currentName;
+}
+
 int MenuEntry::close()
 {
 	if (m_currentName == "Exit")
