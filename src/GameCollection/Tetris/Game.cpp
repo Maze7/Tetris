@@ -35,7 +35,10 @@ void TetrisGame::Game::handleTime()
 
 		// Start a new tick
 		m_clock.restart();
+
 	}
+	// Update the position of the preview tetromino
+	updateCollisionPreview();
 }
 
 /*
@@ -203,7 +206,8 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 		do
 			m_currentTetromino.move(Tetromino::DOWN);
 		while (isPosValid());
-
+		m_currentTetromino.move(Tetromino::UP); // Move it back into a valid position
+		handleCollision(); // Handle the game mechanics following the collision
 		break;
 	case sf::Keyboard::P:
 		if (m_state == PAUSED) {
@@ -220,19 +224,6 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 		break;
 	default:
 		break;
-	}
-
-	// Update the position of the preview tetromino
-	updateCollisionPreview();
-
-	// If the tetromino hit the ground or a block after moving down
-	if (!isPosValid())
-	{
-		// Move it back into a valid position
-		m_currentTetromino.move(Tetromino::UP);
-
-		// Handle the game mechanics following the collision
-		handleCollision();
 	}
 }
 
