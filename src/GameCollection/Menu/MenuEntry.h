@@ -17,6 +17,7 @@ private:
 	std::string m_currentName;
 	std::vector<std::string> m_entryNames;
 	int m_hover;
+	sf::Texture m_background;
 
 public:
 	MenuEntry();

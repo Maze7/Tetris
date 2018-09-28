@@ -10,9 +10,10 @@ TetrisGame::TetrisMenu::TetrisMenu()
 	//Load background. Dont do it inside the draw loop!
 	// Use the defined path to the background picture
 	m_background = sf::Texture();
+	m_currentState = PLAY;
 	if (!m_background.loadFromFile(s_BACKGROUND_PATH))
 	{
-		std::cerr << "[ERROR] [TetrisGame::SettingsMenu] loading bg picture failed" << std::endl;
+		std::cerr << "[ERROR] [TetrisGame::TetrisMenu] loading bg picture failed" << std::endl;
 	}
 }
 
