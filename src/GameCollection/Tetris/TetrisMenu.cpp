@@ -86,7 +86,6 @@ void TetrisGame::TetrisMenu::draw(sf::RenderWindow* window, sf::Font* font)
 	menus[EXIT].setPosition({ 280.f, 460.f });
 
 	sf::Text helpNote("Press <H> for help text", *font, 35);
-	std::cout << window->getSize().y;
 	helpNote.setPosition( 280.f, (window->getSize().y - 50) * 1.f);
 	window->draw(helpNote);
 

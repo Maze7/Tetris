@@ -99,5 +99,8 @@ int TetrisGame::SettingsMenu::close()
 	case BACK:
 		return TetrisLoader::MENU;
 		break;
+	default: // should never reached => avoid compiler warning
+		return EXIT_APP;
+		break;
 	}
 }
