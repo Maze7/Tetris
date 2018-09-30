@@ -17,11 +17,13 @@ void SnakeGame::SnakeGame::handleEvent(const sf::Event sfevent)
 		m_snake.changeDirection(Snake::MOVE_RIGHT);
 		break;
 	}
+
+	m_isDirectionChanged = true;
 }
 
 void SnakeGame::SnakeGame::handleTime()
 {
-	if (m_clock.getElapsedTime().asMilliseconds() > 100) {
+	if (m_clock.getElapsedTime().asMilliseconds() > 100 || m_isDirectionChanged) {
 		// Check if snake head is in a valid position
 		if (!checkCollision()) {
 
@@ -30,7 +32,7 @@ void SnakeGame::SnakeGame::handleTime()
 
 				// Eat and generate new food
 				m_snake.eat();
-				m_field.spawnRandomFood();
+				m_field.spawnRandomFood(m_snake);
 
 				// Update score
 				m_score.update();
@@ -38,6 +40,7 @@ void SnakeGame::SnakeGame::handleTime()
 
 			// Move the snake (automatically travels in the selected current direction)
 			m_snake.move();
+			m_isDirectionChanged = false;
 
 			// Restart timer
 			m_clock.restart();

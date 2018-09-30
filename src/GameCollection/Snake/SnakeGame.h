@@ -16,8 +16,10 @@ namespace SnakeGame
 
 		sf::Clock m_clock;
 
+		bool m_isDirectionChanged;
+
 	public:
-		SnakeGame() {}
+		SnakeGame() : m_isDirectionChanged(false) { m_field.spawnRandomFood(m_snake); }
 		~SnakeGame() {}
 
 		void handleEvent(const sf::Event sfevent);
