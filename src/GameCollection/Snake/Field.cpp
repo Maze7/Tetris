@@ -6,9 +6,6 @@ SnakeGame::Field::Field()
 	m_background.setSize(sf::Vector2f(20 * s_ROWS, 20 * s_COLUMNS));
 	m_background.setPosition(s_OFFSET, s_OFFSET);
 	m_background.setFillColor(sf::Color(0, 51, 0, 255));
-
-	// Spawn food
-	spawnRandomFood();
 }
 
 /*
@@ -20,10 +17,27 @@ SnakeGame::Field::Field()
 		snake.eat();
 		field.spawnRandomFood();
 */
-void SnakeGame::Field::spawnRandomFood()
+void SnakeGame::Field::spawnRandomFood(Snake& snake)
 {
-	m_food.x = rand() % (s_ROWS - 1);
-	m_food.y = rand() % (s_COLUMNS - 1);
+	do {
+		m_food.x = rand() % (s_ROWS - 1);
+		m_food.y = rand() % (s_COLUMNS - 1);
+	} while (!isSpaceEmpty(snake));
+}
+
+/*
+	Checks if the the m_food is not placed in the snake.
+	Private helper function for spawnRandomFood().
+*/
+bool SnakeGame::Field::isSpaceEmpty(Snake& snake)
+{
+	for (auto const& snakePos : *snake.getSnakeBody()) {
+		if (snakePos.x == m_food.x && snakePos.y == m_food.y) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 void SnakeGame::Field::draw(sf::RenderWindow* window, Snake& snake)
@@ -48,3 +62,4 @@ void SnakeGame::Field::draw(sf::RenderWindow* window, Snake& snake)
 		window->draw(block);
 	}
 }
+

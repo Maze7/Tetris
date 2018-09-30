@@ -23,8 +23,11 @@ namespace SnakeGame
 
 		sf::Vector2i& getFood() { return m_food; }
 
-		void spawnRandomFood();
+		void spawnRandomFood(Snake& snake);
 		void draw(sf::RenderWindow* window, Snake& snake);
+
+	private:
+		bool isSpaceEmpty(Snake& snake);
 	};
 }
 
