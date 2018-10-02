@@ -19,13 +19,11 @@ void TetrisGame::TetrisScore::readHighscoreListFromFile()
 	try
 	{
 		std::vector<std::string> v_input = FileIO::readFile("Highscores.txt");
+		int i = 0;
 
-		for (int i = 0; i < m_highscoreList.size(); i++)
-		{
-			for (int j = 0; j < m_highscoreList.size() - 3; j += 3)
-			{
-				m_highscoreList[i] = Highscore {std::stoi(v_input[j]), std::stoi(v_input[j + 1]), std::stoi(v_input[j + 2])};
-			}
+		for (auto& highscore : m_highscoreList) {
+				highscore = Highscore {std::stoi(v_input[i]), std::stoi(v_input[i + 1]), std::stoi(v_input[i + 2])};
+				i += 3; // 3 is the amount of lines that belong to a highscore (score, level, linecount)
 		}
 	}
 	catch (Exceptions::FileExceptions::FileNotFoundException const &e)
@@ -42,7 +40,7 @@ void TetrisGame::TetrisScore::writeHighscoreListToFile()
 {
 	std::string output;
 
-	for (Highscore highscore : m_highscoreList)
+	for (auto const& highscore : m_highscoreList)
 	{
 		output += std::to_string(highscore.score) + "\n" + std::to_string(highscore.level) + "\n" + std::to_string(highscore.lineCount) + "\n";
 	}
