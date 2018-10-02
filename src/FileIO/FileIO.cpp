@@ -3,10 +3,11 @@
 /*
 	Returns a string-vector containing the content of the given file.
 */
-std::vector<std::string> FileIO::readFile(std::string filename)
+std::vector<std::string> FileIO::readFile(const std::string& filename)
 {
 	std::vector<std::string> v_input;
 	std::string line;
+	std::string input;
 
 	std::ifstream fileIn(filename);
 
@@ -15,8 +16,14 @@ std::vector<std::string> FileIO::readFile(std::string filename)
 		// Add each line of the file to the vector
 		while (std::getline(fileIn, line))
 		{
-			v_input.push_back(line);
+			input += line;
 		}
+
+		// Decrypt the string
+		input = Utility::Encryption::XORencryption(input);
+
+		// Use string to fill vector of substrings
+		Utility::Converter::StringToVector(input, v_input, "\n");
 
 		fileIn.close();
 	}
@@ -31,7 +38,7 @@ std::vector<std::string> FileIO::readFile(std::string filename)
 /*
 	Writes the given string to the given file
 */
-void FileIO::writeFile(std::string output, std::string filename)
+void FileIO::writeFile(const std::string& output, const std::string& filename)
 {
 	std::ofstream fileOut;
 	fileOut.exceptions(std::ofstream::failbit | std::ofstream::badbit);
