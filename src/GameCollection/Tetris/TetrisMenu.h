@@ -23,7 +23,9 @@ namespace TetrisGame
 		 * Specify the menu entrys.
 		 * The entrys are the Same 
 		 */
-		enum ENTRYS { PLAY = 1, SETTINGS = 2, MAINMENU=3, EXIT = 4, END = 5 };
+		enum ENTRYS { PLAY = 0, SETTINGS = 1, HIGHSCORES=2, MAINMENU=3, EXIT = 4, END = 5 };
+
+		const std::string entry_names[END] = { "Start Game!", "Settings", "Highscores", "Main Menu", "Exit" };
 
 		/* 
 		 * Specify the current

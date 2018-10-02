@@ -12,7 +12,6 @@ namespace GameCollection
 	{
 	private:
 		static CollectionEntrys s_entrys;
-		//ICollectionEntry* m_screen;
 
 	public:
 		Collection() {};
@@ -20,7 +19,6 @@ namespace GameCollection
 
 		int run(sf::RenderWindow& window, sf::Font& font);
 		void checkScreenStatus(ICollectionEntry** screen);
-		//void setScreen(ICollectionEntry* entry);
 
 		static const CollectionEntrys* const getEntrys();
 		static void addModuleEntrys(std::string modulName, std::vector<ICollectionEntry*>* screens);

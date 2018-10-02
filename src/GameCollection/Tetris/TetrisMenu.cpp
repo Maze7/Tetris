@@ -60,30 +60,17 @@ void TetrisGame::TetrisMenu::draw(sf::RenderWindow* window, sf::Font* font)
 	sf::Text menus[END];
 	sf::Sprite sprite; // used for background and text rendering
 
-	menus[m_hover].setFillColor(sf::Color(255, 0, 0, 255));
-	
-	if (getGame()->getGameState() == Game::PLAYING) {
-		menus[PLAY].setString("Continue");
-		sf::Text text;
-		text.setPosition({ 440.f, 180.f });
-		text.setFont(*font);
-		text.setCharacterSize(20);
-		text.setString("(press <DELETE> for reset)");
-		window->draw(text);
-	}
-	else {
-		menus[PLAY].setString("Start game!");
-	}
-	menus[PLAY].setPosition({ 280.f, 160.f });
+	//menus[m_hover].setFillColor(sf::Color(255, 0, 0, 255));
+	//menus[PLAY].setPosition({ 280.f, 160.f });
 
-	menus[SETTINGS].setString("Settings");
-	menus[SETTINGS].setPosition({ 280.f, 220.f });
+	//menus[SETTINGS].setString("Settings");
+	//menus[SETTINGS].setPosition({ 280.f, 220.f });
 
-	menus[MAINMENU].setString("Main Menu");
-	menus[MAINMENU].setPosition({ 280.f, 400.f });
+	//menus[MAINMENU].setString("Main Menu");
+	//menus[MAINMENU].setPosition({ 280.f, 400.f });
 
-	menus[EXIT].setString("Exit");
-	menus[EXIT].setPosition({ 280.f, 460.f });
+	//menus[EXIT].setString("Exit");
+	//menus[EXIT].setPosition({ 280.f, 460.f });
 
 	sf::Text helpNote("Press <H> for help text", *font, 35);
 	helpNote.setPosition( 280.f, (window->getSize().y - 50) * 1.f);
@@ -91,11 +78,29 @@ void TetrisGame::TetrisMenu::draw(sf::RenderWindow* window, sf::Font* font)
 
 	sprite.setTexture(m_background);
 	sprite.setColor(sf::Color(255, 255, 255, 150));
+	sf::Vector2f pos(280.f, 160.f);
 
-	for (auto &menu : menus) {
-		menu.setFont(*font);
-		menu.setCharacterSize(50);
-		window->draw(menu);
+	for (unsigned int i = 0; i < END; i++) {
+		if (i == ENTRYS::MAINMENU)
+			pos.y = pos.y + 130;
+		
+		if (i == PLAY && getGame()->getGameState() == Game::PLAYING) { // show different text during gameplay
+			menus[PLAY] = sf::Text ("Continue", *font, 50);
+
+			sf::Text text("(press <DELETE> for reset)", *font, 20);
+			text.setPosition({ 440.f, 180.f });
+			window->draw(text);
+		}
+		else {
+			menus[i] = sf::Text(entry_names[i], *font, 50);
+		}
+
+		if (m_hover == i)
+			menus[i].setFillColor(sf::Color(255, 0, 0, 150));
+
+		pos.y = pos.y + 60;
+		menus[i].setPosition(pos);
+		window->draw(menus[i]);
 	}
 	window->draw(sprite);
 }
@@ -117,6 +122,9 @@ int TetrisGame::TetrisMenu::close()
 		break;
 	case SETTINGS:
 		return TetrisLoader::SETTINGS;
+		break;
+	case HIGHSCORES:
+		return TetrisLoader::SCORE;
 		break;
 	case PLAY:
 		// if game is not running right now, create a new one and starts to play

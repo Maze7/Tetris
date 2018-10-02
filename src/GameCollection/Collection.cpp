@@ -16,14 +16,13 @@ int GameCollection::Collection::run(sf::RenderWindow& window, sf::Font& font)
 	// Helpers
 	std::vector<ICollectionEntry*>* entrysOfModule;
 	int screenIndex = 0;
-
 	currentScreen = &mainMenu;
 	while (window.isOpen()) {
 
 		while (window.pollEvent(event)) {
-			if (event.type == sf::Event::Closed) 
+			if (event.type == sf::Event::Closed)
 				window.close();
-			else if (event.type == sf::Event::KeyPressed) 
+			else if (event.type == sf::Event::TextEntered || event.type == sf::Event::KeyPressed)
 				currentScreen->handleEvent(event);
 		}
 
