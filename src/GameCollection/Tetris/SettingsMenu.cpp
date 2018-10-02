@@ -43,12 +43,16 @@ void TetrisGame::SettingsMenu::handleEvent(const sf::Event sfevent)
 	case sf::Keyboard::Left:
 		if (m_hover == SOUND_VOLUME && m_volume > 0)
 			m_volume--;
+		else if (m_hover == DIFFICULTY) 
+			m_difficulty = --m_difficulty % 3;
 		break;
 
 	case sf::Keyboard::D:
 	case sf::Keyboard::Right:
 		if (m_hover == SOUND_VOLUME && m_volume < MAX_VOLUME)
 			m_volume++;
+		if (m_hover == DIFFICULTY)
+			m_difficulty = ++m_difficulty % 3;
 		break;
 	}
 }
@@ -58,6 +62,8 @@ void TetrisGame::SettingsMenu::draw(sf::RenderWindow* window, sf::Font* font)
 	sf::Vector2f pos(280.f, 160.f);
 	sf::Text menus[END];
 	sf::RectangleShape volumeBars[10];
+	int test = 5;
+	sf::Text diffTexts[3] = { sf::Text(std::to_string(test),*font, 35), sf::Text(std::to_string((2*test)), *font, 35), sf::Text(std::to_string((3*test)), *font, 35) };
 
 	for (unsigned int i = 0; i < END; i++) {
 		menus[i] = sf::Text(entryNames[i], *font, 50);
@@ -68,7 +74,7 @@ void TetrisGame::SettingsMenu::draw(sf::RenderWindow* window, sf::Font* font)
 		}
 		if (i == SOUND_VOLUME) {
 			pos.y = pos.y + 20;
-			int x = pos.x;
+			unsigned int x = pos.x;
 			for (unsigned int j = 1; j < m_volume; j++) {
 				volumeBars[j].setFillColor(sf::Color::White);
 				volumeBars[j].setSize(sf::Vector2f(35,25));
@@ -80,6 +86,19 @@ void TetrisGame::SettingsMenu::draw(sf::RenderWindow* window, sf::Font* font)
 			}
 			pos.y = pos.y + 60;
 		}
+		else if (i == DIFFICULTY)  {
+			unsigned int x = pos.x; // copy
+			for (unsigned j = 0; j < 3; j++) {
+				diffTexts[j].setPosition(x, pos.y);
+				x = x + 75;
+				if (m_difficulty == j) {
+					diffTexts[j].setColor({ 255, 0, 0, 255 });
+				}
+				window->draw(diffTexts[j]);
+			}
+			pos.y = pos.y + 40; // make gap wider
+		}
+
 		window->draw(menus[i]);
 	}
 	sf::Sprite sprite;

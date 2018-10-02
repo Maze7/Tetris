@@ -25,6 +25,7 @@ namespace TetrisGame
 		 */
 		ENTRYS m_hover = ENTRYS::DIFFICULTY;
 
+		unsigned int m_difficulty;
 		unsigned int m_volume = 5;
 		static constexpr unsigned int MAX_VOLUME = 10;
 
