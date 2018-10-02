@@ -134,11 +134,13 @@ void TetrisGame::Game::handleCollision()
 	for (int x = 0; x < Playfield::s_COLUMNS; x++) {
 		if (m_playfield.getColorOfField(1, x) != sf::Color::Black) {
 			m_state = Game::GAMEOVER;
-			//m_playfield.gameover();
 
 			if (m_score.isNewHighscore()) {
 				m_score.addToHighscoreList();
 			}
+
+			// Stop game logic
+			return;
 		}
 	}
 
