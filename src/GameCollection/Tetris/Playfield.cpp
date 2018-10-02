@@ -138,12 +138,16 @@ void TetrisGame::Playfield::drawGrid(sf::RenderWindow* window)
 
 /*
 	Draws the given tetromino into the current playfield. 
+	Params: @window - sf::Window* on which the tetromino @tetro
+			should displayed. In case @transparency is true, the
+			given @tetro wont have a color and only the outline will
+			visible.
 	Example Usage:
 		Playfield field(..);
 		Playfield field2(..);
 		Tetromino tetro(..);
-		field.drawTetromino(tetro);
-		field2.drawTetromino(tetro);
+		field.drawTetromino(&window, tetro, true);
+		field2.drawTetromino(&window, tetro, true);
 		// now both fields contains a visible tetromino
 		// in this specific case, the playfield should contain other offsets
 		// so they will be drawn alongsite eachother

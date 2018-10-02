@@ -17,6 +17,7 @@ private:
 	std::string m_currentName;
 	std::vector<std::string> m_entryNames;
 	int m_hover;
+	sf::Texture m_background;
 
 public:
 	MenuEntry();
@@ -24,7 +25,7 @@ public:
 
 	void handleEvent(const sf::Event sfevent);
 	void draw(sf::RenderWindow* window, sf::Font* font);
-	const std::string& getCurrentName() { return m_currentName; } // todo: put in cpp file
+	const std::string& getCurrentName();
 	int close();
 };
 

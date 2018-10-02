@@ -10,9 +10,10 @@ TetrisGame::TetrisMenu::TetrisMenu()
 	//Load background. Dont do it inside the draw loop!
 	// Use the defined path to the background picture
 	m_background = sf::Texture();
+	m_currentState = PLAY;
 	if (!m_background.loadFromFile(s_BACKGROUND_PATH))
 	{
-		std::cerr << "[ERROR] [TetrisGame::SettingsMenu] loading bg picture failed" << std::endl;
+		std::cerr << "[ERROR] [TetrisGame::TetrisMenu] loading bg picture failed" << std::endl;
 	}
 }
 
@@ -85,7 +86,6 @@ void TetrisGame::TetrisMenu::draw(sf::RenderWindow* window, sf::Font* font)
 	menus[EXIT].setPosition({ 280.f, 460.f });
 
 	sf::Text helpNote("Press <H> for help text", *font, 35);
-	std::cout << window->getSize().y;
 	helpNote.setPosition( 280.f, (window->getSize().y - 50) * 1.f);
 	window->draw(helpNote);
 

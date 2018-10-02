@@ -4,6 +4,9 @@
 
 void TetrisGame::Game::handleTime()
 {
+	if (m_state == GAMEOVER)
+		return; // no need for game ticks anymore
+
 	if (m_clock.getElapsedTime().asMilliseconds() > m_tickInterval)
 	{
 		if (m_completedRows.size() > 0)
@@ -32,7 +35,10 @@ void TetrisGame::Game::handleTime()
 
 		// Start a new tick
 		m_clock.restart();
+
 	}
+	// Update the position of the preview tetromino
+	updateCollisionPreview();
 }
 
 /*
@@ -52,12 +58,33 @@ void TetrisGame::Game::draw(sf::RenderWindow* window, sf::Font* font)
 	m_playfield.drawTetromino(window, m_previewTetromino, false);
 	m_playfield.drawTetromino(window, m_collisionPreview, true);
 	m_score.draw(window, font);
+
+	if (m_state == GAMEOVER) {
+		const uint BLOCK_SIZE{ (window->getSize().y- 2 * Playfield::s_OFFSET) / Playfield::s_ROWS };
+		sf::Vector2f size(BLOCK_SIZE * Playfield::s_COLUMNS, window->getSize().y - 2 * Playfield::s_OFFSET);
+
+		sf::RectangleShape shape;
+		shape.setSize(size);
+		shape.setPosition(Playfield::s_OFFSET, Playfield::s_OFFSET);
+		shape.setFillColor(sf::Color(255, 150, 150, 150));
+		window->draw(shape);
+
+		sf::Text gameoverText("\t \t \t  GameOver! \nPress <RETURN> for Continue", *font, 50);
+		gameoverText.setPosition(50.f, 400.f);
+		window->draw(gameoverText);
+	}
 }
 
 int TetrisGame::Game::close()
 {
 	// todo write highscore and/or do cleanup
-	return m_nextScreen;
+	if(m_state == GAMEOVER) {
+		m_score.writeHighscoreListToFile();
+		return TetrisLoader::MENU;
+	}
+	else {
+		return m_nextScreen;
+	}
 }
 
 /*
@@ -104,7 +131,16 @@ void TetrisGame::Game::handleCollision()
 	m_playfield.addTetromino(m_currentTetromino);
 
 	// Check if gameover
-	checkForGameOver();
+	for (int x = 0; x < Playfield::s_COLUMNS; x++) {
+		if (m_playfield.getColorOfField(1, x) != sf::Color::Black) {
+			m_state = Game::GAMEOVER;
+			//m_playfield.gameover();
+
+			if (m_score.isNewHighscore()) {
+				m_score.addToHighscoreList();
+			}
+		}
+	}
 
 	// Check for completed rows
 	m_completedRows = m_playfield.checkForCompletedRows();
@@ -131,8 +167,16 @@ void TetrisGame::Game::handleCollision()
 void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 {
 
-	if (m_state == GAMEOVER)
-		return;
+	// if game is game over only allow to press return
+	if (m_state == GAMEOVER) {
+		if (sfevent.key.code == sf::Keyboard::Return) {
+			m_running = false; // invoke close()
+			m_nextScreen = TetrisLoader::GAME;
+		}
+		else {
+			return;
+		}
+	}
 
 	switch (sfevent.key.code) {
 	case sf::Keyboard::Up:
@@ -162,7 +206,8 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 		do
 			m_currentTetromino.move(Tetromino::DOWN);
 		while (isPosValid());
-
+		m_currentTetromino.move(Tetromino::UP); // Move it back into a valid position
+		handleCollision(); // Handle the game mechanics following the collision
 		break;
 	case sf::Keyboard::P:
 		if (m_state == PAUSED) {
@@ -176,21 +221,9 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 		m_state == PAUSED;
 		m_running = false;
 		m_nextScreen = TetrisGame::TetrisLoader::MENU;
+		break;
 	default:
 		break;
-	}
-
-	// Update the position of the preview tetromino
-	updateCollisionPreview();
-
-	// If the tetromino hit the ground or a block after moving down
-	if (!isPosValid())
-	{
-		// Move it back into a valid position
-		m_currentTetromino.move(Tetromino::UP);
-
-		// Handle the game mechanics following the collision
-		handleCollision();
 	}
 }
 
@@ -262,25 +295,3 @@ void TetrisGame::Game::setGameState(TetrisGame::Game::GAME_STATE state)
 {
 	m_state = state;
 }
-
-/*
-	Checks for gameover.
-	Should be called in the handleCollison()-function.
-*/
-void TetrisGame::Game::checkForGameOver()
-{
-	for (int x = 0; x < Playfield::s_COLUMNS; x++)
-	{
-		if (m_playfield.getColorOfField(1, x) != sf::Color::Black)
-		{
-			m_state = Game::GAMEOVER;
-			m_playfield.gameover();
-
-			if (m_score.isNewHighscore())
-			{
-				m_score.addToHighscoreList();
-			}
-		}
-	}
-}
-
