@@ -54,7 +54,7 @@ void ScoreScreen::draw(sf::RenderWindow* window, sf::Font* font)
 	std::string var = std::to_string(m_score.getHighscoreList()[0][0].score);
 	sf::Text highscoreText("Current Highscore: " + var, *font, 35);
 	highscoreText.setPosition(280.f, 160.f);
-	m_state = STATES::NEW_SCORE;
+
 	for (auto& score : highscores) {
 		var = std::to_string(m_score.getHighscoreList()[0][0].score);
 		score = sf::Text("Score: " + var, *font, 35);
@@ -97,6 +97,3 @@ int ScoreScreen::close()
 {
 	return m_nextScreen;
 }
-
-
-
