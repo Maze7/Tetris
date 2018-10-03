@@ -5,7 +5,6 @@
 */
 std::vector<std::string> FileIO::readFile(const std::string& filename)
 {
-	std::vector<std::string> v_input;
 	std::string line;
 	std::string input;
 
@@ -19,20 +18,18 @@ std::vector<std::string> FileIO::readFile(const std::string& filename)
 			input += line + "\n";
 		}
 
+		fileIn.close();
+
 		// Decrypt the string
 		input = Utility::Encryption::XORencryption(input);
-
-		// Use string to fill vector of substrings (string, targeted vector, delimiter)
-		Utility::Converter::StringToVector(input, v_input, "\n"); 
-
-		fileIn.close();
 	}
 	else
 	{
 		throw Exceptions::FileExceptions::FileNotFoundException("FileNotFoundException");
 	}
 
-	return v_input;
+	// Return vector of the substrings (string, delimiter)
+	return Utility::Converter::StringToVector(input, "\n");
 }
 
 /*

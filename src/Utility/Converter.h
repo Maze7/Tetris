@@ -7,7 +7,7 @@ namespace Utility
 	class Converter
 	{
 	public:
-		static void StringToVector(const std::string& str, std::vector<std::string>& list, const std::string& delimiter);
+		static std::vector<std::string> StringToVector(const std::string& str, const std::string& delimiter);
 	};
 }
 
