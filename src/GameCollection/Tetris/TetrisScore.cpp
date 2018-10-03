@@ -21,11 +21,19 @@ void TetrisGame::TetrisScore::readHighscoreListFromFile()
 		std::vector<std::string> v_input = FileIO::readFile("Highscores.txt");
 		int i = 0;
 
-		if (v_input.size() > 0) {
-			for (auto& highscore : m_highscoreList) {
-				highscore = Highscore{ std::stoi(v_input[i]), std::stoi(v_input[i + 1]), std::stoi(v_input[i + 2]) };
-				i += 3; // 3 is the amount of lines that belong to a highscore (score, level, linecount)
+		if (v_input.size() == m_highscoreList.size() * 3) {
+			try {
+				for (auto& highscore : m_highscoreList) {
+					highscore = Highscore{ std::stoi(v_input[i]), std::stoi(v_input[i + 1]), std::stoi(v_input[i + 2]) };
+					i += 3; // 3 is the amount of lines that belong to a highscore (score, level, linecount)
+				}
 			}
+			catch (std::invalid_argument &e) {
+				std::cout << "Invalid Argument in Highscores.txt" << std::endl;
+			}
+			catch (std::out_of_range& e) {
+				std::cout << "Argument in Highscores.txt is out of range" << std::endl;
+			}	
 		}
 	}
 	catch (Exceptions::FileExceptions::FileNotFoundException const &e)
