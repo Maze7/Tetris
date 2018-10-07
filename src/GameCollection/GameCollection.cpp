@@ -15,6 +15,8 @@ int main()
 	}
 
 	srand(time(NULL));
-	GameCollection::Collection col;
-	return col.run(window, font);
+	GameCollection::Collection* col = new GameCollection::Collection();
+	int returnT =  col->run(window, font);
+	delete col;
+	return returnT;
 }

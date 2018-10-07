@@ -218,7 +218,6 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 		}
 		break;
 	case sf::Keyboard::Escape:
-		m_state == PAUSED;
 		m_running = false;
 		m_nextScreen = TetrisGame::TetrisLoader::MENU;
 		break;

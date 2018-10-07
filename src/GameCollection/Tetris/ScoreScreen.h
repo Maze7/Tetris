@@ -19,7 +19,7 @@ namespace TetrisGame
 		enum ENTRYS { NAME = 0, BACK = 1, END = 2 };
 
 		ENTRYS m_currentState;
-		TetrisScore m_score;
+		TetrisScore& m_score;
 		STATES m_state;
 		ENTRYS m_hover;
 
@@ -27,7 +27,7 @@ namespace TetrisGame
 
 		int m_nextScreen;
 	public:
-		ScoreScreen() : m_hover(ENTRYS::BACK), m_currentState(ENTRYS::BACK), m_state(STATES::SHOW_SCORE), m_nextScreen(EXIT_APP), m_score(TetrisScore()) {};
+		ScoreScreen(TetrisScore& score) : m_hover(ENTRYS::BACK), m_currentState(ENTRYS::BACK), m_state(STATES::SHOW_SCORE), m_nextScreen(EXIT_APP), m_score(score) {};
 		~ScoreScreen() {};
 
 		void handleEvent(const sf::Event sfevent);

@@ -39,6 +39,8 @@ namespace TetrisGame
 
 		sf::Texture m_background;
 
+		TetrisScore m_score;
+
 	public:
 		static constexpr char s_BACKGROUND_PATH[] = "test.jpeg";
 
@@ -50,5 +52,6 @@ namespace TetrisGame
 		int close();
 
 		Game* getGame();
+		ICollectionEntry** getEntry(int index);
 	};
 }

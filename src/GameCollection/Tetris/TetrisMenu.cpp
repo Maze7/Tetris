@@ -5,7 +5,7 @@
 
 constexpr char TetrisGame::TetrisMenu::s_BACKGROUND_PATH[];
 
-TetrisGame::TetrisMenu::TetrisMenu() 
+TetrisGame::TetrisMenu::TetrisMenu() : m_score(TetrisScore())
 {
 	//Load background. Dont do it inside the draw loop!
 	// Use the defined path to the background picture
@@ -60,31 +60,24 @@ void TetrisGame::TetrisMenu::draw(sf::RenderWindow* window, sf::Font* font)
 	sf::Text menus[END];
 	sf::Sprite sprite; // used for background and text rendering
 
-	//menus[m_hover].setFillColor(sf::Color(255, 0, 0, 255));
-	//menus[PLAY].setPosition({ 280.f, 160.f });
-
-	//menus[SETTINGS].setString("Settings");
-	//menus[SETTINGS].setPosition({ 280.f, 220.f });
-
-	//menus[MAINMENU].setString("Main Menu");
-	//menus[MAINMENU].setPosition({ 280.f, 400.f });
-
-	//menus[EXIT].setString("Exit");
-	//menus[EXIT].setPosition({ 280.f, 460.f });
-
 	sf::Text helpNote("Press <H> for help text", *font, 35);
 	helpNote.setPosition( 280.f, (window->getSize().y - 50) * 1.f);
 	window->draw(helpNote);
 
 	sprite.setTexture(m_background);
 	sprite.setColor(sf::Color(255, 255, 255, 150));
-	sf::Vector2f pos(280.f, 160.f);
+	sf::Vector2f pos(280.f, 110.f);
 
 	for (unsigned int i = 0; i < END; i++) {
 		if (i == ENTRYS::MAINMENU)
 			pos.y = pos.y + 130;
-		
-		if (i == PLAY && getGame()->getGameState() == Game::PLAYING) { // show different text during gameplay
+		Game* game = getGame();
+
+		// show different text during gameplay
+		if (i == PLAY 
+			&& game != nullptr
+			&& (game->getGameState() == Game::PAUSED || game->getGameState() == Game::PLAYING) ) 
+		{
 			menus[PLAY] = sf::Text ("Continue", *font, 50);
 
 			sf::Text text("(press <DELETE> for reset)", *font, 20);
@@ -96,7 +89,7 @@ void TetrisGame::TetrisMenu::draw(sf::RenderWindow* window, sf::Font* font)
 		}
 
 		if (m_hover == i)
-			menus[i].setFillColor(sf::Color(255, 0, 0, 150));
+			menus[i].setFillColor(sf::Color(255, 0, 0, 255));
 
 		pos.y = pos.y + 60;
 		menus[i].setPosition(pos);
@@ -111,7 +104,7 @@ void TetrisGame::TetrisMenu::draw(sf::RenderWindow* window, sf::Font* font)
 */
 int TetrisGame::TetrisMenu::close()
 {
-	Game* game = getGame();
+	Game* game;
 	switch (m_currentState)
 	{
 	case EXIT:
@@ -121,17 +114,34 @@ int TetrisGame::TetrisMenu::close()
 		return ICollectionEntry::MAIN_MENU;
 		break;
 	case SETTINGS:
+		// create new settings if needed
+		if (*getEntry(TetrisLoader::SETTINGS) == nullptr) {
+			ICollectionEntry** settingsEntry = getEntry(TetrisLoader::SETTINGS);
+			*settingsEntry = new SettingsMenu();
+		}
 		return TetrisLoader::SETTINGS;
 		break;
 	case HIGHSCORES:
+		if (*getEntry(TetrisLoader::SCORE) == nullptr) {
+			ICollectionEntry** scoreScreen = getEntry(TetrisLoader::SCORE);
+			*scoreScreen = new ScoreScreen(m_score);
+		}
 		return TetrisLoader::SCORE;
 		break;
 	case PLAY:
-		// if game is not running right now, create a new one and starts to play
-		if (game->getGameState() != Game::PLAYING) {
-			*game = Game(); // new game
+	{
+		ICollectionEntry** gameEntry = getEntry(TetrisLoader::GAME);
+		Game* game = dynamic_cast<Game*>(*gameEntry);
+
+		if (game == nullptr) { // no game was played or deleted - new allocate is needed
+			*gameEntry = new Game(m_score);
+		}
+		else if (game->getGameState() == Game::GAMEOVER) { // if game is not running right now, create a new one and starts to play
+			delete *gameEntry;
+			*gameEntry = new Game(m_score); // new game
 			game->setGameState(Game::PLAYING);
 		}
+	}
 		return TetrisLoader::GAME;
 		break;
 	default:
@@ -147,3 +157,12 @@ TetrisGame::Game* TetrisGame::TetrisMenu::getGame()
 	return game;
 }
 
+/*
+	Returns a pointer to the pointer which points to the real entry
+	It can be used for modifying the pointer which is stored in the modul vector
+*/
+GameCollection::ICollectionEntry** TetrisGame::TetrisMenu::getEntry(int index)
+{
+	std::vector<ICollectionEntry*>* modulScreens = GameCollection::Collection::getEntrys()->at(TetrisLoader::MODUL_NAME);
+	return &modulScreens[0][index];
+}

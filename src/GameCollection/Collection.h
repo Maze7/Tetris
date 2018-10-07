@@ -15,7 +15,7 @@ namespace GameCollection
 
 	public:
 		Collection() {};
-		~Collection() {};
+		~Collection();
 
 		int run(sf::RenderWindow& window, sf::Font& font);
 		void checkScreenStatus(ICollectionEntry** screen);
