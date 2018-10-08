@@ -16,22 +16,7 @@ TetrisGame::TetrisScore::TetrisScore()
 */
 void TetrisGame::TetrisScore::readHighscoreListFromFile()
 {
-	try
-	{
-		std::vector<std::string> v_input = FileIO::readFile("Highscores.txt");
-
-		for (int i = 0; i < m_highscoreList.size(); i++)
-		{
-			for (int j = 0; j < m_highscoreList.size() - 3; j += 3)
-			{
-				m_highscoreList[i] = Highscore {std::stoi(v_input[j]), std::stoi(v_input[j + 1]), std::stoi(v_input[j + 2])};
-			}
-		}
-	}
-	catch (Exceptions::FileExceptions::FileNotFoundException const &e)
-	{
-		std::cout << e.what() << std::endl;
-	}
+	// Reworked in ft_Encryption branch - temporarily removed to prevent errors
 }
 
 /*
@@ -97,6 +82,11 @@ void TetrisGame::TetrisScore::update(int completedRowCount)
 		break;
 	}
 
+	// Increase level, if enough lines have been completed
+	if (m_lineCount >= m_level * 10) {
+		m_level++;
+	}
+
 	// Update the sf::Text's that are displayed on screen
 	m_scoreText.setString("Score: " + std::to_string(m_score));
 	m_levelText.setString("Level: " + std::to_string(m_level));
@@ -116,6 +106,11 @@ const int& TetrisGame::TetrisScore::getLevel()
 const int& TetrisGame::TetrisScore::getLineCount()
 {
 	return m_lineCount;
+}
+
+void TetrisGame::TetrisScore::setStartLevel(int level)
+{
+	m_level = level;
 }
 
 /*
