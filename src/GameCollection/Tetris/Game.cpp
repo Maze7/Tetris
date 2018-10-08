@@ -81,6 +81,17 @@ int TetrisGame::Game::close(GameCollection::ICollectionEntry** screen)
 }
 
 /*
+	Sets the starting difficulty of the game.
+	The difficulty corresponds to the level and influences the tickinterval, meaning the tetromino moves
+	down faster the higher the level.
+*/
+void TetrisGame::Game::setDifficulty(int difficulty)
+{
+	m_score.setStartLevel(difficulty);
+	m_tickInterval = 1000 - (difficulty * 50);
+}
+
+/*
 	Generates a random tetromino type out of Tetromino::TETROMINO_TYPE and returns it.
 */
 TetrisGame::Tetromino::TETROMINO_TYPE TetrisGame::Game::generateRandom()
@@ -144,6 +155,9 @@ void TetrisGame::Game::handleCollision()
 
 		// Update the score (includes counting completed lines and level)
 		m_score.update(m_completedRows.size());
+
+		// Adjust difficulty (tickInterval) according to level
+		m_tickInterval = 1000 - (m_score.getLevel() * 50);
 	} 
 
 	// Start a new tick

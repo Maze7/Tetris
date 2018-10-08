@@ -35,6 +35,7 @@ namespace TetrisGame
 			, m_playfield(Playfield())
 			, m_score(score)
 		{
+			setDifficulty(1); // TEMPORARY: Call this method before starting the actual game
 		}
 		
 		~Game() {}
@@ -44,6 +45,7 @@ namespace TetrisGame
 		void draw(sf::RenderWindow* window, sf::Font* font);
 		int close(ICollectionEntry** screen);
 
+		void setDifficulty(int difficulty);
 		bool isPosValid();
 		bool isPosValid(Tetromino* tetromino);
 		Tetromino::TETROMINO_TYPE generateRandom();
