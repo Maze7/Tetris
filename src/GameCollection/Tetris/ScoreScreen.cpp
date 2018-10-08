@@ -35,8 +35,8 @@ void ScoreScreen::handleEvent(const sf::Event sfevent)
 		case sf::Keyboard::Return:
 			//TODO
 			if (m_hover == BACK) {
-				m_running = false;
-				m_nextScreen = TetrisLoader::MENU;
+				m_running = false; // invoke close
+				m_nextScreen = TetrisLoader::MENU; 
 			}
 			else if (m_hover == NAME && !userName.empty()) {
 				m_score.writeHighscoreListToFile();
@@ -93,7 +93,8 @@ void ScoreScreen::draw(sf::RenderWindow* window, sf::Font* font)
 	window->draw(highscoreText);
 }
 
-int ScoreScreen::close()
+int ScoreScreen::close(ICollectionEntry** screen)
 {
-	return m_nextScreen;
+	*screen = *TetrisLoader::getScreen(TetrisLoader::SCREENS(m_nextScreen));
+	return CONTINUE; // There is no exit option in this menu
 }

@@ -14,9 +14,12 @@ namespace GameCollection
 
 	public:
 		/*
-		 * Pre-defined exit codes used in close(). 
+		 * Pre-defined exit codes used in close().
+		 * MAIN_MENU will set the current screen pointer to the main menu
+		 * CONTINUE will set m_running of screen pointer to true (normally used if the close method changed the screen pointer)
+		 * EXIT_APP will exit the application with return code success
 		 */
-		enum RETURN { MAIN_MENU = -1, EXIT_APP = -2 };
+		enum RETURN { MAIN_MENU = -1, EXIT_APP = EXIT_SUCCESS, CONTINUE = -3 };
 
 		/*
 		 *	-- PureVirtual -- 
@@ -47,15 +50,16 @@ namespace GameCollection
 		 * Close() will called if isRunning() is false. Its recommended to do some cleanup 
 		 * like deleting pointers or something like this. 
 		 * 
-		 * The return value value specify what screen should displayed next. There are two 
-		 * pre-defined return values which are located in RETURN-enum. 
-		 * If close() returns MEIN_MENU the current ICollectionEntry wont displayed anymore and main menu will
-		 * displayed again. EXIT_APP closes the hole window which will invoke the end of GameCollection. 
-		 *
-		 * Any other int value specify the next screen which will be shown inside the current screen/entry vector. 
-		 * If close() returns 3 the Collection::s_screen.at(CURRENTMODUL)[3] will displayed next.
+		 * The parameter screen is the current ICollectionEntry which is inside the run-loop. 
+		 * You can let the pointer (*screen) point to another ICollectionEntry if needed. 
+		 * This method can controll which Entryscreen should displayed next (modify *screen
+		 * 
+		 * The return int decides what happens with the running instance of Collection. 
+		 * This method should return an exit code or one of the pre-defined RETURN enums
+		 * In case *screen is nullptr the application will exit immediately.
+		 * 
 		 */
-		virtual int close() { return MAIN_MENU; }
+		virtual int close(ICollectionEntry** screen) { return EXIT_SUCCESS; }
 
 		/*
 		 * Avoid compiler warning
@@ -72,6 +76,7 @@ namespace GameCollection
 		/*
 		 * Sets m_running to true. It will prevent calling close() next loop. 
 		 * It will called each time if the current screen will changed to another. 
+		 * ( m_running = true; if the current ICollectionEntry pointer is not nullptr )
 		 */
 		const virtual void setRunning() { m_running = true;  }
 	};

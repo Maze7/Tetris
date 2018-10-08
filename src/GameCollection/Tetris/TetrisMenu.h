@@ -21,7 +21,7 @@ namespace TetrisGame
 	private:
 		/*
 		 * Specify the menu entrys.
-		 * The entrys are the Same 
+		 * The entrys are the Same edsd
 		 */
 		enum ENTRYS { PLAY = 0, SETTINGS = 1, HIGHSCORES=2, MAINMENU=3, EXIT = 4, END = 5 };
 
@@ -49,9 +49,6 @@ namespace TetrisGame
 
 		void handleEvent(const sf::Event sfevent);
 		void draw(sf::RenderWindow* window, sf::Font* font);
-		int close();
-
-		Game* getGame();
-		ICollectionEntry** getEntry(int index);
+		int close(ICollectionEntry** screen);
 	};
 }

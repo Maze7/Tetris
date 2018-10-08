@@ -46,7 +46,7 @@ void TetrisGame::TetrisMenu::handleEvent(const sf::Event sfevent)
 	case sf::Keyboard::Delete:
 		if (m_hover == PLAY) {
 			m_currentState = ENTRYS(m_hover);
-			getGame()->setGameState(Game::GAMEOVER);
+			TetrisLoader::erase(TetrisLoader::GAME);
 		}
 		break;
 	default:
@@ -71,12 +71,11 @@ void TetrisGame::TetrisMenu::draw(sf::RenderWindow* window, sf::Font* font)
 	for (unsigned int i = 0; i < END; i++) {
 		if (i == ENTRYS::MAINMENU)
 			pos.y = pos.y + 130;
-		Game* game = getGame();
 
 		// show different text during gameplay
 		if (i == PLAY 
-			&& game != nullptr
-			&& (game->getGameState() == Game::PAUSED || game->getGameState() == Game::PLAYING) ) 
+			&& TetrisLoader::contains(TetrisLoader::GAME)
+			&& (TetrisLoader::getGame()->getGameState() == Game::PAUSED || TetrisLoader::getGame()->getGameState() == Game::PLAYING) )
 		{
 			menus[PLAY] = sf::Text ("Continue", *font, 50);
 
@@ -102,67 +101,50 @@ void TetrisGame::TetrisMenu::draw(sf::RenderWindow* window, sf::Font* font)
 	Returns the number of selected menu entry. The selected menu entry is stored in m_currentState. 
 	In case of exit or main menu the defined codes in ICollectionEntry will be returned. 
 */
-int TetrisGame::TetrisMenu::close()
+int TetrisGame::TetrisMenu::close(ICollectionEntry** screen)
 {
-	Game* game;
 	switch (m_currentState)
 	{
 	case EXIT:
-		return ICollectionEntry::EXIT_APP;
+		return EXIT_SUCCESS;
 		break;
 	case MAINMENU:
-		return ICollectionEntry::MAIN_MENU;
+		return MAIN_MENU;
 		break;
 	case SETTINGS:
 		// create new settings if needed
-		if (*getEntry(TetrisLoader::SETTINGS) == nullptr) {
-			ICollectionEntry** settingsEntry = getEntry(TetrisLoader::SETTINGS);
-			*settingsEntry = new SettingsMenu();
+		if (!TetrisLoader::contains(TetrisLoader::SETTINGS)) {
+			TetrisLoader::addScreen(TetrisLoader::SETTINGS, new SettingsMenu());
 		}
-		return TetrisLoader::SETTINGS;
+		*screen = *TetrisLoader::getScreen(TetrisLoader::SETTINGS);
+		return CONTINUE;
 		break;
 	case HIGHSCORES:
-		if (*getEntry(TetrisLoader::SCORE) == nullptr) {
-			ICollectionEntry** scoreScreen = getEntry(TetrisLoader::SCORE);
-			*scoreScreen = new ScoreScreen(m_score);
+		if (!TetrisLoader::contains(TetrisLoader::SCORE)) {
+			TetrisLoader::addScreen(TetrisLoader::SCORE, new ScoreScreen(m_score));
 		}
-		return TetrisLoader::SCORE;
-		break;
+		*screen = *TetrisLoader::getScreen(TetrisLoader::SCORE);
+		return CONTINUE;
 	case PLAY:
-	{
-		ICollectionEntry** gameEntry = getEntry(TetrisLoader::GAME);
-		Game* game = dynamic_cast<Game*>(*gameEntry);
+	{ // new scope, needed for gameScreen
 
-		if (game == nullptr) { // no game was played or deleted - new allocate is needed
-			*gameEntry = new Game(m_score);
+		if (!TetrisLoader::contains(TetrisLoader::GAME)) {
+			TetrisLoader::addScreen(TetrisLoader::GAME, new Game(m_score));
 		}
-		else if (game->getGameState() == Game::GAMEOVER) { // if game is not running right now, create a new one and starts to play
-			delete *gameEntry;
-			*gameEntry = new Game(m_score); // new game
-			game->setGameState(Game::PLAYING);
+		ICollectionEntry** gameScreen = TetrisLoader::getScreen(TetrisLoader::GAME);
+
+		if (TetrisLoader::getGame()->getGameState() == Game::GAMEOVER) { // if game is not running right now, create a new one and starts to play
+			delete *gameScreen;
+			*gameScreen = new Game(m_score); // let pointer point to a new game
+			TetrisLoader::getGame()->setGameState(Game::PLAYING);
 		}
+		*screen = *TetrisLoader::getScreen(TetrisLoader::GAME); // open game
 	}
-		return TetrisLoader::GAME;
+		return CONTINUE;
+
 		break;
 	default:
-		return m_hover;
+		return EXIT_FAILURE;
 		break;
 	}
-}
-
-TetrisGame::Game* TetrisGame::TetrisMenu::getGame()
-{
-	std::vector<ICollectionEntry*>* modulScreens = GameCollection::Collection::getEntrys()->at(TetrisLoader::MODUL_NAME);
-	Game* game = dynamic_cast<Game*>(modulScreens[0][TetrisLoader::GAME]);
-	return game;
-}
-
-/*
-	Returns a pointer to the pointer which points to the real entry
-	It can be used for modifying the pointer which is stored in the modul vector
-*/
-GameCollection::ICollectionEntry** TetrisGame::TetrisMenu::getEntry(int index)
-{
-	std::vector<ICollectionEntry*>* modulScreens = GameCollection::Collection::getEntrys()->at(TetrisLoader::MODUL_NAME);
-	return &modulScreens[0][index];
 }

@@ -32,7 +32,7 @@ namespace TetrisGame
 
 		void handleEvent(const sf::Event sfevent);
 		void draw(sf::RenderWindow* window, sf::Font* font);
-		int close();
+		int close(ICollectionEntry** screen);
 	};
 }
 #endif /* SRC_GAMECOLLECTION_TETRIS_SCORESCREEN_H_ */

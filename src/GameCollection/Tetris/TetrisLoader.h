@@ -11,40 +11,26 @@ namespace TetrisGame
 {
 	class TetrisLoader
 	{
+	public:
+		enum SCREENS { MENU = 0, GAME = 1, SETTINGS = 2, SCORE = 3 };
+		static constexpr char MODUL_NAME[] = "Tetris";
+	
 	private:
 		/*
-			This is the module vector for tetris. It Contains all Screens which will used in this module. 
-			There can be objects and nullptr. 
-			Use nullptr to reserve the space affliate to SCREENS.
-			Initialize a object if it needs at startup. 
-		*/
-		std::vector<GameCollection::ICollectionEntry*> modulScreens = { new TetrisMenu()/*0*/, nullptr/*1*/ , nullptr/*2*/, nullptr/*3*/};
+		 * This map keeps all ICollectionEntrys which needs in Tetris
+		 * Add entrys during runtime with addScreen(SCREENS, ICollectionEntry*)
+		 * Get them with the relevant getter (game etc).
+		 */
+		static std::map<SCREENS, GameCollection::ICollectionEntry*> s_modulScreens;
 
 	public:
-
-		static constexpr char MODUL_NAME[] = "Tetris";
-		/*
-			
-		*/
-		enum SCREENS { MENU=0, GAME=1, SETTINGS=2, SCORE=3 };
-
-		TetrisLoader() { GameCollection::Collection::addModuleEntrys(MODUL_NAME, &modulScreens); }
+		TetrisLoader();
+		~TetrisLoader();
+		static void addScreen(SCREENS screenType, GameCollection::ICollectionEntry* screen);
+		static GameCollection::ICollectionEntry** getScreen(SCREENS screenType);
+		static Game* getGame();
+		static bool contains(SCREENS screenType);
+		static void erase(SCREENS screenType);
 	};
 }
 
-// allocate memory
-constexpr char TetrisGame::TetrisLoader::MODUL_NAME[];
-
-/*
-	Loads the TetrisModule in a private/anonymous namespace
-	It invokes the Loader where the class TetrisLoader will be initialized
-*/
-namespace
-{
-	using namespace TetrisGame;
-	struct Loader
-	{
-		static const TetrisLoader loading;
-	};
-	const TetrisLoader Loader::loading = TetrisLoader();
-}

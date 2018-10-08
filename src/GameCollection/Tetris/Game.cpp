@@ -7,24 +7,19 @@ void TetrisGame::Game::handleTime()
 	if (m_state == GAMEOVER)
 		return; // no need for game ticks anymore
 
-	if (m_clock.getElapsedTime().asMilliseconds() > m_tickInterval)
-	{
-		if (m_completedRows.size() > 0)
-		{
-			for (int& rowId : m_completedRows)
-			{
+	if (m_clock.getElapsedTime().asMilliseconds() > m_tickInterval) {
+		if (m_completedRows.size() > 0) {
+			for (int& rowId : m_completedRows) {
 				m_playfield.deleteRow(rowId);
 			}
 
 			m_completedRows.clear();
 		}
-		else
-		{
+		else {
 			m_currentTetromino.move(Tetromino::DOWN);
 
 			// If the tetromino hit the ground or a block after moving down
-			if (!isPosValid())
-			{
+			if (!isPosValid()) {
 				// Move it back into a valid position
 				m_currentTetromino.move(Tetromino::UP);
 
@@ -75,16 +70,14 @@ void TetrisGame::Game::draw(sf::RenderWindow* window, sf::Font* font)
 	}
 }
 
-int TetrisGame::Game::close()
+int TetrisGame::Game::close(GameCollection::ICollectionEntry** screen)
 {
 	// todo write highscore and/or do cleanup
-	if(m_state == GAMEOVER) {
+	if (m_state == GAMEOVER) {
 		m_score.writeHighscoreListToFile();
-		return TetrisLoader::MENU;
 	}
-	else {
-		return m_nextScreen;
-	}
+	*screen = *TetrisLoader::getScreen(TetrisLoader::SCREENS(m_nextScreen));
+	return CONTINUE;
 }
 
 /*

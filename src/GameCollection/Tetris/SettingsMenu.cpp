@@ -107,16 +107,16 @@ void TetrisGame::SettingsMenu::draw(sf::RenderWindow* window, sf::Font* font)
 	window->draw(sprite); // background opacity
 }
 
-int TetrisGame::SettingsMenu::close()
+int TetrisGame::SettingsMenu::close(ICollectionEntry** screen)
 {
-	std::vector<ICollectionEntry*>* modulScreens = GameCollection::Collection::getEntrys()->at(TetrisLoader::MODUL_NAME);
-	TetrisGame::Game* game = dynamic_cast<Game*>(modulScreens[0][TetrisLoader::GAME]);
+
 	// game->setVolume or smth like this.
 	// game set startlevel
 	switch (m_hover)
 	{
 	case BACK:
-		return TetrisLoader::MENU;
+		*screen = *TetrisLoader::getScreen(TetrisLoader::MENU);
+		return CONTINUE;
 		break;
 	default: // should never reached => avoid compiler warning
 		return EXIT_APP;

@@ -42,7 +42,7 @@ namespace TetrisGame
 		void handleEvent(const sf::Event sfevent);
 		void handleTime();
 		void draw(sf::RenderWindow* window, sf::Font* font);
-		int close();
+		int close(ICollectionEntry** screen);
 
 		bool isPosValid();
 		bool isPosValid(Tetromino* tetromino);
