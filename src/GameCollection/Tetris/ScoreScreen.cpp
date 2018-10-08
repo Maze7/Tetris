@@ -3,6 +3,20 @@
 
 using namespace TetrisGame;
 
+ScoreScreen::ScoreScreen(TetrisScore& score) :
+	m_hover(ENTRYS::BACK), 
+	m_currentState(ENTRYS::BACK), 
+	m_state(STATES::SHOW_SCORE), 
+	m_nextScreen(EXIT_APP), 
+	m_score(score), 
+	m_background(sf::Texture())
+{
+	if (!m_background.loadFromFile(TetrisGame::TetrisMenu::s_BACKGROUND_PATH))
+	{
+		std::cerr << "[ERROR] [TetrisGame::ScoreScreen] loading bg picture failed" << std::endl;
+	}
+}
+
 void ScoreScreen::handleEvent(const sf::Event sfevent)
 {
 	// no new highscore => only back is displayed so return means go back
@@ -63,7 +77,9 @@ void ScoreScreen::draw(sf::RenderWindow* window, sf::Font* font)
 		window->draw(score);
 	}
 
-
+	sf::Sprite sprite;
+	sprite.setTexture(m_background);
+	sprite.setColor(sf::Color(255, 255, 255, 150));
 	sf::Text back("Back", *font, 35);
 
 	if (m_state == NEW_SCORE) { // user can write his name
@@ -77,20 +93,23 @@ void ScoreScreen::draw(sf::RenderWindow* window, sf::Font* font)
 		text.setPosition(pos);
 
 		if (m_hover == NAME) {
-			text.setFillColor(sf::Color(255, 0, 0, 150));
-			back.setFillColor(sf::Color(255, 255, 255, 150));
+			text.setFillColor(sf::Color(255, 0, 0, 255));
+			back.setFillColor(sf::Color(255, 255, 255, 255));
 		}
 		else {
-			text.setFillColor(sf::Color(255, 255, 255, 150));
-			back.setFillColor(sf::Color(255, 0, 0, 150));
+			text.setFillColor(sf::Color(255, 255, 255, 255));
+			back.setFillColor(sf::Color(255, 0, 0, 255));
 		}
 		window->draw(text);
-
+	}
+	else {
+		back.setFillColor(sf::Color(255, 0, 0, 255));
 	}
 
 	back.setPosition(pos.x, pos.y + 100);
 	window->draw(back);
 	window->draw(highscoreText);
+	window->draw(sprite);
 }
 
 int ScoreScreen::close(ICollectionEntry** screen)

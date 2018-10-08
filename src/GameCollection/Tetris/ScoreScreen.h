@@ -22,12 +22,13 @@ namespace TetrisGame
 		TetrisScore& m_score;
 		STATES m_state;
 		ENTRYS m_hover;
+		sf::Texture m_background;
 
 		std::string userName;
 
 		int m_nextScreen;
 	public:
-		ScoreScreen(TetrisScore& score) : m_hover(ENTRYS::BACK), m_currentState(ENTRYS::BACK), m_state(STATES::SHOW_SCORE), m_nextScreen(EXIT_APP), m_score(score) {};
+		ScoreScreen(TetrisScore& score);
 		~ScoreScreen() {};
 
 		void handleEvent(const sf::Event sfevent);
