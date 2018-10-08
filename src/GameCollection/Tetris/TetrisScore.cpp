@@ -1,7 +1,8 @@
 #include "TetrisScore.h"
 
 TetrisGame::TetrisScore::TetrisScore()
-	: m_highscoreList(5, Highscore{0, 0, 0})
+	: m_highscoreList(5, Highscore{"unknown", 0, 0, 0})
+	, m_playerName("unknown")
 	, m_score(0)
 	, m_level(1)
 	, m_lineCount(0)
@@ -21,11 +22,11 @@ void TetrisGame::TetrisScore::readHighscoreListFromFile()
 		std::vector<std::string> v_input = FileIO::readFile("Highscores.txt");
 		int i = 0;
 
-		if (v_input.size() == m_highscoreList.size() * 3) {
+		if (v_input.size() == m_highscoreList.size() * 4) {
 			try {
 				for (auto& highscore : m_highscoreList) {
-					highscore = Highscore{ std::stoi(v_input[i]), std::stoi(v_input[i + 1]), std::stoi(v_input[i + 2]) };
-					i += 3; // 3 is the amount of lines that belong to a highscore (score, level, linecount)
+					highscore = Highscore{ v_input[i], std::stoi(v_input[i + 1]), std::stoi(v_input[i + 2]), std::stoi(v_input[i + 3]) };
+					i += 4; // 4 is the amount of lines that belong to a highscore (score, level, linecount)
 				}
 			}
 			catch (std::invalid_argument &e) {
@@ -52,7 +53,7 @@ void TetrisGame::TetrisScore::writeHighscoreListToFile()
 
 	for (auto const& highscore : m_highscoreList)
 	{
-		output += std::to_string(highscore.score) + "\n" + std::to_string(highscore.level) + "\n" + std::to_string(highscore.lineCount) + "\n";
+		output += highscore.playerName + "\n" + std::to_string(highscore.score) + "\n" + std::to_string(highscore.level) + "\n" + std::to_string(highscore.lineCount) + "\n";
 	}
 
 	// Write to file
@@ -126,12 +127,23 @@ const int& TetrisGame::TetrisScore::getLineCount()
 	return m_lineCount;
 }
 
+const std::string& TetrisGame::TetrisScore::getPlayerName()
+{
+	return m_playerName;
+}
+
+void TetrisGame::TetrisScore::setPlayerName(const std::string& playerName)
+{
+	m_playerName = playerName;
+}
+
 /*
 	Checks if the achieved score is a new highscore.
 
 	Example usage:
 	// gameover 
-	if (m_score.isNewHighscore()) 
+	if (score.isNewHighscore()) 
+		// insert player name
 		// add the score to the list
 */
 bool TetrisGame::TetrisScore::isNewHighscore()
@@ -141,12 +153,19 @@ bool TetrisGame::TetrisScore::isNewHighscore()
 
 /*
 	Adds the current score to the m_highscoreList. The current score replaces the last element
-	of the m_highscoreList. Afterwards the list gets sorted.
+	of the m_highscoreList. Afterwards the list gets sorted. Player should be given the opportunity
+	to insert his name before adding the highscore.
+
+	Example usage:
+	// gameover
+	if (score.isNewHighscore())
+		// insert player name
+		score.addToHighscoreList();
 */
 void TetrisGame::TetrisScore::addToHighscoreList()
 {
 	// Add new highscore as last element to the list
-	m_highscoreList[m_highscoreList.size() - 1] = Highscore{m_score, m_level, m_lineCount};
+	m_highscoreList[m_highscoreList.size() - 1] = Highscore{ m_playerName, m_score, m_level, m_lineCount };
 
 	// Custom sort algorithm - Sorts by score 
 	auto sortByScore = [](Highscore& left, Highscore& right) { return left.score > right.score; };
