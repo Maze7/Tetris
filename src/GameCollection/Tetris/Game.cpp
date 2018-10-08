@@ -165,7 +165,7 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 		if (sfevent.key.code == sf::Keyboard::Return) {
 			m_running = false; // invoke close()
 			TetrisLoader::erase(TetrisLoader::SCORE);
-			TetrisLoader::addScreen(TetrisLoader::SCORE, new ScoreScreen(m_score));
+			TetrisLoader::addScreen(TetrisLoader::SCORE, new ScoreScreen(m_score, ScoreScreen::NEW_SCORE)); // user can write his name
 			m_nextScreen = TetrisLoader::SCORE;
 		}
 		else {

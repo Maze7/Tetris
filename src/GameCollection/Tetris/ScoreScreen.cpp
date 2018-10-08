@@ -3,10 +3,10 @@
 
 using namespace TetrisGame;
 
-ScoreScreen::ScoreScreen(TetrisScore& score) :
+ScoreScreen::ScoreScreen(TetrisScore& score, STATES scoreState) :
 	m_hover(ENTRYS::BACK), 
 	m_currentState(ENTRYS::BACK), 
-	m_state(STATES::SHOW_SCORE), 
+	m_state(scoreState),
 	m_nextScreen(EXIT_APP), 
 	m_score(score), 
 	m_background(sf::Texture())
