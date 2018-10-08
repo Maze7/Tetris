@@ -22,6 +22,8 @@ GameCollection_SOURCES = src/Exceptions/FileExceptions.h\
 						src/GameCollection/Tetris/TetrisLoader.h\
 						src/GameCollection/Tetris/TetrisMenu.cpp\
 						src/GameCollection/Tetris/TetrisMenu.h\
+						src/GameCollection/Tetris/ScoreScreen.h\
+						src/GameCollection/Tetris/ScoreScreen.cpp\
 						src/GameCollection/Tetris/TetrisScore.cpp\
 						src/GameCollection/Tetris/TetrisScore.h\
 						src/GameCollection/Tetris/Tetromino.cpp\
