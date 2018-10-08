@@ -92,7 +92,7 @@ void TetrisGame::SettingsMenu::draw(sf::RenderWindow* window, sf::Font* font)
 				diffTexts[j].setPosition(x, pos.y);
 				x = x + 75;
 				if (m_difficulty == j) {
-					diffTexts[j].setColor({ 255, 0, 0, 255 });
+					diffTexts[j].setFillColor({ 255, 0, 0, 255 });
 				}
 				window->draw(diffTexts[j]);
 			}
