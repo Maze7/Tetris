@@ -2,6 +2,22 @@
 #include <string>
 #include "TetrisLoader.h"
 
+
+TetrisGame::Game::Game(TetrisScore& score)
+			: m_state(Game::PAUSED)
+			, m_currentTetromino(generateRandom(), Tetromino::PLAYFIELD_POS)
+			, m_previewTetromino(generateRandom(), Tetromino::PREVIEW_POS)
+			, m_collisionPreview(m_currentTetromino)
+			, m_tickInterval(500)
+			, m_playfield(Playfield())
+			, m_score(score) {
+	// Game object load difficulty settings from SettingsScreen on initialization
+	// User cannot modify difficulty during gameplay
+	if(TetrisLoader::contains(TetrisLoader::SETTINGS)) {
+		SettingsMenu* settings = dynamic_cast<SettingsMenu*>(*TetrisLoader::getScreen(TetrisLoader::SETTINGS));
+		setDifficulty(settings->getDifficulty());
+	}
+}
 void TetrisGame::Game::handleTime()
 {
 	if (m_state == GAMEOVER)
@@ -77,6 +93,17 @@ int TetrisGame::Game::close(GameCollection::ICollectionEntry** screen)
 }
 
 /*
+	Sets the starting difficulty of the game.
+	The difficulty corresponds to the level and influences the tickinterval, meaning the tetromino moves
+	down faster the higher the level.
+*/
+void TetrisGame::Game::setDifficulty(int difficulty)
+{
+	m_score.setStartLevel(difficulty);
+	m_tickInterval = 1000 - (difficulty * 50);
+}
+
+/*
 	Generates a random tetromino type out of Tetromino::TETROMINO_TYPE and returns it.
 */
 TetrisGame::Tetromino::TETROMINO_TYPE TetrisGame::Game::generateRandom()
@@ -143,6 +170,9 @@ void TetrisGame::Game::handleCollision()
 
 		// Update the score (includes counting completed lines and level)
 		m_score.update(m_completedRows.size());
+
+		// Adjust difficulty (tickInterval) according to level
+		m_tickInterval = 1000 - (m_score.getLevel() * 50);
 	} 
 
 	// Start a new tick

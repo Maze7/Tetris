@@ -32,6 +32,8 @@ namespace TetrisGame
 		const int& getLevel();
 		const int& getLineCount();
 
+		void setStartLevel(int level);
+
 		bool isNewHighscore();
 		void addToHighscoreList();
 

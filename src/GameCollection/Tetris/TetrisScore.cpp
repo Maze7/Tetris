@@ -106,6 +106,11 @@ void TetrisGame::TetrisScore::update(int completedRowCount)
 		break;
 	}
 
+	// Increase level, if enough lines have been completed
+	if (m_lineCount >= m_level * 10) {
+		m_level++;
+	}
+
 	// Update the sf::Text's that are displayed on screen
 	m_scoreText.setString("Score: " + std::to_string(m_score));
 	m_levelText.setString("Level: " + std::to_string(m_level));
@@ -141,6 +146,11 @@ const int& TetrisGame::TetrisScore::getLevel()
 const int& TetrisGame::TetrisScore::getLineCount()
 {
 	return m_lineCount;
+}
+
+void TetrisGame::TetrisScore::setStartLevel(int level)
+{
+	m_level = level;
 }
 
 const std::string& TetrisGame::TetrisScore::getPlayerName()
