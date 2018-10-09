@@ -115,8 +115,9 @@ void TetrisGame::SettingsMenu::draw(sf::RenderWindow* window, sf::Font* font)
 int TetrisGame::SettingsMenu::close(ICollectionEntry** screen)
 {
 
-	TetrisLoader::getGame()->setSoundVolume(getSoundVolume());
-
+	if (TetrisLoader::contains(TetrisLoader::GAME)) {
+		TetrisLoader::getGame()->setSoundVolume(getSoundVolume());
+	}
 	switch (m_hover)
 	{
 	case BACK:
