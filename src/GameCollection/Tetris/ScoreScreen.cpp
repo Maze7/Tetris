@@ -4,7 +4,7 @@
 using namespace TetrisGame;
 
 ScoreScreen::ScoreScreen(TetrisScore& score, STATES scoreState) :
-			m_hover((scoreState == SHOW_SCORE) ? NAME : BACK), // focuse name field if user should type
+			m_hover(((scoreState == NEW_SCORE) ? NAME : BACK)), // focuse name field if user should type
 			m_currentState(m_hover),
 			m_state(scoreState),
 			m_nextScreen(EXIT_APP),
