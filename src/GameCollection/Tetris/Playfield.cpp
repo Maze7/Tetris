@@ -199,24 +199,6 @@ void TetrisGame::Playfield::drawTetromino(sf::RenderWindow* window, TetrisGame::
 }
 
 /*
-	Sets the color of all blocks in the Playfield's m_grid to white.
-
-	Example usage:
-	if ( // gameover)
-		m_playfield.gameover();
-*/
-void TetrisGame::Playfield::gameover()
-{
-	for (int y = 0; y < s_ROWS; y++)
-	{
-		for (int x = 0; x < s_COLUMNS; x++)
-		{
-			m_grid[y][x] = sf::Color::White;
-		}
-	}
-}
-
-/*
 	Changes the color of the completed rows.
 
 	Example usage:
