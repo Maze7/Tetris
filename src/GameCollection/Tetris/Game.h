@@ -44,6 +44,7 @@ namespace TetrisGame
 		void handleCollision();
 		const GAME_STATE& getGameState();
 		void setGameState(GAME_STATE state);
+		void setSoundVolume(const float& volume);
 	};
 
 }

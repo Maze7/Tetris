@@ -15,6 +15,7 @@ TetrisGame::Game::Game(TetrisScore& score)
 	// start music
 	gameMusic.openFromFile("static/Tetris.wav");
 	gameMusic.setLoop(true);
+
 	gameMusic.play();
 
 	// Game object load difficulty settings from SettingsScreen on initialization
@@ -22,6 +23,7 @@ TetrisGame::Game::Game(TetrisScore& score)
 	if(TetrisLoader::contains(TetrisLoader::SETTINGS)) {
 		SettingsMenu* settings = dynamic_cast<SettingsMenu*>(*TetrisLoader::getScreen(TetrisLoader::SETTINGS));
 		setDifficulty(settings->getDifficulty());
+		gameMusic.setVolume(settings->getSoundVolume());
 	}
 	// Update the position of the preview tetromino
 	updateCollisionPreview();
@@ -342,4 +344,8 @@ const TetrisGame::Game::GAME_STATE& TetrisGame::Game::getGameState()
 void TetrisGame::Game::setGameState(TetrisGame::Game::GAME_STATE state)
 {
 	m_state = state;
+}
+
+void TetrisGame::Game::setSoundVolume(const float& volume) {
+	gameMusic.setVolume(volume);
 }
