@@ -30,7 +30,7 @@ namespace TetrisGame
 		 * 2 = 10
 		 * 3 = 15
 		 */
-		unsigned int m_difficulty = 0;
+		unsigned int m_difficulty = 1;
 
 		/*
 		 * m_difficulty * m_difficultyIntervall = the real start level

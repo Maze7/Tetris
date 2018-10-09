@@ -17,7 +17,10 @@ TetrisGame::Game::Game(TetrisScore& score)
 		SettingsMenu* settings = dynamic_cast<SettingsMenu*>(*TetrisLoader::getScreen(TetrisLoader::SETTINGS));
 		setDifficulty(settings->getDifficulty());
 	}
+	// Update the position of the preview tetromino
+	updateCollisionPreview();
 }
+
 void TetrisGame::Game::handleTime()
 {
 	if (m_state == GAMEOVER)
@@ -48,8 +51,7 @@ void TetrisGame::Game::handleTime()
 		m_clock.restart();
 
 	}
-	// Update the position of the preview tetromino
-	updateCollisionPreview();
+
 }
 
 /*
@@ -182,6 +184,7 @@ void TetrisGame::Game::handleCollision()
 	m_currentTetromino = Tetromino(m_previewTetromino.getType(), Tetromino::PLAYFIELD_POS);
 	// Generate a new preview tetromino
 	m_previewTetromino = Tetromino(generateRandom(), Tetromino::PREVIEW_POS);
+
 	// Update the collision preview for the freshly spawned tetromino
 	updateCollisionPreview();
 }
@@ -250,6 +253,12 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 	default:
 		break;
 	}
+
+	if (!isPosValid()) {
+		m_currentTetromino.move(Tetromino::UP);
+		handleCollision();
+	}
+	updateCollisionPreview();
 }
 
 /*
