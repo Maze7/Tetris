@@ -62,12 +62,13 @@ void ScoreScreen::handleEvent(const sf::Event sfevent) {
 				m_state = SHOW_SCORE; // user cant type his name next time
 				m_nextScreen = TetrisLoader::MENU; 
 			} else if (m_hover == NAME && !userName.empty()) {
+				m_score.setPlayerName(userName);
+				m_score.addToHighscoreList();
 				m_score.writeHighscoreListToFile();
+				m_state = SHOW_SCORE;
 			}
 			break;
 		default:
-
-
 			break;
 		}
 	}
@@ -77,16 +78,16 @@ void ScoreScreen::draw(sf::RenderWindow* window, sf::Font* font) {
 
 	sf::Text highscores[4]; // show 4 recent highscores
 	sf::Vector2f pos(280.f, 230.f);
-	std::string var = std::to_string(m_score.getHighscoreList()[0][0].score);
-	sf::Text highscoreText("Current Highscore: " + var, *font, 35);
+	std::string scoreString = std::to_string(m_score.getHighscoreList()[0][0].score);
+	sf::Text highscoreText("Current Highscore: " + scoreString + " (" + m_score.getHighscoreList()[0][0].playerName + ")", *font, 35);
 	highscoreText.setPosition(280.f, 160.f);
 
-	for (auto& score : highscores) {
-		var = std::to_string(m_score.getHighscoreList()[0][0].score);
-		score = sf::Text("Score: " + var, *font, 35);
-		score.setPosition(pos);
+	for (int i = 0; i < 4 ; i++) {
+		scoreString = std::to_string(m_score.getHighscoreList()[0][i + 1].score);
+		highscores[i] = sf::Text("Score: " + scoreString + " (" + m_score.getHighscoreList()[0][i + 1].playerName + ")", *font, 35);
+		highscores[i].setPosition(pos);
 		pos.y = pos.y + 50;
-		window->draw(score);
+		window->draw(highscores[i]);
 	}
 
 	sf::Sprite sprite;
@@ -95,7 +96,7 @@ void ScoreScreen::draw(sf::RenderWindow* window, sf::Font* font) {
 	sf::Text back("Back", *font, 35);
 
 	if (m_state == NEW_SCORE) { // user can write his name
-		sf::Text newScore("YOU HAVE THE NEW HIGHSCORE", *font, 35);
+		sf::Text newScore("YOU HAVE REACHED: " + std::to_string(m_score.getScore()), *font, 35);
 		newScore.setPosition(280.f, 125.f);
 		newScore.setFillColor({ 255, 155, 155, 155 });
 		window->draw(newScore);

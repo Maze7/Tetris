@@ -127,7 +127,6 @@ void TetrisGame::Game::handleCollision()
 			if (m_score.isNewHighscore()) {
 				TetrisLoader::erase(TetrisLoader::SCORE);
 				TetrisLoader::addScreen(TetrisLoader::SCORE, new ScoreScreen(m_score, ScoreScreen::NEW_SCORE)); // user can write his name
-				m_score.addToHighscoreList();
 			}
 
 			// Stop game logic
