@@ -18,6 +18,7 @@ namespace FlappyBirdGame
 		void draw(sf::RenderWindow* window, sf::Font* font);
 
 		void update();
+		void reset();
 
 		const int& getPipesPassed() { return m_pipesPassed; }
 

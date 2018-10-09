@@ -10,7 +10,15 @@
 void FlappyBirdGame::FlappyBirdScore::update()
 {
 	m_pipesPassed++;
-	m_pipesPassedText.setString("Pipes passed: " + std::to_string(m_pipesPassed));
+}
+
+/*
+	Resets the score.
+	Should be called before a new game is started.
+*/
+void FlappyBirdGame::FlappyBirdScore::reset()
+{
+	m_pipesPassed = 0;
 }
 
 /*
@@ -78,6 +86,7 @@ void FlappyBirdGame::FlappyBirdScore::writeHighscoreListToFile()
 
 void FlappyBirdGame::FlappyBirdScore::draw(sf::RenderWindow * window, sf::Font * font)
 {
+	m_pipesPassedText.setString("Pipes passed: " + std::to_string(m_pipesPassed));
 	m_pipesPassedText.setFont(*font);
 	window->draw(m_pipesPassedText);
 }
@@ -91,5 +100,4 @@ void FlappyBirdGame::FlappyBirdScore::init()
 	m_pipesPassedText.setCharacterSize(32);
 	m_pipesPassedText.setFillColor(sf::Color::White);
 	m_pipesPassedText.setPosition(500, 500);
-	m_pipesPassedText.setString("Pipes passed: " + std::to_string(m_pipesPassed));
 }
