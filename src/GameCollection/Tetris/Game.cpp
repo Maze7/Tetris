@@ -161,22 +161,26 @@ void TetrisGame::Game::handleCollision()
 		}
 	}
 
-	// Check for completed rows
-	m_completedRows = m_playfield.checkForCompletedRows();
+	// Only check for completed rows again, if completed rows have been deleted
+	if (m_completedRows.size() == 0) {
 
-	if (m_completedRows.size() > 0)
-	{
-		m_playfield.markCompletedRows(&m_completedRows, sf::Color::White);
+		// Check for completed rows
+		m_completedRows = m_playfield.checkForCompletedRows();
 
-		// Update the score (includes counting completed lines and level)
-		m_score.update(m_completedRows.size());
+		if (m_completedRows.size() > 0)
+		{
+			m_playfield.markCompletedRows(&m_completedRows, sf::Color::White);
 
-		// Adjust difficulty (tickInterval) according to level
-		m_tickInterval = 1000 - (m_score.getLevel() * 50);
-	} 
+			// Update the score (includes counting completed lines and level)
+			m_score.update(m_completedRows.size());
 
-	// Start a new tick
-	m_clock.restart();
+			// Adjust difficulty (tickInterval) according to level
+			m_tickInterval = 1000 - (m_score.getLevel() * 50);
+		}
+
+		// Start a new tick
+		m_clock.restart();
+	}
 	
 	// Spawn a new tetromino with the shape of the preview
 	m_currentTetromino = Tetromino(m_previewTetromino.getType(), Tetromino::PLAYFIELD_POS);
