@@ -17,6 +17,11 @@ FlappyBirdGame::FlappyBirdGame::FlappyBirdGame()
 	m_background.setSize(sf::Vector2f(1200, 500));
 	m_background.setPosition(0, 0);
 	m_background.setFillColor(sf::Color::Cyan);
+
+	// Create ceiling (so birds can't fly over pipes)
+	m_ceiling.setSize(sf::Vector2f(1200, 1));
+	m_ceiling.setPosition(0, -20);
+	m_ceiling.setFillColor(sf::Color::Transparent);
 }
 
 void FlappyBirdGame::FlappyBirdGame::handleEvent(const sf::Event sfevent)
@@ -52,18 +57,30 @@ void FlappyBirdGame::FlappyBirdGame::handleTime()
 		// Apply gravitiy to the bird, so it falls down
 		m_bird.applyGravity(0.5f, deltaTime);
 	}
+	else {
+		// game over stuff
+	}
 }
 
 void FlappyBirdGame::FlappyBirdGame::draw(sf::RenderWindow* window, sf::Font* font)
 {
+	// Draw background
 	window->draw(m_background);
+
+	// Draw bird
 	m_bird.draw(window);
 
+	// Draw pipes
 	for (auto& pipe : m_pipes) {
 		pipe.draw(window);
 	}
 
+	// Draw ground and ceiling
 	window->draw(m_ground);
+	window->draw(m_ceiling);
+
+
+	// Draw score
 	m_score.draw(window, font);
 }
 
@@ -78,19 +95,24 @@ int FlappyBirdGame::FlappyBirdGame::close()
 */
 bool FlappyBirdGame::FlappyBirdGame::checkCollision()
 {
-	bool is_collided = false;
-
+	// Check collision with pipe
 	for (auto& pipe : m_pipes) {
 		if (pipe.checkBirdCollision(&m_bird)) {
-			is_collided = true;
+			return true;
 		}
 	}
 	
+	// Check collision with ground
 	if (m_ground.getGlobalBounds().intersects(m_bird.getBirdHitbox().getGlobalBounds())) {
-		is_collided = true;
+		return true;
+	}
+
+	// Check collision with ceiling
+	if (m_ceiling.getGlobalBounds().intersects(m_bird.getBirdHitbox().getGlobalBounds())) {
+		return true;
 	}
 	
-	return is_collided;
+	return false;
 }
 
 void FlappyBirdGame::FlappyBirdGame::handleCollision()

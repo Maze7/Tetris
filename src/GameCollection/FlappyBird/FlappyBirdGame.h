@@ -26,6 +26,7 @@ namespace FlappyBirdGame
 		std::vector<Pipe> m_pipes;
 
 		sf::RectangleShape m_ground;
+		sf::RectangleShape m_ceiling;
 		sf::RectangleShape m_background;
 
 		FlappyBirdScore m_score;
