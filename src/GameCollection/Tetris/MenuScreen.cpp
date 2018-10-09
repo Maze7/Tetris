@@ -1,11 +1,12 @@
-#include "TetrisMenu.h"
+#include "MenuScreen.h"
+
 #include "../Collection.h"
 #include <iostream>
 #include "TetrisLoader.h"
 
-constexpr char TetrisGame::TetrisMenu::s_BACKGROUND_PATH[];
+constexpr char TetrisGame::MenuScreen::s_BACKGROUND_PATH[];
 
-TetrisGame::TetrisMenu::TetrisMenu() : m_score(TetrisScore())
+TetrisGame::MenuScreen::MenuScreen() : m_score(TetrisScore())
 {
 	//Load background. Dont do it inside the draw loop!
 	// Use the defined path to the background picture
@@ -20,7 +21,7 @@ TetrisGame::TetrisMenu::TetrisMenu() : m_score(TetrisScore())
 /*
 	Allows to switch through the menu.
 */
-void TetrisGame::TetrisMenu::handleEvent(const sf::Event sfevent)
+void TetrisGame::MenuScreen::handleEvent(const sf::Event sfevent)
 {
 	int entryIndex;
 	switch (sfevent.key.code)
@@ -58,7 +59,7 @@ void TetrisGame::TetrisMenu::handleEvent(const sf::Event sfevent)
 }
 
 
-void TetrisGame::TetrisMenu::draw(sf::RenderWindow* window, sf::Font* font)
+void TetrisGame::MenuScreen::draw(sf::RenderWindow* window, sf::Font* font)
 {
 	sf::Text menus[END];
 	sf::Sprite sprite; // used for background and text rendering
@@ -78,7 +79,7 @@ void TetrisGame::TetrisMenu::draw(sf::RenderWindow* window, sf::Font* font)
 		// show different text during gameplay
 		if (i == PLAY 
 			&& TetrisLoader::contains(TetrisLoader::GAME)
-			&& (TetrisLoader::getGame()->getGameState() == Game::PAUSED || TetrisLoader::getGame()->getGameState() == Game::PLAYING) )
+			&& (TetrisLoader::getGame()->getGameState() == GameScreen::PAUSED || TetrisLoader::getGame()->getGameState() == GameScreen::PLAYING) )
 		{
 			menus[PLAY] = sf::Text ("Continue", *font, 50);
 
@@ -104,7 +105,7 @@ void TetrisGame::TetrisMenu::draw(sf::RenderWindow* window, sf::Font* font)
 	Returns the number of selected menu entry. The selected menu entry is stored in m_currentState. 
 	In case of exit or main menu the defined codes in ICollectionEntry will be returned. 
 */
-int TetrisGame::TetrisMenu::close(ICollectionEntry** screen)
+int TetrisGame::MenuScreen::close(ICollectionScreen** screen)
 {
 	switch (m_currentState)
 	{
@@ -117,7 +118,7 @@ int TetrisGame::TetrisMenu::close(ICollectionEntry** screen)
 	case SETTINGS:
 		// create new settings if needed
 		if (!TetrisLoader::contains(TetrisLoader::SETTINGS)) {
-			TetrisLoader::addScreen(TetrisLoader::SETTINGS, new SettingsMenu());
+			TetrisLoader::addScreen(TetrisLoader::SETTINGS, new SettingsScreen());
 		}
 		*screen = *TetrisLoader::getScreen(TetrisLoader::SETTINGS);
 		return CONTINUE;
@@ -132,15 +133,15 @@ int TetrisGame::TetrisMenu::close(ICollectionEntry** screen)
 	{ // new scope, needed for gameScreen
 
 		if (!TetrisLoader::contains(TetrisLoader::GAME)) {
-			TetrisLoader::addScreen(TetrisLoader::GAME, new Game(m_score));
+			TetrisLoader::addScreen(TetrisLoader::GAME, new GameScreen(m_score));
 		}
-		ICollectionEntry** gameScreen = TetrisLoader::getScreen(TetrisLoader::GAME);
+		ICollectionScreen** gameScreen = TetrisLoader::getScreen(TetrisLoader::GAME);
 
-		if (TetrisLoader::getGame()->getGameState() == Game::GAMEOVER) { // if game is not running right now, create a new one and starts to play
+		if (TetrisLoader::getGame()->getGameState() == GameScreen::GAMEOVER) { // if game is not running right now, create a new one and starts to play
 			delete *gameScreen;
 			m_score.reset();
-			*gameScreen = new Game(m_score); // let pointer point to a new game
-			TetrisLoader::getGame()->setGameState(Game::PLAYING);
+			*gameScreen = new GameScreen(m_score); // let pointer point to a new game
+			TetrisLoader::getGame()->setGameState(GameScreen::PLAYING);
 		}
 		*screen = *TetrisLoader::getScreen(TetrisLoader::GAME); // open game
 	}

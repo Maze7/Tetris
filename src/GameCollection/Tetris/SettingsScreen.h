@@ -1,14 +1,15 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "../ICollectionEntry.h"
-#include "TetrisMenu.h"
-#include "Game.h"
+#include "../ICollectionScreen.h"
 #include "../Collection.h"
 #include <string>
 
+#include "GameScreen.h"
+#include "MenuScreen.h"
+
 namespace TetrisGame
 {
-	class SettingsMenu : public GameCollection::ICollectionEntry
+	class SettingsScreen : public GameCollection::ICollectionScreen
 	{
 	private:
 		/*
@@ -40,12 +41,12 @@ namespace TetrisGame
 		sf::Texture m_background;
 
 	public:
-		SettingsMenu();
-		~SettingsMenu() {};
+		SettingsScreen();
+		~SettingsScreen() {};
 
 		void handleEvent(const sf::Event sfevent);
 		void draw(sf::RenderWindow* window, sf::Font* font);
-		int close(ICollectionEntry** screen);
+		int close(ICollectionScreen** screen);
 
 		const unsigned int getDifficulty();
 		float getSoundVolume();

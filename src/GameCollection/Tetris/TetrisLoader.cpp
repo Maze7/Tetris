@@ -3,11 +3,11 @@
 
 // allocate memory (static elements)
 constexpr char TetrisGame::TetrisLoader::MODUL_NAME[];
-std::map <TetrisGame::TetrisLoader::SCREENS, GameCollection::ICollectionEntry*> TetrisGame::TetrisLoader::s_modulScreens;
+std::map <TetrisGame::TetrisLoader::SCREENS, GameCollection::ICollectionScreen*> TetrisGame::TetrisLoader::s_modulScreens;
 
 TetrisGame::TetrisLoader::TetrisLoader() 
 { 
-	TetrisLoader::s_modulScreens.insert(std::make_pair(MENU, new TetrisMenu()));
+	TetrisLoader::s_modulScreens.insert(std::make_pair(MENU, new MenuScreen()));
 	GameCollection::Collection::addModuleEntrys(MODUL_NAME, s_modulScreens.at(MENU)); 
 }
 
@@ -24,7 +24,7 @@ TetrisGame::TetrisLoader::~TetrisLoader()
 		SCREENS the type of the module
 		ICollectionEntry* screen to add
 */
-void TetrisGame::TetrisLoader::addScreen(TetrisLoader::SCREENS screenType, GameCollection::ICollectionEntry* screen) 
+void TetrisGame::TetrisLoader::addScreen(TetrisLoader::SCREENS screenType, GameCollection::ICollectionScreen* screen) 
 {
 	s_modulScreens.insert(std::make_pair(screenType, screen));
 }
@@ -38,15 +38,15 @@ void TetrisGame::TetrisLoader::addScreen(TetrisLoader::SCREENS screenType, GameC
 		Game* game = dynamic_cast<Game*>(TetrisLoader::getScreen(TetrisLoader::GAME)); // with dynamic cast
 
 */
-GameCollection::ICollectionEntry** TetrisGame::TetrisLoader::getScreen(TetrisLoader::SCREENS screenType)
+GameCollection::ICollectionScreen** TetrisGame::TetrisLoader::getScreen(TetrisLoader::SCREENS screenType)
 {
 	return &s_modulScreens.at(screenType);
 }
 
-TetrisGame::Game* TetrisGame::TetrisLoader::getGame()
+TetrisGame::GameScreen* TetrisGame::TetrisLoader::getGame()
 {
 	if (TetrisLoader::contains(GAME))
-		return dynamic_cast<Game*>(*TetrisLoader::getScreen(GAME));
+		return dynamic_cast<GameScreen*>(*TetrisLoader::getScreen(GAME));
 	else
 		return nullptr;
 }

@@ -1,4 +1,5 @@
-#include "MenuEntry.h"
+#include "MainMenuScreen.h"
+
 #include <iostream>
 
 /*
@@ -6,7 +7,7 @@
 	It puts all keywords (strings) of s_entrys into m_entryNames. 
 	This vector will needed to display the names of the different module to the main menu. 
 */
-MenuEntry::MenuEntry()
+MainMenuScreen::MainMenuScreen()
 {
 	const GameCollection::CollectionEntrys* const allEntrys = GameCollection::Collection::getEntrys();
 
@@ -21,7 +22,7 @@ MenuEntry::MenuEntry()
 	m_hover = 0;
 }
 
-void MenuEntry::handleEvent(const sf::Event sfevent)
+void MainMenuScreen::handleEvent(const sf::Event sfevent)
 {
 	switch (sfevent.key.code)
 	{
@@ -46,7 +47,7 @@ void MenuEntry::handleEvent(const sf::Event sfevent)
 }
 
 
-void MenuEntry::draw(sf::RenderWindow* window, sf::Font* font)
+void MainMenuScreen::draw(sf::RenderWindow* window, sf::Font* font)
 {
 	sf::Sprite sprite; // used for background and text rendering
 	sprite.setTexture(m_background);
@@ -72,12 +73,12 @@ void MenuEntry::draw(sf::RenderWindow* window, sf::Font* font)
 	window->draw(sprite);
 }
 
-const std::string& MenuEntry::getCurrentName()
+const std::string& MainMenuScreen::getCurrentName()
 {
 	return m_currentName;
 }
 
-int MenuEntry::close(ICollectionEntry** screen)
+int MainMenuScreen::close(ICollectionScreen** screen)
 {
 	if (m_currentName == "Exit") {
 	return EXIT_APP;

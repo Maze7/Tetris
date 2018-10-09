@@ -1,7 +1,8 @@
 #pragma once
-#include "../ICollectionEntry.h"
 #include <SFML/Graphics.hpp>
-#include "Game.h"
+
+#include "../ICollectionScreen.h"
+#include "GameScreen.h"
 
 /*
  * Check the platform and define it to OS_Windows.
@@ -16,7 +17,7 @@
 
 namespace TetrisGame
 {
-	class TetrisMenu : public GameCollection::ICollectionEntry
+	class MenuScreen : public GameCollection::ICollectionScreen
 	{
 	private:
 		/*
@@ -44,11 +45,11 @@ namespace TetrisGame
 	public:
 		static constexpr char s_BACKGROUND_PATH[] = "test.jpeg";
 
-		TetrisMenu();
-		~TetrisMenu() {};
+		MenuScreen();
+		~MenuScreen() {};
 
 		void handleEvent(const sf::Event sfevent);
 		void draw(sf::RenderWindow* window, sf::Font* font);
-		int close(ICollectionEntry** screen);
+		int close(ICollectionScreen** screen);
 	};
 }

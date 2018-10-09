@@ -1,7 +1,7 @@
 #include "Collection.h"
 #include <iostream>
 
-std::map<std::string, GameCollection::ICollectionEntry*> GameCollection::Collection::s_entrys = std::map<std::string, GameCollection::ICollectionEntry*>();
+std::map<std::string, GameCollection::ICollectionScreen*> GameCollection::Collection::s_entrys = std::map<std::string, GameCollection::ICollectionScreen*>();
 
 /*
 	Iterates through s_entrys and deletes every pointer. 
@@ -21,8 +21,8 @@ GameCollection::Collection::~Collection()
 int GameCollection::Collection::run(sf::RenderWindow& window, sf::Font& font)
 {
 
-	MenuEntry mainMenu;
-	ICollectionEntry* currentScreen;
+	MainMenuScreen mainMenu;
+	ICollectionScreen* currentScreen;
 
 	// helpers - will overwritten
 	int returnValue = EXIT_SUCCESS;
@@ -91,7 +91,7 @@ int GameCollection::Collection::run(sf::RenderWindow& window, sf::Font& font)
 		};
 		namspace { static const ExampleGameLoader loading; } // invoke Constructor in private namespace
 */
-void GameCollection::Collection::addModuleEntrys(std::string moduleName, GameCollection::ICollectionEntry* screen)
+void GameCollection::Collection::addModuleEntrys(std::string moduleName, GameCollection::ICollectionScreen* screen)
 {
 	s_entrys.insert(std::make_pair(moduleName, screen));
 }
@@ -99,7 +99,7 @@ void GameCollection::Collection::addModuleEntrys(std::string moduleName, GameCol
 /*
 	const Getter for s_screens. Returns a pointer to hole map std::map<std::string, GameCollection::ICollectionEntry*>*
 */
-const std::map<std::string, GameCollection::ICollectionEntry*>* const GameCollection::Collection::getEntrys()
+const std::map<std::string, GameCollection::ICollectionScreen*>* const GameCollection::Collection::getEntrys()
 {
 	return &s_entrys;
 }
