@@ -116,6 +116,11 @@ void TetrisGame::Playfield::drawGrid(sf::RenderWindow* window)
 	grid.setPosition(s_OFFSET, s_OFFSET);
 	window->draw(grid);
 
+	// Create a sf::Rectangleshape to draw the blocks in the playfield
+	sf::RectangleShape block(sf::Vector2f(BLOCK_SIZE, BLOCK_SIZE));
+	block.setOutlineColor(sf::Color::Black);
+	block.setOutlineThickness(1);
+
 	// Draw color  grid
 	for (int y = 0; y < s_ROWS; y++)
 	{
@@ -123,10 +128,7 @@ void TetrisGame::Playfield::drawGrid(sf::RenderWindow* window)
 		{
 			if (m_grid[y][x] != sf::Color::Black) {
 				// Create the blocks as sf::RectangleShape's and assign color and position
-				sf::RectangleShape block(sf::Vector2f(BLOCK_SIZE, BLOCK_SIZE));
 				block.setFillColor(m_grid[y][x]);
-				block.setOutlineColor(sf::Color::Black);
-				block.setOutlineThickness(1);
 				block.setPosition(x * BLOCK_SIZE + s_OFFSET, y * BLOCK_SIZE + s_OFFSET);
 
 				// Call draw-function of window
@@ -163,6 +165,19 @@ void TetrisGame::Playfield::drawTetromino(sf::RenderWindow* window, TetrisGame::
 	const TetrisGame::Tetromino::TetroShape* tetroShape = &TetrisGame::Tetromino::SHAPE_DATA[tetromino.getType()][tetromino.getRotation()];
 	sf::Vector2i tetrominoBlockPosition;
 
+	// Create a sf::RectangleShape to draw the blocks
+	sf::RectangleShape tetroBlock(sf::Vector2f(38, 38));
+
+	// Assign the respective color to the shape
+	if (transparency) {
+		tetroBlock.setFillColor(sf::Color::Transparent);
+		tetroBlock.setOutlineColor(sf::Color::White);
+		tetroBlock.setOutlineThickness(1);
+	}
+	else {
+		tetroBlock.setFillColor(TetrisGame::Tetromino::SHAPE_COLORS[tetromino.getType()]);
+	}
+
 	// Iterate over the corresponding SHAPE_DATA (sub)array
 	for (int y = 0; y < 4; y++)
 	{
@@ -171,19 +186,6 @@ void TetrisGame::Playfield::drawTetromino(sf::RenderWindow* window, TetrisGame::
 			// If a block is visible (== 1), draw it
 			if (tetroShape[0][y][x] == 1)
 			{
-				// Create the blocks as sf::RectangleShape'
-				sf::RectangleShape tetroBlock(sf::Vector2f(38, 38));
-
-				// Assign the respective color to the shape
-				if (transparency) {
-					tetroBlock.setFillColor(sf::Color::Transparent);
-					tetroBlock.setOutlineColor(sf::Color::White);
-					tetroBlock.setOutlineThickness(1);
-				} 
-				else {
-					tetroBlock.setFillColor(TetrisGame::Tetromino::SHAPE_COLORS[tetromino.getType()]);
-				}
-
 				// Calculate the on-screen position of the block
 				tetrominoBlockPosition.x = (tetromino.getPosition().x + x) * BLOCK_SIZE + s_OFFSET;
 				tetrominoBlockPosition.y = (tetromino.getPosition().y + y) * BLOCK_SIZE + s_OFFSET;
