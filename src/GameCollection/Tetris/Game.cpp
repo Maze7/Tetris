@@ -159,6 +159,9 @@ void TetrisGame::Game::updateCollisionPreview()
 */
 void TetrisGame::Game::handleCollision()
 {
+    if (m_state == GAMEOVER) {
+        return;
+    }
 	// Add the tetromino to the grid
 	m_playfield.addTetromino(m_currentTetromino);
 
