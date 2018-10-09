@@ -112,6 +112,18 @@ void TetrisGame::TetrisScore::update(int completedRowCount)
 	m_lineCountText.setString("Lines: " + std::to_string(m_lineCount));
 }
 
+/*
+	Resets the current score. 
+	Has to be called before starting a new game.
+*/
+void TetrisGame::TetrisScore::reset()
+{
+	m_playerName = "unknown";
+	m_score = 0;
+	m_level = 1;
+	m_lineCount = 0;
+}
+
 const int& TetrisGame::TetrisScore::getScore()
 {
 	return m_score;

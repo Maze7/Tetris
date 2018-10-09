@@ -22,6 +22,7 @@ namespace TetrisGame
 
 		void draw(sf::RenderWindow* window, sf::Font* font);
 		void update(int completedRowCount);
+		void reset();
 		const std::vector<Highscore>* getHighscoreList() { return &m_highscoreList; }
 
 		const std::string& getPlayerName();
