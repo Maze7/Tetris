@@ -28,7 +28,6 @@ namespace TetrisGame
 		void drawGrid(sf::RenderWindow* window);
 		void drawTetromino(sf::RenderWindow* window, TetrisGame::Tetromino& tetromino, bool transparency);
 
-		void gameover();
 		void markCompletedRows(std::vector<int>* completedRows, sf::Color color);
 		void resetPlayfield();
 	};

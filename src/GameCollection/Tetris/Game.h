@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "Playfield.h"
 #include "Tetromino.h"
 #include "TetrisScore.h"
@@ -19,35 +20,31 @@ namespace TetrisGame
 		Tetromino m_collisionPreview;
 		Playfield m_playfield;
 
-		TetrisScore m_score;
+		TetrisScore& m_score;
 		sf::Clock m_clock;
 		uint m_tickInterval;
 		std::vector<int> m_completedRows;
+		sf::Music gameMusic;
 
+		int m_nextScreen = -1;
 	public:
-		Game()
-			: m_state(Game::PLAYING)
-			, m_currentTetromino(generateRandom(), Tetromino::PLAYFIELD_POS)
-			, m_previewTetromino(generateRandom(), Tetromino::PREVIEW_POS)
-			, m_collisionPreview(m_currentTetromino)
-			, m_tickInterval(500)
-			, m_playfield(Playfield())
-		{
-		}
-		
+		Game(TetrisScore& score);
 		~Game() {}
 
 		void handleEvent(const sf::Event sfevent);
 		void handleTime();
 		void draw(sf::RenderWindow* window, sf::Font* font);
-		int close();
+		int close(ICollectionEntry** screen);
 
+		void setDifficulty(int difficulty);
 		bool isPosValid();
 		bool isPosValid(Tetromino* tetromino);
 		Tetromino::TETROMINO_TYPE generateRandom();
 		void updateCollisionPreview();
 		void handleCollision();
-		void checkForGameOver();
+		const GAME_STATE& getGameState();
+		void setGameState(GAME_STATE state);
+		void setSoundVolume(const float& volume);
 	};
 
 }
