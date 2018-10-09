@@ -16,7 +16,6 @@ TetrisGame::Game::Game(TetrisScore& score)
 	if(TetrisLoader::contains(TetrisLoader::SETTINGS)) {
 		SettingsMenu* settings = dynamic_cast<SettingsMenu*>(*TetrisLoader::getScreen(TetrisLoader::SETTINGS));
 		setDifficulty(settings->getDifficulty());
-		std::cout << settings->getDifficulty();
 	}
 }
 void TetrisGame::Game::handleTime()
