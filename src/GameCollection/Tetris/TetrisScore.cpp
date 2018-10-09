@@ -112,6 +112,22 @@ void TetrisGame::TetrisScore::update(int completedRowCount)
 	m_lineCountText.setString("Lines: " + std::to_string(m_lineCount));
 }
 
+/*
+	Resets the current score. 
+	Has to be called before starting a new game.
+*/
+void TetrisGame::TetrisScore::reset()
+{
+	m_playerName = "unknown";
+	m_score = 0;
+	m_level = 1;
+	m_lineCount = 0;
+	// Update the sf::Text's that are displayed on screen
+	m_scoreText.setString("Score: " + std::to_string(m_score));
+	m_levelText.setString("Level: " + std::to_string(m_level));
+	m_lineCountText.setString("Lines: " + std::to_string(m_lineCount));
+}
+
 const int& TetrisGame::TetrisScore::getScore()
 {
 	return m_score;
@@ -172,6 +188,9 @@ void TetrisGame::TetrisScore::addToHighscoreList()
 
 	// Sort the list with the custom sort algorithm
 	std::sort(m_highscoreList.begin(), m_highscoreList.end(), sortByScore);
+
+	// reset values to default
+	reset();
 }
 
 /*
