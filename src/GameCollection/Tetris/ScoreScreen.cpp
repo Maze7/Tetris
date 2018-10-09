@@ -56,6 +56,7 @@ void ScoreScreen::handleEvent(const sf::Event sfevent) {
 				userName = userName.substr(0, userName.size()-1); // delete one char
 			}
 			break;
+		case sf::Keyboard::Space:
 		case sf::Keyboard::Return:
 			if (m_hover == BACK) {
 				m_running = false; // invoke close

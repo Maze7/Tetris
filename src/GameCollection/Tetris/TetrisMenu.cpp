@@ -29,16 +29,19 @@ void TetrisGame::TetrisMenu::handleEvent(const sf::Event sfevent)
 		if(OS_Windows)
 			system("notepad.exe Tetris\\helptext_Tetris.txt");
 		break;
+	case sf::Keyboard::W:
 	case sf::Keyboard::Up:
 		if (m_hover == 0)
 			m_hover = ENTRYS(END - 1);
 		else
 			m_hover = ENTRYS(m_hover - 1);
 		break;
+	case sf::Keyboard::S:
 	case sf::Keyboard::Down:
 		entryIndex = ENTRYS((m_hover + 1)) % (END);
 		m_hover = ENTRYS(abs(entryIndex));
 		break;
+	case sf::Keyboard::Space:
 	case sf::Keyboard::Return:
 		m_currentState = ENTRYS(m_hover);
 		m_running = false; // will invoke close()

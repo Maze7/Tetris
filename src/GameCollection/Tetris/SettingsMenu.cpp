@@ -34,6 +34,7 @@ void TetrisGame::SettingsMenu::handleEvent(const sf::Event sfevent)
 	case sf::Keyboard::Escape:
 		m_hover = BACK;
 		// instant return
+	case sf::Keyboard::Space:
 	case sf::Keyboard::Return:
 		//TODO
 		if (m_hover == BACK)

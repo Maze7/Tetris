@@ -27,14 +27,15 @@ void MenuEntry::handleEvent(const sf::Event sfevent)
 	{
 	case sf::Keyboard::W:
 	case sf::Keyboard::Up:
-		if (m_hover == 0)
+		if (m_hover == 0) {
 			m_hover = m_entryNames.size() - 1;
-		else
+		} else {
 			m_hover--;
+		}
 		break;
 	case sf::Keyboard::S:
 	case sf::Keyboard::Down:
-		m_hover = m_hover++ % m_entryNames.size();
+		m_hover = ++m_hover % m_entryNames.size();
 		break;
 	case sf::Keyboard::Space:
 	case sf::Keyboard::Return:
