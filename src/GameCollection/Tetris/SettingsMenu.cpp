@@ -45,7 +45,7 @@ void TetrisGame::SettingsMenu::handleEvent(const sf::Event sfevent)
 		if (m_hover == SOUND_VOLUME && m_volume > 0)
 			m_volume--;
 		else if (m_hover == DIFFICULTY) 
-			m_difficulty = --m_difficulty % difficultySize;
+			m_difficulty = --m_difficulty % DIFFICULTY_SIZE;
 		break;
 
 	case sf::Keyboard::D:
@@ -53,7 +53,7 @@ void TetrisGame::SettingsMenu::handleEvent(const sf::Event sfevent)
 		if (m_hover == SOUND_VOLUME && m_volume < MAX_VOLUME)
 			m_volume++;
 		if (m_hover == DIFFICULTY)
-			m_difficulty = ++m_difficulty % difficultySize;
+			m_difficulty = ++m_difficulty % DIFFICULTY_SIZE;
 		break;
 	}
 }
@@ -62,8 +62,8 @@ void TetrisGame::SettingsMenu::draw(sf::RenderWindow* window, sf::Font* font)
 {
 	sf::Vector2f pos(280.f, 160.f);
 	sf::Text menus[END];
-	sf::RectangleShape volumeBars[10];
-	sf::Text diffTexts[difficultySize] = {
+	sf::RectangleShape volumeBars[MAX_VOLUME];
+	sf::Text diffTexts[DIFFICULTY_SIZE] = {
 			sf::Text("0", *font, 35),
 			sf::Text(std::to_string(m_difficultyIntervall),*font, 35),
 			sf::Text(std::to_string((2*m_difficultyIntervall)), *font, 35),
@@ -80,7 +80,7 @@ void TetrisGame::SettingsMenu::draw(sf::RenderWindow* window, sf::Font* font)
 		if (i == SOUND_VOLUME) {
 			pos.y = pos.y + 20;
 			unsigned int x = pos.x;
-			for (unsigned int j = 1; j < m_volume; j++) {
+			for (unsigned int j = 0; j < m_volume; j++) {
 				volumeBars[j].setFillColor(sf::Color::White);
 				volumeBars[j].setSize(sf::Vector2f(35,25));
 				volumeBars[j].setOutlineThickness(1);
@@ -93,7 +93,7 @@ void TetrisGame::SettingsMenu::draw(sf::RenderWindow* window, sf::Font* font)
 		}
 		else if (i == DIFFICULTY)  {
 			unsigned int x = pos.x; // copy
-			for (unsigned j = 0; j < difficultySize; j++) {
+			for (unsigned j = 0; j < DIFFICULTY_SIZE; j++) {
 				diffTexts[j].setPosition(x, pos.y);
 				x = x + 75;
 				if (m_difficulty == j) {
@@ -115,8 +115,9 @@ void TetrisGame::SettingsMenu::draw(sf::RenderWindow* window, sf::Font* font)
 int TetrisGame::SettingsMenu::close(ICollectionEntry** screen)
 {
 
-	// game->setVolume or smth like this.
-
+	if (TetrisLoader::contains(TetrisLoader::GAME)) {
+		TetrisLoader::getGame()->setSoundVolume(getSoundVolume());
+	}
 	switch (m_hover)
 	{
 	case BACK:
@@ -131,4 +132,12 @@ int TetrisGame::SettingsMenu::close(ICollectionEntry** screen)
 
 const unsigned int TetrisGame::SettingsMenu::getDifficulty() {
 	return m_difficulty * m_difficultyIntervall;
+}
+
+/*
+ * Returns a sound volume from 0 - 100 (%)
+ * Directly parse to sfml sound is possible.
+ */
+float TetrisGame::SettingsMenu::getSoundVolume() {
+	return m_volume * 10.f;
 }

@@ -16,7 +16,6 @@ namespace TetrisGame
 		 */
 		enum ENTRYS {DIFFICULTY = 0, SOUND_VOLUME = 1, BACK = 2, END = 3 };
 		const std::string entryNames[END] = {"Difficulty", "Sound Volume", "Back"};
-		ENTRYS m_currentState;
 
 		/*
 		 * Specify the menu entry which is currently focused.
@@ -30,7 +29,7 @@ namespace TetrisGame
 		 * 2 = 10
 		 * 3 = 15
 		 */
-		unsigned int m_difficulty = 1;
+		unsigned int m_difficulty = 0;
 
 		/*
 		 * m_difficulty * m_difficultyIntervall = the real start level
@@ -49,10 +48,11 @@ namespace TetrisGame
 		int close(ICollectionEntry** screen);
 
 		const unsigned int getDifficulty();
+		float getSoundVolume();
 
 	private:
 		// helpers
-		static constexpr  int difficultySize = 4; // difficulty options
+		static constexpr int DIFFICULTY_SIZE = 4; // difficulty options
 		static constexpr unsigned int MAX_VOLUME = 10;
 	};
 }
