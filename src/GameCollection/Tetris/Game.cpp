@@ -24,6 +24,8 @@ TetrisGame::Game::Game(TetrisScore& score)
 		SettingsMenu* settings = dynamic_cast<SettingsMenu*>(*TetrisLoader::getScreen(TetrisLoader::SETTINGS));
 		setDifficulty(settings->getDifficulty());
 		gameMusic.setVolume(settings->getSoundVolume());
+	} else {
+		gameMusic.setVolume(50.f);
 	}
 	// Update the position of the preview tetromino
 	updateCollisionPreview();
