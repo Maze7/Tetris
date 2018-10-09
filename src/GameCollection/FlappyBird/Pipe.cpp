@@ -1,7 +1,7 @@
 #include "Pipe.h"
 #include <iostream>
 
-FlappyBirdGame::Pipe::Pipe(int offsetX) : m_gapSize(100), m_isPassed(false)
+FlappyBirdGame::Pipe::Pipe(int offsetX) : m_gapSize(85), m_isPassed(false)
 {
 	// Add the RectangleShapes, that make up the pipe
 	m_pipeShapes.push_back(sf::RectangleShape());
