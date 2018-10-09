@@ -1,26 +1,44 @@
 #include "Game.h"
 #include <string>
+#include "TetrisLoader.h"
+
+
+TetrisGame::Game::Game(TetrisScore& score)
+			: m_state(Game::PAUSED)
+			, m_currentTetromino(generateRandom(), Tetromino::PLAYFIELD_POS)
+			, m_previewTetromino(generateRandom(), Tetromino::PREVIEW_POS)
+			, m_collisionPreview(m_currentTetromino)
+			, m_tickInterval(500)
+			, m_playfield(Playfield())
+			, m_score(score) {
+	// Game object load difficulty settings from SettingsScreen on initialization
+	// User cannot modify difficulty during gameplay
+	if(TetrisLoader::contains(TetrisLoader::SETTINGS)) {
+		SettingsMenu* settings = dynamic_cast<SettingsMenu*>(*TetrisLoader::getScreen(TetrisLoader::SETTINGS));
+		setDifficulty(settings->getDifficulty());
+	}
+	// Update the position of the preview tetromino
+	updateCollisionPreview();
+}
 
 void TetrisGame::Game::handleTime()
 {
-	if (m_clock.getElapsedTime().asMilliseconds() > m_tickInterval)
-	{
-		if (m_completedRows.size() > 0)
-		{
-			for (int rowId : m_completedRows)
-			{
+	if (m_state == GAMEOVER)
+		return; // no need for game ticks anymore
+
+	if (m_clock.getElapsedTime().asMilliseconds() > m_tickInterval) {
+		if (m_completedRows.size() > 0) {
+			for (int& rowId : m_completedRows) {
 				m_playfield.deleteRow(rowId);
 			}
 
 			m_completedRows.clear();
 		}
-		else
-		{
+		else {
 			m_currentTetromino.move(Tetromino::DOWN);
 
 			// If the tetromino hit the ground or a block after moving down
-			if (!isPosValid())
-			{
+			if (!isPosValid()) {
 				// Move it back into a valid position
 				m_currentTetromino.move(Tetromino::UP);
 
@@ -31,7 +49,9 @@ void TetrisGame::Game::handleTime()
 
 		// Start a new tick
 		m_clock.restart();
+
 	}
+
 }
 
 /*
@@ -51,14 +71,38 @@ void TetrisGame::Game::draw(sf::RenderWindow* window, sf::Font* font)
 	m_playfield.drawTetromino(window, m_previewTetromino, false);
 	m_playfield.drawTetromino(window, m_collisionPreview, true);
 	m_score.draw(window, font);
+
+	if (m_state == GAMEOVER) {
+		const uint BLOCK_SIZE{ (window->getSize().y- 2 * Playfield::s_OFFSET) / Playfield::s_ROWS };
+		sf::Vector2f size(BLOCK_SIZE * Playfield::s_COLUMNS, window->getSize().y - 2 * Playfield::s_OFFSET);
+
+		sf::RectangleShape shape;
+		shape.setSize(size);
+		shape.setPosition(Playfield::s_OFFSET, Playfield::s_OFFSET);
+		shape.setFillColor(sf::Color(255, 150, 150, 150));
+		window->draw(shape);
+
+		sf::Text gameoverText("\t \t \t  GameOver! \nPress <RETURN> for Continue", *font, 50);
+		gameoverText.setPosition(50.f, 400.f);
+		window->draw(gameoverText);
+	}
 }
 
-int TetrisGame::Game::close()
+int TetrisGame::Game::close(GameCollection::ICollectionEntry** screen)
 {
-	// todo write highscore and/or do cleanup
-	m_score.writeHighscoreListToFile();
+	*screen = *TetrisLoader::getScreen(TetrisLoader::SCREENS(m_nextScreen));
+	return CONTINUE;
+}
 
-	return this->EXIT_CODE::GOOD;
+/*
+	Sets the starting difficulty of the game.
+	The difficulty corresponds to the level and influences the tickinterval, meaning the tetromino moves
+	down faster the higher the level.
+*/
+void TetrisGame::Game::setDifficulty(int difficulty)
+{
+	m_score.setStartLevel(difficulty);
+	m_tickInterval = 1000 - (difficulty * 50);
 }
 
 /*
@@ -105,26 +149,46 @@ void TetrisGame::Game::handleCollision()
 	m_playfield.addTetromino(m_currentTetromino);
 
 	// Check if gameover
-	checkForGameOver();
+	for (int x = 0; x < Playfield::s_COLUMNS; x++) {
+		if (m_playfield.getColorOfField(1, x) != sf::Color::Black) {
+			m_state = Game::GAMEOVER;
 
-	// Check for completed rows
-	m_completedRows = m_playfield.checkForCompletedRows();
+			if (m_score.isNewHighscore()) {
+				TetrisLoader::erase(TetrisLoader::SCORE);
+				TetrisLoader::addScreen(TetrisLoader::SCORE, new ScoreScreen(m_score, ScoreScreen::NEW_SCORE)); // user can write his name
+			}
 
-	if (m_completedRows.size() > 0)
-	{
-		m_playfield.markCompletedRows(&m_completedRows, sf::Color::White);
+			// Stop game logic
+			return;
+		}
+	}
 
-		// Update the score (includes counting completed lines and level)
-		m_score.update(m_completedRows.size());
-	} 
+	// Only check for completed rows again, if completed rows have been deleted
+	if (m_completedRows.size() == 0) {
 
-	// Start a new tick
-	m_clock.restart();
+		// Check for completed rows
+		m_completedRows = m_playfield.checkForCompletedRows();
+
+		if (m_completedRows.size() > 0)
+		{
+			m_playfield.markCompletedRows(&m_completedRows, sf::Color::White);
+
+			// Update the score (includes counting completed lines and level)
+			m_score.update(m_completedRows.size());
+
+			// Adjust difficulty (tickInterval) according to level
+			m_tickInterval = 1000 - (m_score.getLevel() * 50);
+		}
+
+		// Start a new tick
+		m_clock.restart();
+	}
 	
 	// Spawn a new tetromino with the shape of the preview
 	m_currentTetromino = Tetromino(m_previewTetromino.getType(), Tetromino::PLAYFIELD_POS);
 	// Generate a new preview tetromino
 	m_previewTetromino = Tetromino(generateRandom(), Tetromino::PREVIEW_POS);
+
 	// Update the collision preview for the freshly spawned tetromino
 	updateCollisionPreview();
 }
@@ -132,25 +196,41 @@ void TetrisGame::Game::handleCollision()
 void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 {
 
-	if (m_state == GAMEOVER)
-		return;
+	// if game is gameover only allow to press return
+	if (m_state == GAMEOVER) {
+		if (sfevent.key.code == sf::Keyboard::Return) {
+			m_running = false; // invoke close()
+			m_nextScreen = TetrisLoader::SCORE;
+			if (!TetrisLoader::contains(TetrisLoader::SCORE)) {
+				// create new score screen if no exists
+				TetrisLoader::addScreen(TetrisLoader::SCORE, new ScoreScreen(m_score));
+			}
+		}
+		else {
+			return;
+		}
+	}
 
 	switch (sfevent.key.code) {
+	case sf::Keyboard::Up:
 	case sf::Keyboard::W:
 		m_currentTetromino.rotate(Tetromino::FORWARD);
 		if (!isPosValid())
 			m_currentTetromino.rotate(Tetromino::BACKWARD);
 		break;
+	case sf::Keyboard::Left:
 	case sf::Keyboard::A:
 		m_currentTetromino.move(Tetromino::LEFT);
 		if (!isPosValid())
 			m_currentTetromino.move(Tetromino::RIGHT);
 		break;
+	case sf::Keyboard::Right:
 	case sf::Keyboard::D:
 		m_currentTetromino.move(Tetromino::RIGHT);
 		if (!isPosValid())
 			m_currentTetromino.move(Tetromino::LEFT);
 		break;
+	case sf::Keyboard::Down:
 	case sf::Keyboard::S:
 		m_currentTetromino.move(Tetromino::DOWN);
 		m_clock.restart(); // Start a new tick
@@ -159,28 +239,30 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 		do
 			m_currentTetromino.move(Tetromino::DOWN);
 		while (isPosValid());
-
+		m_currentTetromino.move(Tetromino::UP); // Move it back into a valid position
+		handleCollision(); // Handle the game mechanics following the collision
 		break;
 	case sf::Keyboard::P:
-		m_state = GAME_STATE::PAUSED;
+		if (m_state == PAUSED) {
+			m_state = GAME_STATE::PAUSED;
+		}
+		else {
+			m_state = PLAYING;
+		}
 		break;
-
+	case sf::Keyboard::Escape:
+		m_running = false;
+		m_nextScreen = TetrisGame::TetrisLoader::MENU;
+		break;
 	default:
 		break;
 	}
 
-	// Update the position of the preview tetromino
-	updateCollisionPreview();
-
-	// If the tetromino hit the ground or a block after moving down
-	if (!isPosValid())
-	{
-		// Move it back into a valid position
+	if (!isPosValid()) {
 		m_currentTetromino.move(Tetromino::UP);
-
-		// Handle the game mechanics following the collision
 		handleCollision();
 	}
+	updateCollisionPreview();
 }
 
 /*
@@ -242,24 +324,12 @@ bool TetrisGame::Game::isPosValid(Tetromino* tetromino)
 	return true;
 }
 
-/*
-	Checks for gameover.
-	Should be called in the handleCollison()-function.
-*/
-void TetrisGame::Game::checkForGameOver()
+const TetrisGame::Game::GAME_STATE& TetrisGame::Game::getGameState()
 {
-	for (int x = 0; x < 10; x++)
-	{
-		if (m_playfield.getColorOfField(1, x) != sf::Color::Black)
-		{
-			m_state = Game::GAMEOVER;
-			m_playfield.gameover();
-
-			if (m_score.isNewHighscore())
-			{
-				m_score.addToHighscoreList();
-			}
-		}
-	}
+	return m_state;
 }
 
+void TetrisGame::Game::setGameState(TetrisGame::Game::GAME_STATE state)
+{
+	m_state = state;
+}

@@ -116,6 +116,11 @@ void TetrisGame::Playfield::drawGrid(sf::RenderWindow* window)
 	grid.setPosition(s_OFFSET, s_OFFSET);
 	window->draw(grid);
 
+	// Create a sf::Rectangleshape to draw the blocks in the playfield
+	sf::RectangleShape block(sf::Vector2f(BLOCK_SIZE, BLOCK_SIZE));
+	block.setOutlineColor(sf::Color::Black);
+	block.setOutlineThickness(1);
+
 	// Draw color  grid
 	for (int y = 0; y < s_ROWS; y++)
 	{
@@ -123,10 +128,7 @@ void TetrisGame::Playfield::drawGrid(sf::RenderWindow* window)
 		{
 			if (m_grid[y][x] != sf::Color::Black) {
 				// Create the blocks as sf::RectangleShape's and assign color and position
-				sf::RectangleShape block(sf::Vector2f(BLOCK_SIZE, BLOCK_SIZE));
 				block.setFillColor(m_grid[y][x]);
-				block.setOutlineColor(sf::Color::Black);
-				block.setOutlineThickness(1);
 				block.setPosition(x * BLOCK_SIZE + s_OFFSET, y * BLOCK_SIZE + s_OFFSET);
 
 				// Call draw-function of window
@@ -138,12 +140,16 @@ void TetrisGame::Playfield::drawGrid(sf::RenderWindow* window)
 
 /*
 	Draws the given tetromino into the current playfield. 
+	Params: @window - sf::Window* on which the tetromino @tetro
+			should displayed. In case @transparency is true, the
+			given @tetro wont have a color and only the outline will
+			visible.
 	Example Usage:
 		Playfield field(..);
 		Playfield field2(..);
 		Tetromino tetro(..);
-		field.drawTetromino(tetro);
-		field2.drawTetromino(tetro);
+		field.drawTetromino(&window, tetro, true);
+		field2.drawTetromino(&window, tetro, true);
 		// now both fields contains a visible tetromino
 		// in this specific case, the playfield should contain other offsets
 		// so they will be drawn alongsite eachother
@@ -159,6 +165,19 @@ void TetrisGame::Playfield::drawTetromino(sf::RenderWindow* window, TetrisGame::
 	const TetrisGame::Tetromino::TetroShape* tetroShape = &TetrisGame::Tetromino::SHAPE_DATA[tetromino.getType()][tetromino.getRotation()];
 	sf::Vector2i tetrominoBlockPosition;
 
+	// Create a sf::RectangleShape to draw the blocks
+	sf::RectangleShape tetroBlock(sf::Vector2f(38, 38));
+
+	// Assign the respective color to the shape
+	if (transparency) {
+		tetroBlock.setFillColor(sf::Color::Transparent);
+		tetroBlock.setOutlineColor(sf::Color::White);
+		tetroBlock.setOutlineThickness(1);
+	}
+	else {
+		tetroBlock.setFillColor(TetrisGame::Tetromino::SHAPE_COLORS[tetromino.getType()]);
+	}
+
 	// Iterate over the corresponding SHAPE_DATA (sub)array
 	for (int y = 0; y < 4; y++)
 	{
@@ -167,19 +186,6 @@ void TetrisGame::Playfield::drawTetromino(sf::RenderWindow* window, TetrisGame::
 			// If a block is visible (== 1), draw it
 			if (tetroShape[0][y][x] == 1)
 			{
-				// Create the blocks as sf::RectangleShape'
-				sf::RectangleShape tetroBlock(sf::Vector2f(38, 38));
-
-				// Assign the respective color to the shape
-				if (transparency) {
-					tetroBlock.setFillColor(sf::Color::Transparent);
-					tetroBlock.setOutlineColor(sf::Color::White);
-					tetroBlock.setOutlineThickness(1);
-				} 
-				else {
-					tetroBlock.setFillColor(TetrisGame::Tetromino::SHAPE_COLORS[tetromino.getType()]);
-				}
-
 				// Calculate the on-screen position of the block
 				tetrominoBlockPosition.x = (tetromino.getPosition().x + x) * BLOCK_SIZE + s_OFFSET;
 				tetrominoBlockPosition.y = (tetromino.getPosition().y + y) * BLOCK_SIZE + s_OFFSET;
@@ -195,24 +201,6 @@ void TetrisGame::Playfield::drawTetromino(sf::RenderWindow* window, TetrisGame::
 }
 
 /*
-	Sets the color of all blocks in the Playfield's m_grid to white.
-
-	Example usage:
-	if ( // gameover)
-		m_playfield.gameover();
-*/
-void TetrisGame::Playfield::gameover()
-{
-	for (int y = 0; y < s_ROWS; y++)
-	{
-		for (int x = 0; x < s_COLUMNS; x++)
-		{
-			m_grid[y][x] = sf::Color::White;
-		}
-	}
-}
-
-/*
 	Changes the color of the completed rows.
 
 	Example usage:
@@ -222,9 +210,9 @@ void TetrisGame::Playfield::gameover()
 */
 void TetrisGame::Playfield::markCompletedRows(std::vector<int>* completedRows, sf::Color color)
 {
-	for (int rowId : *completedRows) 
+	for (int& rowId : *completedRows) 
 	{
-		for (int x = 0; x < 10; x++)
+		for (int x = 0; x < s_COLUMNS; x++)
 		{
 			m_grid[rowId][x] = color;
 		}
