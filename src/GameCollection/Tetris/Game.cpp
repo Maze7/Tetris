@@ -11,6 +11,12 @@ TetrisGame::Game::Game(TetrisScore& score)
 			, m_tickInterval(500)
 			, m_playfield(Playfield())
 			, m_score(score) {
+
+	// start music
+	gameMusic.openFromFile("static/Tetris.wav");
+	gameMusic.setLoop(true);
+	gameMusic.play();
+
 	// Game object load difficulty settings from SettingsScreen on initialization
 	// User cannot modify difficulty during gameplay
 	if(TetrisLoader::contains(TetrisLoader::SETTINGS)) {
@@ -27,6 +33,9 @@ void TetrisGame::Game::handleTime()
 		return; // no need for game ticks anymore
 
 	if (m_clock.getElapsedTime().asMilliseconds() > m_tickInterval) {
+		if (gameMusic.getStatus() == sf::Music::Status::Paused) {
+			gameMusic.play();
+		}
 		if (m_completedRows.size() > 0) {
 			for (int& rowId : m_completedRows) {
 				m_playfield.deleteRow(rowId);
@@ -90,6 +99,7 @@ void TetrisGame::Game::draw(sf::RenderWindow* window, sf::Font* font)
 
 int TetrisGame::Game::close(GameCollection::ICollectionEntry** screen)
 {
+	gameMusic.pause();
 	*screen = *TetrisLoader::getScreen(TetrisLoader::SCREENS(m_nextScreen));
 	return CONTINUE;
 }

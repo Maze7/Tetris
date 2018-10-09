@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "Playfield.h"
 #include "Tetromino.h"
 #include "TetrisScore.h"
@@ -23,6 +24,7 @@ namespace TetrisGame
 		sf::Clock m_clock;
 		uint m_tickInterval;
 		std::vector<int> m_completedRows;
+		sf::Music gameMusic;
 
 		int m_nextScreen = -1;
 	public:
