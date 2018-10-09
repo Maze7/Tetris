@@ -2,6 +2,23 @@
 #include <string>
 #include "TetrisLoader.h"
 
+
+TetrisGame::Game::Game(TetrisScore& score)
+			: m_state(Game::PAUSED)
+			, m_currentTetromino(generateRandom(), Tetromino::PLAYFIELD_POS)
+			, m_previewTetromino(generateRandom(), Tetromino::PREVIEW_POS)
+			, m_collisionPreview(m_currentTetromino)
+			, m_tickInterval(500)
+			, m_playfield(Playfield())
+			, m_score(score) {
+	// Game object load difficulty settings from SettingsScreen on initialization
+	// User cannot modify difficulty during gameplay
+	if(TetrisLoader::contains(TetrisLoader::SETTINGS)) {
+		SettingsMenu* settings = dynamic_cast<SettingsMenu*>(*TetrisLoader::getScreen(TetrisLoader::SETTINGS));
+		setDifficulty(settings->getDifficulty());
+		std::cout << settings->getDifficulty();
+	}
+}
 void TetrisGame::Game::handleTime()
 {
 	if (m_state == GAMEOVER)

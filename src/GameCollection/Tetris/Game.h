@@ -26,18 +26,7 @@ namespace TetrisGame
 
 		int m_nextScreen = -1;
 	public:
-		Game(TetrisScore& score)
-			: m_state(Game::PAUSED)
-			, m_currentTetromino(generateRandom(), Tetromino::PLAYFIELD_POS)
-			, m_previewTetromino(generateRandom(), Tetromino::PREVIEW_POS)
-			, m_collisionPreview(m_currentTetromino)
-			, m_tickInterval(500)
-			, m_playfield(Playfield())
-			, m_score(score)
-		{
-			setDifficulty(1); // TEMPORARY: Call this method before starting the actual game
-		}
-		
+		Game(TetrisScore& score);
 		~Game() {}
 
 		void handleEvent(const sf::Event sfevent);
