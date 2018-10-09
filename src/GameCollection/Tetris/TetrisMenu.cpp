@@ -5,7 +5,7 @@
 
 constexpr char TetrisGame::TetrisMenu::s_BACKGROUND_PATH[];
 
-TetrisGame::TetrisMenu::TetrisMenu() 
+TetrisGame::TetrisMenu::TetrisMenu() : m_score(TetrisScore())
 {
 	//Load background. Dont do it inside the draw loop!
 	// Use the defined path to the background picture
@@ -46,7 +46,7 @@ void TetrisGame::TetrisMenu::handleEvent(const sf::Event sfevent)
 	case sf::Keyboard::Delete:
 		if (m_hover == PLAY) {
 			m_currentState = ENTRYS(m_hover);
-			getGame()->setGameState(Game::GAMEOVER);
+			TetrisLoader::erase(TetrisLoader::GAME);
 		}
 		break;
 	default:
@@ -60,31 +60,23 @@ void TetrisGame::TetrisMenu::draw(sf::RenderWindow* window, sf::Font* font)
 	sf::Text menus[END];
 	sf::Sprite sprite; // used for background and text rendering
 
-	//menus[m_hover].setFillColor(sf::Color(255, 0, 0, 255));
-	//menus[PLAY].setPosition({ 280.f, 160.f });
-
-	//menus[SETTINGS].setString("Settings");
-	//menus[SETTINGS].setPosition({ 280.f, 220.f });
-
-	//menus[MAINMENU].setString("Main Menu");
-	//menus[MAINMENU].setPosition({ 280.f, 400.f });
-
-	//menus[EXIT].setString("Exit");
-	//menus[EXIT].setPosition({ 280.f, 460.f });
-
 	sf::Text helpNote("Press <H> for help text", *font, 35);
 	helpNote.setPosition( 280.f, (window->getSize().y - 50) * 1.f);
 	window->draw(helpNote);
 
 	sprite.setTexture(m_background);
 	sprite.setColor(sf::Color(255, 255, 255, 150));
-	sf::Vector2f pos(280.f, 160.f);
+	sf::Vector2f pos(280.f, 110.f);
 
 	for (unsigned int i = 0; i < END; i++) {
 		if (i == ENTRYS::MAINMENU)
 			pos.y = pos.y + 130;
-		
-		if (i == PLAY && getGame()->getGameState() == Game::PLAYING) { // show different text during gameplay
+
+		// show different text during gameplay
+		if (i == PLAY 
+			&& TetrisLoader::contains(TetrisLoader::GAME)
+			&& (TetrisLoader::getGame()->getGameState() == Game::PAUSED || TetrisLoader::getGame()->getGameState() == Game::PLAYING) )
+		{
 			menus[PLAY] = sf::Text ("Continue", *font, 50);
 
 			sf::Text text("(press <DELETE> for reset)", *font, 20);
@@ -96,7 +88,7 @@ void TetrisGame::TetrisMenu::draw(sf::RenderWindow* window, sf::Font* font)
 		}
 
 		if (m_hover == i)
-			menus[i].setFillColor(sf::Color(255, 0, 0, 150));
+			menus[i].setFillColor(sf::Color(255, 0, 0, 255));
 
 		pos.y = pos.y + 60;
 		menus[i].setPosition(pos);
@@ -109,41 +101,50 @@ void TetrisGame::TetrisMenu::draw(sf::RenderWindow* window, sf::Font* font)
 	Returns the number of selected menu entry. The selected menu entry is stored in m_currentState. 
 	In case of exit or main menu the defined codes in ICollectionEntry will be returned. 
 */
-int TetrisGame::TetrisMenu::close()
+int TetrisGame::TetrisMenu::close(ICollectionEntry** screen)
 {
-	Game* game = getGame();
 	switch (m_currentState)
 	{
 	case EXIT:
-		return ICollectionEntry::EXIT_APP;
+		return EXIT_SUCCESS;
 		break;
 	case MAINMENU:
-		return ICollectionEntry::MAIN_MENU;
+		return MAIN_MENU;
 		break;
 	case SETTINGS:
-		return TetrisLoader::SETTINGS;
+		// create new settings if needed
+		if (!TetrisLoader::contains(TetrisLoader::SETTINGS)) {
+			TetrisLoader::addScreen(TetrisLoader::SETTINGS, new SettingsMenu());
+		}
+		*screen = *TetrisLoader::getScreen(TetrisLoader::SETTINGS);
+		return CONTINUE;
 		break;
 	case HIGHSCORES:
-		return TetrisLoader::SCORE;
-		break;
-	case PLAY:
-		// if game is not running right now, create a new one and starts to play
-		if (game->getGameState() != Game::PLAYING) {
-			*game = Game(); // new game
-			game->setGameState(Game::PLAYING);
+		if (!TetrisLoader::contains(TetrisLoader::SCORE)) {
+			TetrisLoader::addScreen(TetrisLoader::SCORE, new ScoreScreen(m_score));
 		}
-		return TetrisLoader::GAME;
+		*screen = *TetrisLoader::getScreen(TetrisLoader::SCORE);
+		return CONTINUE;
+	case PLAY:
+	{ // new scope, needed for gameScreen
+
+		if (!TetrisLoader::contains(TetrisLoader::GAME)) {
+			TetrisLoader::addScreen(TetrisLoader::GAME, new Game(m_score));
+		}
+		ICollectionEntry** gameScreen = TetrisLoader::getScreen(TetrisLoader::GAME);
+
+		if (TetrisLoader::getGame()->getGameState() == Game::GAMEOVER) { // if game is not running right now, create a new one and starts to play
+			delete *gameScreen;
+			*gameScreen = new Game(m_score); // let pointer point to a new game
+			TetrisLoader::getGame()->setGameState(Game::PLAYING);
+		}
+		*screen = *TetrisLoader::getScreen(TetrisLoader::GAME); // open game
+	}
+		return CONTINUE;
+
 		break;
 	default:
-		return m_hover;
+		return EXIT_FAILURE;
 		break;
 	}
 }
-
-TetrisGame::Game* TetrisGame::TetrisMenu::getGame()
-{
-	std::vector<ICollectionEntry*>* modulScreens = GameCollection::Collection::getEntrys()->at(TetrisLoader::MODUL_NAME);
-	Game* game = dynamic_cast<Game*>(modulScreens[0][TetrisLoader::GAME]);
-	return game;
-}
-

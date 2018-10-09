@@ -92,7 +92,7 @@ void TetrisGame::SettingsMenu::draw(sf::RenderWindow* window, sf::Font* font)
 				diffTexts[j].setPosition(x, pos.y);
 				x = x + 75;
 				if (m_difficulty == j) {
-					diffTexts[j].setColor({ 255, 0, 0, 255 });
+					diffTexts[j].setFillColor({ 255, 0, 0, 255 });
 				}
 				window->draw(diffTexts[j]);
 			}
@@ -107,16 +107,16 @@ void TetrisGame::SettingsMenu::draw(sf::RenderWindow* window, sf::Font* font)
 	window->draw(sprite); // background opacity
 }
 
-int TetrisGame::SettingsMenu::close()
+int TetrisGame::SettingsMenu::close(ICollectionEntry** screen)
 {
-	std::vector<ICollectionEntry*>* modulScreens = GameCollection::Collection::getEntrys()->at(TetrisLoader::MODUL_NAME);
-	TetrisGame::Game* game = dynamic_cast<Game*>(modulScreens[0][TetrisLoader::GAME]);
+
 	// game->setVolume or smth like this.
 	// game set startlevel
 	switch (m_hover)
 	{
 	case BACK:
-		return TetrisLoader::MENU;
+		*screen = *TetrisLoader::getScreen(TetrisLoader::MENU);
+		return CONTINUE;
 		break;
 	default: // should never reached => avoid compiler warning
 		return EXIT_APP;

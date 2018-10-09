@@ -3,21 +3,39 @@
 
 using namespace TetrisGame;
 
-void ScoreScreen::handleEvent(const sf::Event sfevent)
-{
+ScoreScreen::ScoreScreen(TetrisScore& score, STATES scoreState) :
+			m_hover(((scoreState == NEW_SCORE) ? NAME : BACK)), // focuse name field if user should type
+			m_currentState(m_hover),
+			m_state(scoreState),
+			m_nextScreen(EXIT_APP),
+			m_score(score),
+			m_background(sf::Texture()) {
+
+	if (!m_background.loadFromFile(TetrisGame::TetrisMenu::s_BACKGROUND_PATH))
+		std::cerr << "[ERROR] [TetrisGame::ScoreScreen] loading bg picture failed" << std::endl;
+}
+
+void ScoreScreen::handleEvent(const sf::Event sfevent) {
 	// no new highscore => only back is displayed so return means go back
 	if (m_state == SHOW_SCORE && sfevent.key.code == sf::Keyboard::Return) {
 		m_running = false;
 		m_nextScreen = TetrisLoader::MENU;
 		return;
-	// if user focused "NAME" (only possible if m_state is on NEW_SCORE, implicit condition) let him write his name 
+
+	// if user focused "NAME" (only possible if m_state is on NEW_SCORE, implicit condition) let him write his name
 	} else if (m_hover == NAME && sfevent.type == sf::Event::TextEntered) {
-		userName += sfevent.text.unicode;
-	// if NEW the user is able to swtich between menu points 
-	} else if (m_state == NEW_SCORE) {
+	    if (sfevent.text.unicode == 8) {
+	        if (userName.length()) {//If the string doesn't have any char, don't do anything
+	        	userName = userName.substr(0, userName.size()-1);
+	        }
+	    } else {//Don't add any character while delete one
+	        if(userName.length() < 16) {
+	        	userName += sfevent.text.unicode;
+	        }
+	    }
+	} else if (m_state == NEW_SCORE && sfevent.type == sf::Event::KeyPressed) {
 		int newHover;
-		switch (sfevent.key.code)
-		{
+		switch (sfevent.key.code) {
 		case sf::Keyboard::Up:
 			if (m_hover == 0)
 				m_hover = ENTRYS(END - 1);
@@ -32,29 +50,37 @@ void ScoreScreen::handleEvent(const sf::Event sfevent)
 			m_running = false;
 			m_nextScreen = TetrisLoader::MENU;
 			break;
-		case sf::Keyboard::Return:
-			//TODO
-			if (m_hover == BACK) {
-				m_running = false;
-				m_nextScreen = TetrisLoader::MENU;
+		case sf::Keyboard::Backspace:
+		case sf::Keyboard::Delete:
+			if (userName.size() > 0) {
+				userName = userName.substr(0, userName.size()-1); // delete one char
 			}
-			else if (m_hover == NAME && !userName.empty()) {
+			break;
+		case sf::Keyboard::Return:
+			if (m_hover == BACK) {
+				m_running = false; // invoke close
+				m_state = SHOW_SCORE; // user cant type his name next time
+				m_nextScreen = TetrisLoader::MENU; 
+			} else if (m_hover == NAME && !userName.empty()) {
 				m_score.writeHighscoreListToFile();
 			}
+			break;
+		default:
+
+
 			break;
 		}
 	}
 }
 
-void ScoreScreen::draw(sf::RenderWindow* window, sf::Font* font)
-{
+void ScoreScreen::draw(sf::RenderWindow* window, sf::Font* font) {
 
 	sf::Text highscores[4]; // show 4 recent highscores
 	sf::Vector2f pos(280.f, 230.f);
 	std::string var = std::to_string(m_score.getHighscoreList()[0][0].score);
 	sf::Text highscoreText("Current Highscore: " + var, *font, 35);
 	highscoreText.setPosition(280.f, 160.f);
-	m_state = STATES::NEW_SCORE;
+
 	for (auto& score : highscores) {
 		var = std::to_string(m_score.getHighscoreList()[0][0].score);
 		score = sf::Text("Score: " + var, *font, 35);
@@ -63,7 +89,9 @@ void ScoreScreen::draw(sf::RenderWindow* window, sf::Font* font)
 		window->draw(score);
 	}
 
-
+	sf::Sprite sprite;
+	sprite.setTexture(m_background);
+	sprite.setColor(sf::Color(255, 255, 255, 150));
 	sf::Text back("Back", *font, 35);
 
 	if (m_state == NEW_SCORE) { // user can write his name
@@ -77,26 +105,24 @@ void ScoreScreen::draw(sf::RenderWindow* window, sf::Font* font)
 		text.setPosition(pos);
 
 		if (m_hover == NAME) {
-			text.setFillColor(sf::Color(255, 0, 0, 150));
-			back.setFillColor(sf::Color(255, 255, 255, 150));
-		}
-		else {
-			text.setFillColor(sf::Color(255, 255, 255, 150));
-			back.setFillColor(sf::Color(255, 0, 0, 150));
+			text.setFillColor(sf::Color(255, 0, 0, 255));
+			back.setFillColor(sf::Color(255, 255, 255, 255));
+		} else {
+			text.setFillColor(sf::Color(255, 255, 255, 255));
+			back.setFillColor(sf::Color(255, 0, 0, 255));
 		}
 		window->draw(text);
-
+	} else {
+		back.setFillColor(sf::Color(255, 0, 0, 255));
 	}
 
 	back.setPosition(pos.x, pos.y + 100);
 	window->draw(back);
 	window->draw(highscoreText);
+	window->draw(sprite);
 }
 
-int ScoreScreen::close()
-{
-	return m_nextScreen;
+int ScoreScreen::close(ICollectionEntry** screen) {
+	*screen = *TetrisLoader::getScreen(TetrisLoader::SCREENS(m_nextScreen));
+	return CONTINUE; // There is no exit option in this menu
 }
-
-
-

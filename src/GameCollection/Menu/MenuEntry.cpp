@@ -3,7 +3,7 @@
 
 /*
 	Constructor of MenuEnry. 
-	It puts all keywords (strings) of s_entrys into m_entryNames (vector of strings). 
+	It puts all keywords (strings) of s_entrys into m_entryNames. 
 	This vector will needed to display the names of the different module to the main menu. 
 */
 MenuEntry::MenuEntry()
@@ -76,10 +76,13 @@ const std::string& MenuEntry::getCurrentName()
 	return m_currentName;
 }
 
-int MenuEntry::close()
+int MenuEntry::close(ICollectionEntry** screen)
 {
-	if (m_currentName == "Exit")
-		return -2;
-	else
-		return 0;
+	if (m_currentName == "Exit") {
+	return EXIT_APP;
+	}
+	else {
+		*screen = GameCollection::Collection::getEntrys()->at(m_currentName);
+		return CONTINUE;
+	}
 }

@@ -6,7 +6,7 @@
 
 namespace GameCollection
 {
-	typedef std::map<std::string, std::vector<ICollectionEntry*>*> CollectionEntrys;
+	typedef std::map<std::string, ICollectionEntry*> CollectionEntrys;
 	
 	class Collection
 	{
@@ -15,12 +15,27 @@ namespace GameCollection
 
 	public:
 		Collection() {};
-		~Collection() {};
 
+		/*
+		 * Deletes every pointer in s_entrys
+		 */
+		~Collection();
+
+		/*
+		 * Contains the "main"lopp of GameCollection
+  		 */
 		int run(sf::RenderWindow& window, sf::Font& font);
-		void checkScreenStatus(ICollectionEntry** screen);
 
+		/*
+		 * Returns a pointer to member s_entrys
+		 * Type: std::map<std::string, std::vector<ICollectionEntry*>*>
+		 */
 		static const CollectionEntrys* const getEntrys();
-		static void addModuleEntrys(std::string modulName, std::vector<ICollectionEntry*>* screens);
+
+		/*
+		 * Used to add a new module to GameCollection. The (first) screen of each module 
+		 * needs to be set on startup. 
+		 */
+		static void addModuleEntrys(std::string modulName, ICollectionEntry* screen);
 	};
 }

@@ -7,24 +7,19 @@ void TetrisGame::Game::handleTime()
 	if (m_state == GAMEOVER)
 		return; // no need for game ticks anymore
 
-	if (m_clock.getElapsedTime().asMilliseconds() > m_tickInterval)
-	{
-		if (m_completedRows.size() > 0)
-		{
-			for (int& rowId : m_completedRows)
-			{
+	if (m_clock.getElapsedTime().asMilliseconds() > m_tickInterval) {
+		if (m_completedRows.size() > 0) {
+			for (int& rowId : m_completedRows) {
 				m_playfield.deleteRow(rowId);
 			}
 
 			m_completedRows.clear();
 		}
-		else
-		{
+		else {
 			m_currentTetromino.move(Tetromino::DOWN);
 
 			// If the tetromino hit the ground or a block after moving down
-			if (!isPosValid())
-			{
+			if (!isPosValid()) {
 				// Move it back into a valid position
 				m_currentTetromino.move(Tetromino::UP);
 
@@ -75,16 +70,10 @@ void TetrisGame::Game::draw(sf::RenderWindow* window, sf::Font* font)
 	}
 }
 
-int TetrisGame::Game::close()
+int TetrisGame::Game::close(GameCollection::ICollectionEntry** screen)
 {
-	// todo write highscore and/or do cleanup
-	if(m_state == GAMEOVER) {
-		m_score.writeHighscoreListToFile();
-		return TetrisLoader::MENU;
-	}
-	else {
-		return m_nextScreen;
-	}
+	*screen = *TetrisLoader::getScreen(TetrisLoader::SCREENS(m_nextScreen));
+	return CONTINUE;
 }
 
 /*
@@ -136,6 +125,8 @@ void TetrisGame::Game::handleCollision()
 			m_state = Game::GAMEOVER;
 
 			if (m_score.isNewHighscore()) {
+				TetrisLoader::erase(TetrisLoader::SCORE);
+				TetrisLoader::addScreen(TetrisLoader::SCORE, new ScoreScreen(m_score, ScoreScreen::NEW_SCORE)); // user can write his name
 				m_score.addToHighscoreList();
 			}
 
@@ -169,11 +160,11 @@ void TetrisGame::Game::handleCollision()
 void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 {
 
-	// if game is game over only allow to press return
+	// if game is gameover only allow to press return
 	if (m_state == GAMEOVER) {
 		if (sfevent.key.code == sf::Keyboard::Return) {
 			m_running = false; // invoke close()
-			m_nextScreen = TetrisLoader::GAME;
+			m_nextScreen = TetrisLoader::SCORE;
 		}
 		else {
 			return;
@@ -220,7 +211,6 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 		}
 		break;
 	case sf::Keyboard::Escape:
-		m_state == PAUSED;
 		m_running = false;
 		m_nextScreen = TetrisGame::TetrisLoader::MENU;
 		break;

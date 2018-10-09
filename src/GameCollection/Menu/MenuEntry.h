@@ -26,6 +26,6 @@ public:
 	void handleEvent(const sf::Event sfevent);
 	void draw(sf::RenderWindow* window, sf::Font* font);
 	const std::string& getCurrentName();
-	int close();
+	int close(ICollectionEntry** screen);
 };
 

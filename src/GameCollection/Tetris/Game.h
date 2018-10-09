@@ -19,20 +19,21 @@ namespace TetrisGame
 		Tetromino m_collisionPreview;
 		Playfield m_playfield;
 
-		TetrisScore m_score;
+		TetrisScore& m_score;
 		sf::Clock m_clock;
 		uint m_tickInterval;
 		std::vector<int> m_completedRows;
 
 		int m_nextScreen = -1;
 	public:
-		Game()
+		Game(TetrisScore& score)
 			: m_state(Game::PAUSED)
 			, m_currentTetromino(generateRandom(), Tetromino::PLAYFIELD_POS)
 			, m_previewTetromino(generateRandom(), Tetromino::PREVIEW_POS)
 			, m_collisionPreview(m_currentTetromino)
 			, m_tickInterval(500)
 			, m_playfield(Playfield())
+			, m_score(score)
 		{
 		}
 		
@@ -41,7 +42,7 @@ namespace TetrisGame
 		void handleEvent(const sf::Event sfevent);
 		void handleTime();
 		void draw(sf::RenderWindow* window, sf::Font* font);
-		int close();
+		int close(ICollectionEntry** screen);
 
 		bool isPosValid();
 		bool isPosValid(Tetromino* tetromino);
@@ -50,7 +51,6 @@ namespace TetrisGame
 		void handleCollision();
 		const GAME_STATE& getGameState();
 		void setGameState(GAME_STATE state);
-		void checkForGameOver();
 	};
 
 }
