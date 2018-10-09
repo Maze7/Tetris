@@ -164,6 +164,10 @@ void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 		if (sfevent.key.code == sf::Keyboard::Return) {
 			m_running = false; // invoke close()
 			m_nextScreen = TetrisLoader::SCORE;
+			if (!TetrisLoader::contains(TetrisLoader::SCORE)) {
+				// create new score screen if no exists
+				TetrisLoader::addScreen(TetrisLoader::SCORE, new ScoreScreen(m_score));
+			}
 		}
 		else {
 			return;
