@@ -53,13 +53,22 @@ void FlappyBirdGame::FlappyBirdScore::readHighscoreListFromFile()
 	try {
 		std::vector<std::string> v_input = FileIO::readFile("FlappyBirdHighscores.txt");
 
-		for (int i = 0; i < m_highscoreList.size(); i++) {
-			m_highscoreList.at(i) = std::stoi(v_input.at(i));
+		if (v_input.size() == m_highscoreList.size()) {
+			try {
+				for (int i = 0; i < v_input.size(); i++) {
+					m_highscoreList.at(i) = std::stoi(v_input.at(i));
+				}
+			}
+			catch (std::invalid_argument &e) {
+				std::cout << "Invalid Argument in Highscores.txt" << std::endl;
+			}
+			catch (std::out_of_range &e) {
+				std::cout << "Argument in Highscores.txt is out of range" << std::endl;
+			}
 		}
 	}
-	catch (Exceptions::FileExceptions::FileNotFoundException const &e)
-	{
-		std::cout << e.what() << std::endl;
+	catch (Exceptions::FileExceptions::FileNotFoundException const &e) {
+			std::cout << e.what() << std::endl;
 	}
 }
 
@@ -71,7 +80,7 @@ void FlappyBirdGame::FlappyBirdScore::writeHighscoreListToFile()
 {
 	std::string output;
 
-	for (int highscore : m_highscoreList) {
+	for (auto const& highscore : m_highscoreList) {
 		output += std::to_string(highscore) + "\n";
 	}
 
