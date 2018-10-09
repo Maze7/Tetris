@@ -33,6 +33,7 @@ void TetrisGame::SettingsMenu::handleEvent(const sf::Event sfevent)
 
 	case sf::Keyboard::Escape:
 		m_hover = BACK;
+		// instant return
 	case sf::Keyboard::Return:
 		//TODO
 		if (m_hover == BACK)
@@ -44,7 +45,7 @@ void TetrisGame::SettingsMenu::handleEvent(const sf::Event sfevent)
 		if (m_hover == SOUND_VOLUME && m_volume > 0)
 			m_volume--;
 		else if (m_hover == DIFFICULTY) 
-			m_difficulty = --m_difficulty % 3;
+			m_difficulty = --m_difficulty % difficultySize;
 		break;
 
 	case sf::Keyboard::D:
@@ -52,7 +53,7 @@ void TetrisGame::SettingsMenu::handleEvent(const sf::Event sfevent)
 		if (m_hover == SOUND_VOLUME && m_volume < MAX_VOLUME)
 			m_volume++;
 		if (m_hover == DIFFICULTY)
-			m_difficulty = ++m_difficulty % 3;
+			m_difficulty = ++m_difficulty % difficultySize;
 		break;
 	}
 }
@@ -62,8 +63,12 @@ void TetrisGame::SettingsMenu::draw(sf::RenderWindow* window, sf::Font* font)
 	sf::Vector2f pos(280.f, 160.f);
 	sf::Text menus[END];
 	sf::RectangleShape volumeBars[10];
-	int test = 5;
-	sf::Text diffTexts[3] = { sf::Text(std::to_string(test),*font, 35), sf::Text(std::to_string((2*test)), *font, 35), sf::Text(std::to_string((3*test)), *font, 35) };
+	sf::Text diffTexts[difficultySize] = {
+			sf::Text("0", *font, 35),
+			sf::Text(std::to_string(m_difficultyIntervall),*font, 35),
+			sf::Text(std::to_string((2*m_difficultyIntervall)), *font, 35),
+			sf::Text(std::to_string((3*m_difficultyIntervall)), *font, 35)
+	};
 
 	for (unsigned int i = 0; i < END; i++) {
 		menus[i] = sf::Text(entryNames[i], *font, 50);
@@ -88,7 +93,7 @@ void TetrisGame::SettingsMenu::draw(sf::RenderWindow* window, sf::Font* font)
 		}
 		else if (i == DIFFICULTY)  {
 			unsigned int x = pos.x; // copy
-			for (unsigned j = 0; j < 3; j++) {
+			for (unsigned j = 0; j < difficultySize; j++) {
 				diffTexts[j].setPosition(x, pos.y);
 				x = x + 75;
 				if (m_difficulty == j) {
@@ -111,7 +116,7 @@ int TetrisGame::SettingsMenu::close(ICollectionEntry** screen)
 {
 
 	// game->setVolume or smth like this.
-	// game set startlevel
+
 	switch (m_hover)
 	{
 	case BACK:
@@ -122,4 +127,8 @@ int TetrisGame::SettingsMenu::close(ICollectionEntry** screen)
 		return EXIT_APP;
 		break;
 	}
+}
+
+const unsigned int TetrisGame::SettingsMenu::getDifficulty() {
+	return m_difficulty * m_difficultyIntervall;
 }
