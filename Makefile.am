@@ -6,6 +6,10 @@ GameCollection_SOURCES = src/Exceptions/FileExceptions.h\
 						src/FileIO/FileIO.cpp\
 						src/FileIO/FileIO.h\
 						src/FileIO/FileIO.o\
+						src/Utility/Converter.cpp\
+						src/Utility/Converter.h\
+						src/Utility/Encryption.cpp\
+						src/Utility/Encryption.h\
 						src/GameCollection/Collection.cpp\
 						src/GameCollection/Collection.h\
 						src/GameCollection/GameCollection.cpp\
