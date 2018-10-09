@@ -98,7 +98,7 @@ void ScoreScreen::draw(sf::RenderWindow* window, sf::Font* font) {
 	if (m_state == NEW_SCORE) { // user can write his name
 		sf::Text newScore("YOU HAVE REACHED: " + std::to_string(m_score.getScore()), *font, 35);
 		newScore.setPosition(280.f, 125.f);
-		newScore.setFillColor({ 255, 155, 155, 155 });
+		newScore.setFillColor({ 255, 155, 155, 255 });
 		window->draw(newScore);
 
 		sf::Text text("Type in your name: " + userName, *font, 35);
