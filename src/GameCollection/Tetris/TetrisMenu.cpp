@@ -135,6 +135,7 @@ int TetrisGame::TetrisMenu::close(ICollectionEntry** screen)
 
 		if (TetrisLoader::getGame()->getGameState() == Game::GAMEOVER) { // if game is not running right now, create a new one and starts to play
 			delete *gameScreen;
+			m_score.reset();
 			*gameScreen = new Game(m_score); // let pointer point to a new game
 			TetrisLoader::getGame()->setGameState(Game::PLAYING);
 		}

@@ -1,7 +1,8 @@
 #include "TetrisScore.h"
 
 TetrisGame::TetrisScore::TetrisScore()
-	: m_highscoreList(5, Highscore{0, 0, 0})
+	: m_highscoreList(5, Highscore{"unknown", 0, 0, 0})
+	, m_playerName("unknown")
 	, m_score(0)
 	, m_level(1)
 	, m_lineCount(0)
@@ -16,7 +17,30 @@ TetrisGame::TetrisScore::TetrisScore()
 */
 void TetrisGame::TetrisScore::readHighscoreListFromFile()
 {
-	// Reworked in ft_Encryption branch - temporarily removed to prevent errors
+	try
+	{
+		std::vector<std::string> v_input = FileIO::readFile("Highscores.txt");
+		int i = 0;
+
+		if (v_input.size() == m_highscoreList.size() * 4) {
+			try {
+				for (auto& highscore : m_highscoreList) {
+					highscore = Highscore{ v_input[i], std::stoi(v_input[i + 1]), std::stoi(v_input[i + 2]), std::stoi(v_input[i + 3]) };
+					i += 4; // 4 is the amount of lines that belong to a highscore (score, level, linecount)
+				}
+			}
+			catch (std::invalid_argument &e) {
+				std::cout << "Invalid Argument in Highscores.txt" << std::endl;
+			}
+			catch (std::out_of_range& e) {
+				std::cout << "Argument in Highscores.txt is out of range" << std::endl;
+			}	
+		}
+	}
+	catch (Exceptions::FileExceptions::FileNotFoundException const &e)
+	{
+		std::cout << e.what() << std::endl;
+	}
 }
 
 /*
@@ -27,9 +51,9 @@ void TetrisGame::TetrisScore::writeHighscoreListToFile()
 {
 	std::string output;
 
-	for (Highscore highscore : m_highscoreList)
+	for (auto const& highscore : m_highscoreList)
 	{
-		output += std::to_string(highscore.score) + "\n" + std::to_string(highscore.level) + "\n" + std::to_string(highscore.lineCount) + "\n";
+		output += highscore.playerName + "\n" + std::to_string(highscore.score) + "\n" + std::to_string(highscore.level) + "\n" + std::to_string(highscore.lineCount) + "\n";
 	}
 
 	// Write to file
@@ -93,6 +117,22 @@ void TetrisGame::TetrisScore::update(int completedRowCount)
 	m_lineCountText.setString("Lines: " + std::to_string(m_lineCount));
 }
 
+/*
+	Resets the current score. 
+	Has to be called before starting a new game.
+*/
+void TetrisGame::TetrisScore::reset()
+{
+	m_playerName = "unknown";
+	m_score = 0;
+	m_level = 1;
+	m_lineCount = 0;
+	// Update the sf::Text's that are displayed on screen
+	m_scoreText.setString("Score: " + std::to_string(m_score));
+	m_levelText.setString("Level: " + std::to_string(m_level));
+	m_lineCountText.setString("Lines: " + std::to_string(m_lineCount));
+}
+
 const int& TetrisGame::TetrisScore::getScore()
 {
 	return m_score;
@@ -113,12 +153,23 @@ void TetrisGame::TetrisScore::setStartLevel(int level)
 	m_level = level;
 }
 
+const std::string& TetrisGame::TetrisScore::getPlayerName()
+{
+	return m_playerName;
+}
+
+void TetrisGame::TetrisScore::setPlayerName(const std::string& playerName)
+{
+	m_playerName = playerName;
+}
+
 /*
 	Checks if the achieved score is a new highscore.
 
 	Example usage:
 	// gameover 
-	if (m_score.isNewHighscore()) 
+	if (score.isNewHighscore()) 
+		// insert player name
 		// add the score to the list
 */
 bool TetrisGame::TetrisScore::isNewHighscore()
@@ -128,18 +179,28 @@ bool TetrisGame::TetrisScore::isNewHighscore()
 
 /*
 	Adds the current score to the m_highscoreList. The current score replaces the last element
-	of the m_highscoreList. Afterwards the list gets sorted.
+	of the m_highscoreList. Afterwards the list gets sorted. Player should be given the opportunity
+	to insert his name before adding the highscore.
+
+	Example usage:
+	// gameover
+	if (score.isNewHighscore())
+		// insert player name
+		score.addToHighscoreList();
 */
 void TetrisGame::TetrisScore::addToHighscoreList()
 {
 	// Add new highscore as last element to the list
-	m_highscoreList[m_highscoreList.size() - 1] = Highscore{m_score, m_level, m_lineCount};
+	m_highscoreList[m_highscoreList.size() - 1] = Highscore{ m_playerName, m_score, m_level, m_lineCount };
 
 	// Custom sort algorithm - Sorts by score 
 	auto sortByScore = [](Highscore& left, Highscore& right) { return left.score > right.score; };
 
 	// Sort the list with the custom sort algorithm
 	std::sort(m_highscoreList.begin(), m_highscoreList.end(), sortByScore);
+
+	// reset values to default
+	reset();
 }
 
 /*

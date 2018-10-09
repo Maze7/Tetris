@@ -13,6 +13,7 @@ namespace TetrisGame
 	public:
 		struct Highscore
 		{
+			std::string playerName;
 			int score, level, lineCount;
 		};
 		
@@ -21,7 +22,11 @@ namespace TetrisGame
 
 		void draw(sf::RenderWindow* window, sf::Font* font);
 		void update(int completedRowCount);
+		void reset();
 		const std::vector<Highscore>* getHighscoreList() { return &m_highscoreList; }
+
+		const std::string& getPlayerName();
+		void setPlayerName(const std::string& playerName);
 
 		const int& getScore();
 		const int& getLevel();
@@ -37,6 +42,8 @@ namespace TetrisGame
 
 	private:
 		std::vector<Highscore> m_highscoreList;
+
+		std::string m_playerName;
 
 		int m_score;
 		sf::Text m_scoreText;

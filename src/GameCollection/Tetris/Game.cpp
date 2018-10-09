@@ -72,10 +72,6 @@ void TetrisGame::Game::draw(sf::RenderWindow* window, sf::Font* font)
 
 int TetrisGame::Game::close(GameCollection::ICollectionEntry** screen)
 {
-	// todo write highscore and/or do cleanup
-	if (m_state == GAMEOVER) {
-		m_score.writeHighscoreListToFile();
-	}
 	*screen = *TetrisLoader::getScreen(TetrisLoader::SCREENS(m_nextScreen));
 	return CONTINUE;
 }
@@ -138,11 +134,14 @@ void TetrisGame::Game::handleCollision()
 	for (int x = 0; x < Playfield::s_COLUMNS; x++) {
 		if (m_playfield.getColorOfField(1, x) != sf::Color::Black) {
 			m_state = Game::GAMEOVER;
-			//m_playfield.gameover();
 
 			if (m_score.isNewHighscore()) {
-				m_score.addToHighscoreList();
+				TetrisLoader::erase(TetrisLoader::SCORE);
+				TetrisLoader::addScreen(TetrisLoader::SCORE, new ScoreScreen(m_score, ScoreScreen::NEW_SCORE)); // user can write his name
 			}
+
+			// Stop game logic
+			return;
 		}
 	}
 
@@ -174,13 +173,15 @@ void TetrisGame::Game::handleCollision()
 void TetrisGame::Game::handleEvent(const sf::Event sfevent)
 {
 
-	// if game is game over only allow to press return
+	// if game is gameover only allow to press return
 	if (m_state == GAMEOVER) {
 		if (sfevent.key.code == sf::Keyboard::Return) {
 			m_running = false; // invoke close()
-			TetrisLoader::erase(TetrisLoader::SCORE);
-			TetrisLoader::addScreen(TetrisLoader::SCORE, new ScoreScreen(m_score));
 			m_nextScreen = TetrisLoader::SCORE;
+			if (!TetrisLoader::contains(TetrisLoader::SCORE)) {
+				// create new score screen if no exists
+				TetrisLoader::addScreen(TetrisLoader::SCORE, new ScoreScreen(m_score));
+			}
 		}
 		else {
 			return;
