@@ -2,12 +2,12 @@
 
 namespace FlappyBirdGame {
 
-FlappyMenuScreen::FlappyMenuScreen() : m_snakeGame(nullptr) {
-	entryScreens[PLAY] = (ICollectionScreen**) &m_snakeGame;
+FlappyMenuScreen::FlappyMenuScreen() : m_flappyGame(nullptr) {
+	entryScreens[PLAY] = (ICollectionScreen**) &m_flappyGame;
 }
 
 FlappyMenuScreen::~FlappyMenuScreen() {
-	delete m_snakeGame;
+	delete m_flappyGame;
 }
 
 void FlappyMenuScreen::handleEvent(const sf::Event sfevent) {
@@ -28,20 +28,20 @@ void FlappyMenuScreen::handleEvent(const sf::Event sfevent) {
 	case sf::Keyboard::Space:
 	case sf::Keyboard::Return:
 		if (m_hover == PLAY) {
-			if (m_snakeGame == nullptr) {
-				m_snakeGame = new FlappyBirdScreen();
-			} else if (m_snakeGame->getGameState() == FlappyBirdScreen::GAMEOVER){
-				delete m_snakeGame;
-				m_snakeGame = new FlappyBirdScreen();
+			if (m_flappyGame == nullptr) {
+				m_flappyGame = new FlappyBirdScreen();
+			} else if (m_flappyGame->getGameState() == FlappyBirdScreen::GAMEOVER){
+				delete m_flappyGame;
+				m_flappyGame = new FlappyBirdScreen();
 			}
-			m_snakeGame->setGameState(FlappyBirdScreen::PLAYING);
+			m_flappyGame->setGameState(FlappyBirdScreen::PLAYING);
 		}
 		m_running = false; // will invoke close()
 		break;
 	case sf::Keyboard::Delete:
 		if (m_hover == PLAY) {
-			delete m_snakeGame;
-			m_snakeGame = nullptr;
+			delete m_flappyGame;
+			m_flappyGame = nullptr;
 		}
 		break;
 	default:
@@ -64,8 +64,8 @@ void FlappyMenuScreen::draw(sf::RenderWindow* window, sf::Font* font) {
 
 			// show different text during gameplay
 			if (i == PLAY
-				&& m_snakeGame != nullptr
-				&& m_snakeGame->getGameState() == FlappyBirdScreen::PLAYING) {
+				&& m_flappyGame != nullptr
+				&& m_flappyGame->getGameState() == FlappyBirdScreen::PLAYING) {
 				menus[PLAY] = sf::Text ("Continue", *font, 50);
 
 				sf::Text text("(press <DELETE> for reset)", *font, 20);

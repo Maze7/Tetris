@@ -23,7 +23,8 @@ private:
 
 
 	ICollectionScreen** entryScreens[END - 2];
-	FlappyBirdScreen* m_snakeGame;
+	FlappyBirdScreen* m_flappyGame;
+
 
 
 public:
