@@ -9,7 +9,7 @@ int main()
 	sf::Font font;
 
 	// Todo ioutils
-	if (!font.loadFromFile("big_noodle_titling.ttf")) {
+	if (!font.loadFromFile("static/big_noodle_titling.ttf")) {
 		std::cerr << "[ERROR] [MAIN] Could not load font" << std::endl;
 		return 1;
 	}
