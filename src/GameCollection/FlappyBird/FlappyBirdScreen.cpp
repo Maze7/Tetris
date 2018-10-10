@@ -58,7 +58,8 @@ void FlappyBirdGame::FlappyBirdScreen::handleTime()
 		m_bird.applyGravity(15.0f, deltaTime);
 	}
 	else {
-		
+		// Gameover
+		m_state = GAMEOVER;
 	}
 }
 
@@ -129,9 +130,5 @@ bool FlappyBirdGame::FlappyBirdScreen::checkCollision()
 	}
 	
 	return false;
-}
-
-void FlappyBirdGame::FlappyBirdScreen::handleCollision()
-{
 }
 
