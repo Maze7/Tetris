@@ -16,6 +16,7 @@ namespace SnakeGame
 		static constexpr int s_ROWS = 25;
 		static constexpr int s_COLUMNS = 25;
 		static constexpr int s_OFFSET = 10;
+		static constexpr int s_BLOCK_SIZE = 20;
 
 	public:
 		Field();

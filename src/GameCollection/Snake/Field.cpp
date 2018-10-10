@@ -46,7 +46,7 @@ void SnakeGame::Field::draw(sf::RenderWindow* window, Snake& snake)
 	window->draw(m_background);
 
 	// Draw Food
-	sf::RectangleShape block(sf::Vector2f(20, 20));
+	sf::RectangleShape block(sf::Vector2f(s_BLOCK_SIZE, s_BLOCK_SIZE));
 	block.setOutlineThickness(1.0f);
 	block.setOutlineColor(sf::Color(217, 217, 217, 255));
 	block.setPosition(20 * m_food.x + s_OFFSET, 20 * m_food.y + s_OFFSET);
