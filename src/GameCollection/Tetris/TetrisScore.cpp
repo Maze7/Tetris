@@ -12,8 +12,8 @@ TetrisGame::TetrisScore::TetrisScore()
 }
 
 /*
-Reads the highscores from the file and saves them in the m_highscoreList
-Should be called in the constructor of this class (TetrisScore).
+	Reads the highscores from the file and saves them in the m_highscoreList
+	Should be called in the constructor of this class (TetrisScore).
 */
 void TetrisGame::TetrisScore::readHighscoreListFromFile()
 {
@@ -44,8 +44,8 @@ void TetrisGame::TetrisScore::readHighscoreListFromFile()
 }
 
 /*
-Writes the m_highscoreList to a file.
-Should be called before closing the application.
+	Writes the m_highscoreList to a file.
+	Should be called before closing the application.
 */
 void TetrisGame::TetrisScore::writeHighscoreListToFile()
 {
@@ -66,7 +66,7 @@ void TetrisGame::TetrisScore::writeHighscoreListToFile()
 }
 
 /*
-Draws the score texts in the given window with the given font.
+	Draws the score texts in the given window with the given font.
 */
 void TetrisGame::TetrisScore::draw(sf::RenderWindow* window, sf::Font* font)
 {
@@ -87,7 +87,7 @@ void TetrisGame::TetrisScore::draw(sf::RenderWindow* window, sf::Font* font)
 }
 
 /*
-Increases each score metric and the corresponding sf::Text depending on rows completed
+	Increases each score metric and the corresponding sf::Text depending on rows completed
 */
 void TetrisGame::TetrisScore::update(int completedRowCount)
 {
@@ -120,8 +120,8 @@ void TetrisGame::TetrisScore::update(int completedRowCount)
 }
 
 /*
-Resets the current score.
-Has to be called before starting a new game.
+	Resets the current score.
+	Has to be called before starting a new game.
 */
 void TetrisGame::TetrisScore::reset()
 {
@@ -162,13 +162,13 @@ void TetrisGame::TetrisScore::setPlayerName(const std::string& playerName)
 }
 
 /*
-Checks if the achieved score is a new highscore.
+	Checks if the achieved score is a new highscore.
 
-Example usage:
-// gameover
-if (score.isNewHighscore())
-// insert player name
-// add the score to the list
+	Example usage:
+	// gameover
+	if (score.isNewHighscore())
+		// insert player name
+		// add the score to the list
 */
 bool TetrisGame::TetrisScore::isNewHighscore()
 {
@@ -176,15 +176,15 @@ bool TetrisGame::TetrisScore::isNewHighscore()
 }
 
 /*
-Adds the current score to the m_highscoreList. The current score replaces the last element
-of the m_highscoreList. Afterwards the list gets sorted. Player should be given the opportunity
-to insert his name before adding the highscore.
+	Adds the current score to the m_highscoreList. The current score replaces the last element
+	of the m_highscoreList. Afterwards the list gets sorted. Player should be given the opportunity
+	to insert his name before adding the highscore.
 
-Example usage:
-// gameover
-if (score.isNewHighscore())
-// insert player name
-score.addToHighscoreList();
+	Example usage:
+	// gameover
+	if (score.isNewHighscore())
+		// insert player name
+		score.addToHighscoreList();
 */
 void TetrisGame::TetrisScore::addToHighscoreList()
 {
@@ -202,8 +202,8 @@ void TetrisGame::TetrisScore::addToHighscoreList()
 }
 
 /*
-Sets up the position, color and size of the sf::Texts.
-Should be called in the constructor of this class (TetrisScore).
+	Sets up the position, color and size of the sf::Texts.
+	Should be called in the constructor of this class (TetrisScore).
 */
 void TetrisGame::TetrisScore::init()
 {
