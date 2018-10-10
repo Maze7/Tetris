@@ -1,7 +1,6 @@
 #include "FlappyBirdScreen.h"
 
-FlappyBirdGame::FlappyBirdScreen::FlappyBirdScreen()
-{
+FlappyBirdGame::FlappyBirdScreen::FlappyBirdScreen() : m_state(PLAYING) {
 	// Create pipes
 	m_pipes.push_back(Pipe(1400));
 	m_pipes.push_back(Pipe(1800));
@@ -22,19 +21,38 @@ FlappyBirdGame::FlappyBirdScreen::FlappyBirdScreen()
 	m_ceiling.setSize(sf::Vector2f(1200, 1));
 	m_ceiling.setPosition(0, -20);
 	m_ceiling.setFillColor(sf::Color::Transparent);
+
+	if (!soundBufferJump.loadFromFile("static/flappy_jump.wav")) {
+		std::cout << "flappy_jump.wav could not found \n";
+	} else {
+		jumpSound.setBuffer(soundBufferJump);
+		jumpSound.setLoop(false);
+	}
+	if (!soundBufferFail.loadFromFile("static/flappy_fail.wav")) {
+		std::cerr << "flappy_fail.wav could not found \n";
+	} else {
+		failSound.setBuffer(soundBufferFail);
+		failSound.setLoop(false);
+	}
+
 }
 
 void FlappyBirdGame::FlappyBirdScreen::handleEvent(const sf::Event sfevent)
 {
 	switch (sfevent.key.code) {
+	case sf::Keyboard::Up:
 	case sf::Keyboard::W:
 		m_bird.flap();
+		jumpSound.play();
 		break;
 	}
 }
 
-void FlappyBirdGame::FlappyBirdScreen::handleTime()
-{
+void FlappyBirdGame::FlappyBirdScreen::handleTime() {
+
+	if (m_state == GAMEOVER) {
+		return;
+	}
 	if (!checkCollision()) {
 		sf::Time deltaTime = m_clock.restart(); // clock.restart() returns elapsed time and restarts the timer
 
@@ -60,6 +78,7 @@ void FlappyBirdGame::FlappyBirdScreen::handleTime()
 	else {
 		// Gameover
 		m_state = GAMEOVER;
+		failSound.play();
 	}
 }
 

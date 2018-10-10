@@ -5,6 +5,7 @@
 #include "Bird.h"
 #include "Pipe.h"
 #include "FlappyBirdScore.h"
+#include <SFML/Audio.hpp>
 
 namespace FlappyBirdGame
 {
@@ -26,6 +27,11 @@ namespace FlappyBirdGame
 		FlappyBirdScore m_score;
 
 		sf::Clock m_clock;
+
+		sf::SoundBuffer soundBufferJump;
+		sf::SoundBuffer soundBufferFail;
+		sf::Sound failSound;
+		sf::Sound jumpSound;
 
 	public:
 		FlappyBirdScreen();
