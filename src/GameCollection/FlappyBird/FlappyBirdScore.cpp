@@ -93,7 +93,7 @@ void FlappyBirdGame::FlappyBirdScore::writeHighscoreListToFile()
 	}
 }
 
-void FlappyBirdGame::FlappyBirdScore::draw(sf::RenderWindow * window, sf::Font * font)
+void FlappyBirdGame::FlappyBirdScore::draw(sf::RenderWindow * window, sf::Font * font) {
 	m_pipesPassedText.setString("Pipes passed: " + std::to_string(m_pipesPassed));
 	m_pipesPassedText.setFont(*font);
 	window->draw(m_pipesPassedText);

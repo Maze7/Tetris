@@ -1,14 +1,14 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "../ICollectionEntry.h"
+#include "../ICollectionScreen.h"
 #include "Bird.h"
 #include "Pipe.h"
 #include "FlappyBirdScore.h"
 
 namespace FlappyBirdGame
 {
-	class FlappyBirdScreen : public GameCollection::ICollectionEntry
+	class FlappyBirdScreen : public GameCollection::ICollectionScreen
 	{
 	public:
 		FlappyBirdScreen();
