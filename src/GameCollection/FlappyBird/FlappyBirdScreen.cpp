@@ -83,6 +83,18 @@ void FlappyBirdGame::FlappyBirdScreen::draw(sf::RenderWindow* window, sf::Font* 
 
 	// Draw score
 	m_score.draw(window, font);
+
+	// Draw gameover screen
+	if (m_state == GAMEOVER) {
+		sf::Vector2f size(1200, 500);
+		sf::RectangleShape shape;
+		shape.setSize(size);
+		shape.setFillColor(sf::Color(255, 150, 150, 150));
+		window->draw(shape);
+		sf::Text gameoverText("\t \t \t  GameOver! \n      \t Press <RETURN>", *font, 50);
+		gameoverText.setPosition(50.f, 250.f);
+		window->draw(gameoverText);
+	}
 }
 
 int FlappyBirdGame::FlappyBirdScreen::close()
