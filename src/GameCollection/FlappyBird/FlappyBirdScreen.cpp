@@ -55,7 +55,7 @@ void FlappyBirdGame::FlappyBirdScreen::handleTime()
 		}
 
 		// Apply gravitiy to the bird, so it falls down
-		m_bird.applyGravity(0.5f, deltaTime);
+		m_bird.applyGravity(15.0f, deltaTime);
 	}
 	else {
 		// game over stuff

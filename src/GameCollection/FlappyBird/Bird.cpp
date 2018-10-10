@@ -1,7 +1,7 @@
 #include "Bird.h"
 #include <iostream>
 
-FlappyBirdGame::Bird::Bird() : m_currentSpeed(0.0f)
+FlappyBirdGame::Bird::Bird() : m_currentSpeed(-20.0f)
 {
 	// Create the bird
 	m_birdBox.setSize(sf::Vector2f(20, 20));
@@ -23,7 +23,7 @@ FlappyBirdGame::Bird::Bird() : m_currentSpeed(0.0f)
 */
 void FlappyBirdGame::Bird::flap()
 {
-	m_currentSpeed = -0.128f;
+	m_currentSpeed = -5.0f;
 }
 
 /*
