@@ -35,4 +35,4 @@ We do not provide an buildfile (like cmake) for windows. But it is fully compati
 Follows // TODO
 
 # Site note
-Due to an unclear copyright situation, the most files in "static" directory wasn't published. Maybe one day they will be uploaded. 
+Due to an unclear copyright situation, most files in "static" directory wasn't published. Maybe one day they will be uploaded. 
