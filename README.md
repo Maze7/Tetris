@@ -7,7 +7,7 @@ The main "feature" is still Tetris, but we programmed Snake and FlappyBird as we
 You can add your own games to it, see "Contribution"for more explanation.
 
 ## Build (Linux)
-### SFML
+
 You have to install sfml first.
 ArchLinux: `pacman -S sfml`
 Sample Ubuntu explanation: http://seriousitguy.blogspot.com/2014/05/how-to-setup-sfml-on-ubuntu-1404-lts.html
