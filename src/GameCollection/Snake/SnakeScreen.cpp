@@ -1,6 +1,18 @@
 #include "SnakeScreen.h"
+#include "../Collection.h"
+#include "SnakeLoader.h"
 
 #include <iostream>
+
+SnakeGame::SnakeScreen::SnakeScreen() :
+		m_nextScreen(nullptr),
+		m_isDirectionChanged(false),
+		m_state(PAUSED) {
+	m_field.spawnRandomFood(m_snake);
+	soundBuffer.loadFromFile("static/snake_eat.wav");
+	eatSound.setBuffer(soundBuffer);
+	eatSound.setLoop(false);
+}
 
 void SnakeGame::SnakeScreen::handleEvent(const sf::Event sfevent)
 {
@@ -16,6 +28,10 @@ void SnakeGame::SnakeScreen::handleEvent(const sf::Event sfevent)
 		break;
 	case sf::Keyboard::D:
 		m_snake.changeDirection(Snake::MOVE_RIGHT);
+		break;
+	case sf::Keyboard::Escape:
+		m_running=false;
+		m_nextScreen = &GameCollection::Collection::getEntrys()->at(SnakeLoader::MODUL_NAME);
 		break;
 	}
 
@@ -35,6 +51,7 @@ void SnakeGame::SnakeScreen::handleTime()
 
 				// Eat and generate new food
 				m_snake.eat();
+				eatSound.play();
 				m_field.spawnRandomFood(m_snake);
 
 				// Update score
@@ -60,9 +77,10 @@ void SnakeGame::SnakeScreen::draw(sf::RenderWindow * window, sf::Font * font)
 	m_score.draw(window, font);
 }
 
-int SnakeGame::SnakeScreen::close()
+int SnakeGame::SnakeScreen::close(ICollectionScreen** screen)
 {
-	return 0;
+	*screen = *m_nextScreen;
+	return CONTINUE;
 }
 
 /*
@@ -103,4 +121,12 @@ bool SnakeGame::SnakeScreen::isEatingPossible()
 	}
 
 	return false;
+}
+
+const SnakeGame::SnakeScreen::STATES& SnakeGame::SnakeScreen::getGameState() {
+	return m_state;
+}
+
+void SnakeGame::SnakeScreen::setGameState(const STATES& newState) {
+	m_state = newState;
 }
