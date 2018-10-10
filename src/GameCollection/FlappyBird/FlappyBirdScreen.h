@@ -16,7 +16,7 @@ namespace FlappyBirdGame
 
 	private:
 		GAME_STATE m_state;
-
+		ICollectionScreen*const* m_nextScreen;
 		Bird m_bird;
 		std::vector<Pipe> m_pipes;
 
@@ -40,7 +40,7 @@ namespace FlappyBirdGame
 		void handleEvent(const sf::Event sfevent);
 		void handleTime();
 		void draw(sf::RenderWindow* window, sf::Font* font);
-		int close();
+		int close(ICollectionScreen** screen);
 
 		const GAME_STATE& getGameState();
 		void setGameState(const GAME_STATE& state);

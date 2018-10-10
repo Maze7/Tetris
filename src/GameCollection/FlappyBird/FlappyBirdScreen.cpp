@@ -1,6 +1,7 @@
 #include "FlappyBirdScreen.h"
+#include "FlappyLoader.h"
 
-FlappyBirdGame::FlappyBirdScreen::FlappyBirdScreen() : m_state(PLAYING) {
+FlappyBirdGame::FlappyBirdScreen::FlappyBirdScreen() : m_state(PLAYING), m_nextScreen(nullptr) {
 	// Create pipes
 	m_pipes.push_back(Pipe(1400));
 	m_pipes.push_back(Pipe(1800));
@@ -39,6 +40,14 @@ FlappyBirdGame::FlappyBirdScreen::FlappyBirdScreen() : m_state(PLAYING) {
 
 void FlappyBirdGame::FlappyBirdScreen::handleEvent(const sf::Event sfevent)
 {
+	if (m_state == GAMEOVER) {
+		if(sfevent.key.code == sf::Keyboard::Return) {
+			m_running = false;
+			m_nextScreen = &GameCollection::Collection::getEntrys()->at(FlappyLoader::MODUL_NAME);
+		} else {
+			return;
+		}
+	}
 	switch (sfevent.key.code) {
 	case sf::Keyboard::Up:
 	case sf::Keyboard::W:
@@ -117,9 +126,10 @@ void FlappyBirdGame::FlappyBirdScreen::draw(sf::RenderWindow* window, sf::Font* 
 	}
 }
 
-int FlappyBirdGame::FlappyBirdScreen::close()
+int FlappyBirdGame::FlappyBirdScreen::close(ICollectionScreen** screen)
 {
-	return 0;
+	*screen = *m_nextScreen;
+	return CONTINUE;
 }
 
 /*
