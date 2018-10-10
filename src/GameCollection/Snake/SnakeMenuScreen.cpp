@@ -1,8 +1,11 @@
 #include "SnakeMenuScreen.h"
 namespace SnakeGame {
 
-SnakeMenuScreen::SnakeMenuScreen() : m_snakeGame(nullptr) {
+SnakeMenuScreen::SnakeMenuScreen() :
+			m_snakeGame(nullptr),
+			m_score(SnakeScore()) {
 	entryScreens[PLAY] = (ICollectionScreen**) &m_snakeGame;
+	entryScreens[HIGHSCORES] = (ICollectionScreen**) &m_scoreScreen;
 }
 
 SnakeMenuScreen::~SnakeMenuScreen() {
@@ -28,10 +31,10 @@ void SnakeMenuScreen::handleEvent(const sf::Event sfevent) {
 	case sf::Keyboard::Return:
 		if (m_hover == PLAY) {
 			if (m_snakeGame == nullptr) {
-				m_snakeGame = new SnakeScreen();
+				m_snakeGame = new SnakeScreen(m_score);
 			} else if (m_snakeGame->getGameState() == SnakeScreen::GAMEOVER){
 				delete m_snakeGame;
-				m_snakeGame = new SnakeScreen();
+				m_snakeGame = new SnakeScreen(m_score);
 			}
 			m_snakeGame->setGameState(SnakeScreen::PLAYING);
 		}

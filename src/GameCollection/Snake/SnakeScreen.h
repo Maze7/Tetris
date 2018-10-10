@@ -15,7 +15,7 @@ namespace SnakeGame
 		Snake m_snake;
 		Field m_field;
 		STATES m_state;
-		SnakeScore m_score;
+		SnakeScore& m_score;
 		ICollectionScreen*const* m_nextScreen;
 		sf::Clock m_clock;
 		sf::SoundBuffer soundBuffer;
@@ -24,7 +24,7 @@ namespace SnakeGame
 		bool m_isDirectionChanged;
 
 	public:
-		SnakeScreen();
+		SnakeScreen(SnakeScore& score);
 		~SnakeScreen() {}
 
 		void handleEvent(const sf::Event sfevent);

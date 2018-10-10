@@ -4,7 +4,8 @@
 
 #include <iostream>
 
-SnakeGame::SnakeScreen::SnakeScreen() :
+SnakeGame::SnakeScreen::SnakeScreen(SnakeScore& score) :
+		m_score(score),
 		m_nextScreen(nullptr),
 		m_isDirectionChanged(false),
 		m_state(PAUSED) {
@@ -39,7 +40,7 @@ void SnakeGame::SnakeScreen::handleEvent(const sf::Event sfevent)
 		break;
 	case sf::Keyboard::Escape:
 		m_running=false;
-		m_nextScreen = &GameCollection::Collection::getEntrys()->at(SnakeLoader::MODUL_NAME);
+		m_nextScreen = &GameCollection::Collection::getEntrys()->at(SnakeLoader::MODUL_NAME); // this is the menu
 		break;
 	}
 

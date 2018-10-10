@@ -2,6 +2,7 @@
 #include "../ICollectionScreen.h"
 #include <SFML/Graphics.hpp>
 #include "SnakeScreen.h"
+#include "SnakeScoreScreen.h"
 
 namespace SnakeGame {
 
@@ -11,7 +12,7 @@ private:
 	 * Specify the menu entrys.
 	 * The entrys are the Same edsd
 	 */
-	enum ENTRYS { PLAY = 0, SETTINGS = 1, MAINMENU=2, EXIT = 3, END = 4 };
+	enum ENTRYS { PLAY = 0, HIGHSCORES = 1, MAINMENU=2, EXIT = 3, END = 4 };
 
 	const std::string entry_names[END] = { "Start Game!", "Highscores", "Main Menu", "Exit" };
 
@@ -24,7 +25,8 @@ private:
 
 	ICollectionScreen** entryScreens[END - 2];
 	SnakeScreen* m_snakeGame;
-
+	SnakeScoreScreen* m_scoreScreen;
+	SnakeScore m_score;
 
 public:
 	static constexpr char s_BACKGROUND_PATH[] = "static/bg.jpeg";
