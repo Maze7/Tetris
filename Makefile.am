@@ -36,8 +36,8 @@ GameCollection_SOURCES = src/Exceptions/FileExceptions.h\
 						src/GameCollection/Snake/Field.cpp\
 						src/GameCollection/Snake/Field.h\
 						src/GameCollection/Snake/Snake.cpp\
-						src/GameCollection/Snake/SnakeGame.cpp\
-						src/GameCollection/Snake/SnakeGame.h\
+						src/GameCollection/Snake/SnakeScreen.cpp\
+						src/GameCollection/Snake/SnakeScreen.h\
 						src/GameCollection/Snake/Snake.h\
 						src/GameCollection/Snake/SnakeScore.cpp\
 						src/GameCollection/Snake/SnakeScore.h\

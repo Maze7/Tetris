@@ -1,12 +1,12 @@
 #pragma once
-#include "../ICollectionEntry.h"
+#include "../ICollectionScreen.h"
 #include "Snake.h"
 #include "Field.h"
 #include "SnakeScore.h"
 
 namespace SnakeGame 
 {
-	class SnakeScreen : public GameCollection::ICollectionEntry
+	class SnakeScreen : public GameCollection::ICollectionScreen
 	{
 	private:
 		Snake m_snake;
