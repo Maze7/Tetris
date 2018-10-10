@@ -1,13 +1,15 @@
 #include "Collection.h"
 #include <iostream>
 
-std::map<std::string, GameCollection::ICollectionScreen*> GameCollection::Collection::s_entrys = std::map<std::string, GameCollection::ICollectionScreen*>();
+namespace GameCollection {
+
+// init for static elements
+std::map<std::string, ICollectionScreen*> Collection::s_entrys = std::map<std::string, ICollectionScreen*>();
 
 /*
 	Iterates through s_entrys and deletes every pointer. 
 */
-GameCollection::Collection::~Collection()
-{
+Collection::~Collection() {
 	for (auto& modulScreen : s_entrys) {
 		delete modulScreen.second;
 	}
@@ -18,8 +20,7 @@ GameCollection::Collection::~Collection()
 	Params: sf::RenderWindow& where everything should displayed
 			sf::Font& the font will used everywhere in Collection.h
 */
-int GameCollection::Collection::run(sf::RenderWindow& window, sf::Font& font)
-{
+int Collection::run(sf::RenderWindow& window, sf::Font& font) {
 
 	MainMenuScreen mainMenu;
 	ICollectionScreen* currentScreen;
@@ -35,10 +36,11 @@ int GameCollection::Collection::run(sf::RenderWindow& window, sf::Font& font)
 
 		// event loop
 		while (window.pollEvent(event)) {
-			if (event.type == sf::Event::Closed)
+			if (event.type == sf::Event::Closed) {
 				window.close();
-			else if (event.type == sf::Event::TextEntered || event.type == sf::Event::KeyPressed)
+			} else if (event.type == sf::Event::TextEntered || event.type == sf::Event::KeyPressed) {
 				currentScreen->handleEvent(event);
+			}
 		}
 
 		if (!currentScreen->isRunning()) {
@@ -49,8 +51,7 @@ int GameCollection::Collection::run(sf::RenderWindow& window, sf::Font& font)
 				exit(EXIT_FAILURE);
 			
 			// check which action needs to perform depends on return value of close()
-			switch (returnValue)
-			{
+			switch (returnValue) {
 			case currentScreen->MAIN_MENU:
 				currentScreen = &mainMenu;
 				currentScreen->setRunning();
@@ -84,22 +85,22 @@ int GameCollection::Collection::run(sf::RenderWindow& window, sf::Font& font)
 
 	Param:
 		std::string the name of module - 	It is recommended to set modulName equals to the used namespace. 
-		GameCollection::ICollectionEntry* an compatible GameCollection screen.
+		ICollectionEntry* an compatible GameCollection screen.
 	Example Usage: (Quick and Dirty with Game-Loader)
 		class ExampleGameLoader {
-			ExampleGameLoader() { GameCollection::Collection::addModuleEntrys("ExampleGame", new ExampleGame()); }
+			ExampleGameLoader() { Collection::addModuleEntrys("ExampleGame", new ExampleGame()); }
 		};
 		namspace { static const ExampleGameLoader loading; } // invoke Constructor in private namespace
 */
-void GameCollection::Collection::addModuleEntrys(std::string moduleName, GameCollection::ICollectionScreen* screen)
-{
+void Collection::addModuleEntrys(std::string moduleName, ICollectionScreen* screen) {
 	s_entrys.insert(std::make_pair(moduleName, screen));
 }
 
 /*
-	const Getter for s_screens. Returns a pointer to hole map std::map<std::string, GameCollection::ICollectionEntry*>*
+	const Getter for s_screens. Returns a pointer to hole map std::map<std::string, ICollectionEntry*>*
 */
-const std::map<std::string, GameCollection::ICollectionScreen*>* const GameCollection::Collection::getEntrys()
-{
+const std::map<std::string, ICollectionScreen*>* const Collection::getEntrys() {
 	return &s_entrys;
 }
+
+} /* namespace GameCollection */

@@ -3,8 +3,18 @@
 #include "GameScreen.h"
 #include "TetrisLoader.h"
 
-
-TetrisGame::GameScreen::GameScreen(TetrisScore& score)
+namespace TetrisGame {
+/*
+	Creates an Object of GameScreen. It contains the main tetris game logic.
+	It will create its own Playfield and and handle everything which is needed. 
+	It inherits from ICollectionScreen and can loaded into Collection::run
+	Param:
+		TetrisScore& - a reference to TetrisScore. 
+						Be aware: each time an instance of TetrisScore is created, 
+						there is one read operation from local disk
+						
+*/
+GameScreen::GameScreen(TetrisScore& score)
 			: m_state(GameScreen::PAUSED)
 			, m_currentTetromino(generateRandom(), Tetromino::PLAYFIELD_POS)
 			, m_previewTetromino(generateRandom(), Tetromino::PREVIEW_POS)
@@ -16,7 +26,6 @@ TetrisGame::GameScreen::GameScreen(TetrisScore& score)
 	// start music
 	gameMusic.openFromFile("static/Tetris.wav");
 	gameMusic.setLoop(true);
-
 	gameMusic.play();
 
 	// Game object load difficulty settings from SettingsScreen on initialization
@@ -32,8 +41,12 @@ TetrisGame::GameScreen::GameScreen(TetrisScore& score)
 	updateCollisionPreview();
 }
 
-void TetrisGame::GameScreen::update()
-{
+/*
+	#Override : ICollectionScreen
+	Handles the actual game ticks of Tetris.
+	It is the place where the collision check happen. 
+*/
+void GameScreen::update() {
 	if (m_state == GAMEOVER)
 		return; // no need for game ticks anymore
 
@@ -48,8 +61,7 @@ void TetrisGame::GameScreen::update()
 
 			m_completedRows.clear();
 			updateCollisionPreview(); // Update Preview after completed lines are removed
-		}
-		else {
+		} else {
 			m_currentTetromino.move(Tetromino::DOWN);
 
 			// If the tetromino hit the ground or a block after moving down
@@ -61,32 +73,30 @@ void TetrisGame::GameScreen::update()
 				handleCollision();
 			}
 		}
-
 		// Start a new tick
 		m_clock.restart();
-
 	}
-
 }
 
 /*
+	#Override : ICollectionScreen
 	Draw method will be called directly before the next frame will
 	displayed. It needs the actual window and font. Both are pointers.
 	From here, all other components will be drawn (playfield, tetromino, text, etc).
 
 	Example usage:
-	window.clear();
-	CollectionEntry.draw(&currentWindow, &currentFont);
-	window.diplay();
+		window.clear();
+		CollectionScreen.draw(&currentWindow, &currentFont);
+		window.diplay();
 */
-void TetrisGame::GameScreen::draw(sf::RenderWindow* window, sf::Font* font)
-{
+void GameScreen::draw(sf::RenderWindow* window, sf::Font* font) {
 	m_playfield.drawGrid(window);
 	m_playfield.drawTetromino(window, m_currentTetromino, false);
 	m_playfield.drawTetromino(window, m_previewTetromino, false);
 	m_playfield.drawTetromino(window, m_collisionPreview, true);
 	m_score.draw(window, font);
 
+	// print an nice GameOVer screen
 	if (m_state == GAMEOVER) {
 		const unsigned int BLOCK_SIZE{ (window->getSize().y- 2 * Playfield::s_OFFSET) / Playfield::s_ROWS };
 		sf::Vector2f size(BLOCK_SIZE * Playfield::s_COLUMNS, window->getSize().y - 2 * Playfield::s_OFFSET);
@@ -103,8 +113,10 @@ void TetrisGame::GameScreen::draw(sf::RenderWindow* window, sf::Font* font)
 	}
 }
 
-int TetrisGame::GameScreen::close(GameCollection::ICollectionScreen** screen)
-{
+/*
+	#Override : ICollectionScreen
+*/
+int GameScreen::close(GameCollection::ICollectionScreen** screen) {
 	gameMusic.pause();
 	*screen = *TetrisLoader::getScreen(TetrisLoader::SCREENS(m_nextScreen));
 	return CONTINUE;
@@ -115,8 +127,7 @@ int TetrisGame::GameScreen::close(GameCollection::ICollectionScreen** screen)
 	The difficulty corresponds to the level and influences the tickinterval, meaning the tetromino moves
 	down faster the higher the level.
 */
-void TetrisGame::GameScreen::setDifficulty(int difficulty)
-{
+void GameScreen::setDifficulty(int difficulty) {
 	m_score.setStartLevel(difficulty);
 	m_tickInterval = 1000 - (difficulty * 50);
 }
@@ -124,8 +135,7 @@ void TetrisGame::GameScreen::setDifficulty(int difficulty)
 /*
 	Generates a random tetromino type out of Tetromino::TETROMINO_TYPE and returns it.
 */
-TetrisGame::Tetromino::TETROMINO_TYPE TetrisGame::GameScreen::generateRandom()
-{
+Tetromino::TETROMINO_TYPE GameScreen::generateRandom() {
 	Tetromino::TETROMINO_TYPE randomTetrominoType = static_cast<Tetromino::TETROMINO_TYPE>(rand() % Tetromino::END);
 	return randomTetrominoType;
 }
@@ -139,8 +149,7 @@ TetrisGame::Tetromino::TETROMINO_TYPE TetrisGame::GameScreen::generateRandom()
 	// check if valid
 	updateCollisionPreview();
 */
-void TetrisGame::GameScreen::updateCollisionPreview()
-{
+void GameScreen::updateCollisionPreview() {
 	m_collisionPreview = m_currentTetromino;
 
 	// Move the preview until it collides with the ground or a block
@@ -159,8 +168,7 @@ void TetrisGame::GameScreen::updateCollisionPreview()
 	if (!isPosValid())
 		handleCollision();
 */
-void TetrisGame::GameScreen::handleCollision()
-{
+void GameScreen::handleCollision() {
     if (m_state == GAMEOVER) {
         return;
     }
@@ -176,20 +184,17 @@ void TetrisGame::GameScreen::handleCollision()
 				TetrisLoader::erase(TetrisLoader::SCORE);
 				TetrisLoader::addScreen(TetrisLoader::SCORE, new ScoreScreen(m_score, ScoreScreen::NEW_SCORE)); // user can write his name
 			}
-
 			// Stop game logic
 			return;
 		}
 	}
-
 	// Only check for completed rows again, if completed rows have been deleted
 	if (m_completedRows.size() == 0) {
 
 		// Check for completed rows
 		m_completedRows = m_playfield.checkForCompletedRows();
 
-		if (m_completedRows.size() > 0)
-		{
+		if (m_completedRows.size() > 0) {
 			m_playfield.markCompletedRows(&m_completedRows, sf::Color::White);
 
 			// Update the score (includes counting completed lines and level)
@@ -198,11 +203,9 @@ void TetrisGame::GameScreen::handleCollision()
 			// Adjust difficulty (tickInterval) according to level
 			m_tickInterval = 1000 - (m_score.getLevel() * 50);
 		}
-
 		// Start a new tick
 		m_clock.restart();
 	}
-	
 	// Spawn a new tetromino with the shape of the preview
 	m_currentTetromino = Tetromino(m_previewTetromino.getType(), Tetromino::PLAYFIELD_POS);
 	// Generate a new preview tetromino
@@ -212,8 +215,16 @@ void TetrisGame::GameScreen::handleCollision()
 	updateCollisionPreview();
 }
 
-void TetrisGame::GameScreen::handleEvent(const sf::Event sfevent)
-{
+/*
+	#Override : ICollectionScreen
+	Will called if KeyPressed or TextEntered Event get cached in Collection::run
+	Param:
+		sf::Event - Possible states of sf::Event.key.code:
+					KeyPressed,
+					TextEntered
+
+*/
+void GameScreen::handleEvent(const sf::Event sfevent) {
 
 	// if game is gameover only allow to press return
 	if (m_state == GAMEOVER) {
@@ -224,8 +235,7 @@ void TetrisGame::GameScreen::handleEvent(const sf::Event sfevent)
 				// create new score screen if no exists
 				TetrisLoader::addScreen(TetrisLoader::SCORE, new ScoreScreen(m_score));
 			}
-		}
-		else {
+		} else {
 			return;
 		}
 	}
@@ -255,23 +265,22 @@ void TetrisGame::GameScreen::handleEvent(const sf::Event sfevent)
 		m_clock.restart(); // Start a new tick
 		break;
 	case sf::Keyboard::Space:
-		do
+		do {
 			m_currentTetromino.move(Tetromino::DOWN);
-		while (isPosValid());
+		} while (isPosValid());
 		m_currentTetromino.move(Tetromino::UP); // Move it back into a valid position
 		handleCollision(); // Handle the game mechanics following the collision
 		break;
 	case sf::Keyboard::P:
 		if (m_state == PAUSED) {
 			m_state = GAME_STATE::PAUSED;
-		}
-		else {
+		} else {
 			m_state = PLAYING;
 		}
 		break;
 	case sf::Keyboard::Escape:
 		m_running = false;
-		m_nextScreen = TetrisGame::TetrisLoader::MENU;
+		m_nextScreen = TetrisLoader::MENU;
 		break;
 	default:
 		break;
@@ -289,8 +298,7 @@ void TetrisGame::GameScreen::handleEvent(const sf::Event sfevent)
 	m_currentTetromino. This method is just for clarity and defines the default 
 	tetromino if someone want to know if the position is valid.
 */
-bool TetrisGame::GameScreen::isPosValid()
-{
+bool GameScreen::isPosValid() {
 	return isPosValid(&m_currentTetromino);
 }
 
@@ -309,10 +317,9 @@ bool TetrisGame::GameScreen::isPosValid()
 			currentTetromino.move(Tetromino::LEFT);
 			// position invalid! left wall? or something?
 */
-bool TetrisGame::GameScreen::isPosValid(Tetromino* tetromino) 
-{
+bool GameScreen::isPosValid(Tetromino* tetromino) {
 	const sf::Vector2i* pos = &tetromino->getPosition();
-	const Tetromino::TetroShape* currentShape = &TetrisGame::Tetromino::SHAPE_DATA[tetromino->getType()][tetromino->getRotation()];
+	const Tetromino::TetroShape* currentShape = &Tetromino::SHAPE_DATA[tetromino->getType()][tetromino->getRotation()];
 
 	// other tetrominos
 	// iterate the 4x4 tetroshape
@@ -338,21 +345,20 @@ bool TetrisGame::GameScreen::isPosValid(Tetromino* tetromino)
 			}
 		}
 	}
-
 	// return true if no if-condition is true
 	return true;
 }
 
-const TetrisGame::GameScreen::GAME_STATE& TetrisGame::GameScreen::getGameState()
-{
+const GameScreen::GAME_STATE& GameScreen::getGameState() {
 	return m_state;
 }
 
-void TetrisGame::GameScreen::setGameState(TetrisGame::GameScreen::GAME_STATE state)
-{
+void GameScreen::setGameState(GameScreen::GAME_STATE state) {
 	m_state = state;
 }
 
-void TetrisGame::GameScreen::setSoundVolume(const float& volume) {
+void GameScreen::setSoundVolume(const float& volume) {
 	gameMusic.setVolume(volume);
 }
+
+} /* namespace TetrisGame */

@@ -23,7 +23,7 @@ namespace GameCollection
 
 		/*
 		 *	-- PureVirtual -- 
-		 *	Every entry have to handle keyboard and/or mouse events. 
+		 *	Every screen have to handle keyboard and/or mouse events. 
 		 *	It will called right before draw method.
 		 */
 		virtual void handleEvent(const sf::Event sfevent) = 0;
@@ -32,7 +32,7 @@ namespace GameCollection
 		 *	This method will directly called after "handleEvent" outside the window.pollEvent loop.
 		 *	It should handle something like time/tick or other game behaviors. It will be called every
 		 *	loop right before the draw-method and before window.display(). There is no need to 
-		 *	override this method if its not needed (in a case like "Menu" entry, where is no need
+		 *	override this method if its not needed (in a case like "Menu"-screen, where is no need
 		 *	for any time/game behaviors).
 		 */
 		virtual void update() {}
@@ -67,7 +67,7 @@ namespace GameCollection
 		virtual ~ICollectionScreen() {};
 
 		/*
-		 * Specify if the current Entry/Screen/Module is running or not. Returns "m_running"
+		 * Specify if the current Screen is running or not. Returns "m_running"
 		 * The run/main method will call close() if isRunning() return false. It will called right after
 		 * handleEvent() and before update() and draw()-
 		 */

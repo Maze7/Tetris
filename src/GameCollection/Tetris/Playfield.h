@@ -4,7 +4,6 @@
 
 namespace TetrisGame 
 {
-
 	class Playfield
 	{
 
