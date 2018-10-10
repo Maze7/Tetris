@@ -1,18 +1,19 @@
-#include "SettingsMenu.h"
+#include "SettingsScreen.h"
+
 #include "TetrisLoader.h"
 #include <iostream>
 
-TetrisGame::SettingsMenu::SettingsMenu()
+TetrisGame::SettingsScreen::SettingsScreen()
 {
 	// Load Background picture. Use same as tetris menu.
 	m_background = sf::Texture();
-	if (!m_background.loadFromFile(TetrisGame::TetrisMenu::s_BACKGROUND_PATH))
+	if (!m_background.loadFromFile(TetrisGame::MenuScreen::s_BACKGROUND_PATH))
 	{
 		std::cerr << "[ERROR] [TetrisGame::SettingsMenu] loading bg picture failed" << std::endl;
 	}
 }
 
-void TetrisGame::SettingsMenu::handleEvent(const sf::Event sfevent)
+void TetrisGame::SettingsScreen::handleEvent(const sf::Event sfevent)
 {
 	int newHover;
 	switch (sfevent.key.code)
@@ -59,7 +60,7 @@ void TetrisGame::SettingsMenu::handleEvent(const sf::Event sfevent)
 	}
 }
 
-void TetrisGame::SettingsMenu::draw(sf::RenderWindow* window, sf::Font* font)
+void TetrisGame::SettingsScreen::draw(sf::RenderWindow* window, sf::Font* font)
 {
 	sf::Vector2f pos(280.f, 160.f);
 	sf::Text menus[END];
@@ -113,7 +114,7 @@ void TetrisGame::SettingsMenu::draw(sf::RenderWindow* window, sf::Font* font)
 	window->draw(sprite); // background opacity
 }
 
-int TetrisGame::SettingsMenu::close(ICollectionEntry** screen)
+int TetrisGame::SettingsScreen::close(ICollectionScreen** screen)
 {
 
 	if (TetrisLoader::contains(TetrisLoader::GAME)) {
@@ -131,7 +132,7 @@ int TetrisGame::SettingsMenu::close(ICollectionEntry** screen)
 	}
 }
 
-const unsigned int TetrisGame::SettingsMenu::getDifficulty() {
+const unsigned int TetrisGame::SettingsScreen::getDifficulty() {
 	return m_difficulty * m_difficultyIntervall;
 }
 
@@ -139,6 +140,6 @@ const unsigned int TetrisGame::SettingsMenu::getDifficulty() {
  * Returns a sound volume from 0 - 100 (%)
  * Directly parse to sfml sound is possible.
  */
-float TetrisGame::SettingsMenu::getSoundVolume() {
+float TetrisGame::SettingsScreen::getSoundVolume() {
 	return m_volume * 10.f;
 }

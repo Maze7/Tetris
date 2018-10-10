@@ -4,11 +4,11 @@
 #include "Playfield.h"
 #include "Tetromino.h"
 #include "TetrisScore.h"
-#include "../ICollectionEntry.h"
+#include "../ICollectionScreen.h"
 
 namespace TetrisGame
 {
-	class Game : public GameCollection::ICollectionEntry
+	class GameScreen : public GameCollection::ICollectionScreen
 	{
 	public:
 		enum GAME_STATE { PLAYING = 0, GAMEOVER = 1, PAUSED = 2 };
@@ -28,13 +28,13 @@ namespace TetrisGame
 
 		int m_nextScreen = -1;
 	public:
-		Game(TetrisScore& score);
-		~Game() {}
+		GameScreen(TetrisScore& score);
+		~GameScreen() {}
 
 		void handleEvent(const sf::Event sfevent);
 		void handleTime();
 		void draw(sf::RenderWindow* window, sf::Font* font);
-		int close(ICollectionEntry** screen);
+		int close(ICollectionScreen** screen);
 
 		void setDifficulty(int difficulty);
 		bool isPosValid();

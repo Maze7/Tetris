@@ -7,7 +7,7 @@ namespace GameCollection
 	 *	Every screen which should be displayed, need to implement this inferface-like class. 
 	 *	Each module can have multiple screens. See GameCollection::Collection. 
 	 */
-	class ICollectionEntry
+	class ICollectionScreen
 	{
 	protected:
 		bool m_running = true;
@@ -59,12 +59,12 @@ namespace GameCollection
 		 * In case *screen is nullptr the application will exit immediately.
 		 * 
 		 */
-		virtual int close(ICollectionEntry** screen) { return EXIT_SUCCESS; }
+		virtual int close(ICollectionScreen** screen) { return EXIT_SUCCESS; }
 
 		/*
 		 * Avoid compiler warning
 		 */
-		virtual ~ICollectionEntry() {};
+		virtual ~ICollectionScreen() {};
 
 		/*
 		 * Specify if the current Entry/Screen/Module is running or not. Returns "m_running"

@@ -1,5 +1,5 @@
 #pragma once
-#include "../ICollectionEntry.h"
+#include "../ICollectionScreen.h"
 #include <SFML/Graphics.hpp>
 #include "../Collection.h"
 
@@ -11,7 +11,7 @@
 	There is no need to change something in this class, if there is 
 	a new modul (=map entry). 
 */
-class MenuEntry : public GameCollection::ICollectionEntry
+class MainMenuScreen : public GameCollection::ICollectionScreen
 {
 private:
 	std::string m_currentName;
@@ -20,12 +20,12 @@ private:
 	sf::Texture m_background;
 
 public:
-	MenuEntry();
-	~MenuEntry() {};
+	MainMenuScreen();
+	~MainMenuScreen() {};
 
 	void handleEvent(const sf::Event sfevent);
 	void draw(sf::RenderWindow* window, sf::Font* font);
 	const std::string& getCurrentName();
-	int close(ICollectionEntry** screen);
+	int close(ICollectionScreen** screen);
 };
 
