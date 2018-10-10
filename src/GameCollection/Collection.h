@@ -29,7 +29,7 @@ namespace GameCollection
 
 		/*
 		 * Returns a pointer to member s_entrys
-		 * Type: std::map<std::string, std::vector<ICollectionEntry*>*>
+		 * Type: std::map<std::string, ICollectionEntry*>*
 		 */
 		static const CollectionEntrys* const getEntrys();
 
