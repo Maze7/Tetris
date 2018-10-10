@@ -67,7 +67,7 @@ int GameCollection::Collection::run(sf::RenderWindow& window, sf::Font& font)
 			}
 		}
 
-		currentScreen->handleTime();
+		currentScreen->update();
 		window.clear();
 		currentScreen->draw(&window, &font);
 		window.display();

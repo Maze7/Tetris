@@ -32,7 +32,7 @@ TetrisGame::GameScreen::GameScreen(TetrisScore& score)
 	updateCollisionPreview();
 }
 
-void TetrisGame::GameScreen::handleTime()
+void TetrisGame::GameScreen::update()
 {
 	if (m_state == GAMEOVER)
 		return; // no need for game ticks anymore

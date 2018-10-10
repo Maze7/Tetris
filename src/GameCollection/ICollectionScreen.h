@@ -35,7 +35,7 @@ namespace GameCollection
 		 *	override this method if its not needed (in a case like "Menu" entry, where is no need
 		 *	for any time/game behaviors).
 		 */
-		virtual void handleTime() {}
+		virtual void update() {}
 		
 		/*
 		 *	--PureVirtual -- 
