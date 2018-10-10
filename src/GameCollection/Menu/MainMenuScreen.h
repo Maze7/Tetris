@@ -3,6 +3,16 @@
 #include <SFML/Graphics.hpp>
 #include "../Collection.h"
 
+/*
+ * Check the platform and define it to OS_Windows.
+ * OS_Windows = 1 if platform is windows
+ * OS_Windows = 0 if platform is unix (like Linux)
+ */
+#ifdef __unix__
+	constexpr bool OS_Windows = 0;
+#elif defined(_WIN32) || defined(WIN32)
+	constexpr bool OS_Windows = 1;
+#endif
 
 /*
 	This Class loads all entrys inside Collection::s_entrys
