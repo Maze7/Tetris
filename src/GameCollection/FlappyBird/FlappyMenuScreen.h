@@ -11,9 +11,9 @@ private:
 	 * Specify the menu entrys.
 	 * The entrys are the Same edsd
 	 */
-	enum ENTRYS { PLAY = 0, HIGHSCORES = 1, MAINMENU=2, EXIT = 3, END = 4 };
+	enum ENTRYS { PLAY = 0, MAINMENU=1, EXIT = 2, END = 3 };
 
-	const std::string entry_names[END] = { "Start Game!", "Highscores", "Main Menu", "Exit" };
+	const std::string entry_names[END] = { "Start Game!","Main Menu", "Exit" };
 
 	/*
 	 * Specify the menu entry which is currently focused.
