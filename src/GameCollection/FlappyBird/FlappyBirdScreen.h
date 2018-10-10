@@ -5,6 +5,7 @@
 #include "Bird.h"
 #include "Pipe.h"
 #include "FlappyBirdScore.h"
+#include <SFML/Audio.hpp>
 
 namespace FlappyBirdGame
 {
@@ -15,7 +16,7 @@ namespace FlappyBirdGame
 
 	private:
 		GAME_STATE m_state;
-
+		ICollectionScreen*const* m_nextScreen;
 		Bird m_bird;
 		std::vector<Pipe> m_pipes;
 
@@ -27,6 +28,11 @@ namespace FlappyBirdGame
 
 		sf::Clock m_clock;
 
+		sf::SoundBuffer soundBufferJump;
+		sf::SoundBuffer soundBufferFail;
+		sf::Sound failSound;
+		sf::Sound jumpSound;
+
 	public:
 		FlappyBirdScreen();
 		~FlappyBirdScreen() {}
@@ -34,7 +40,7 @@ namespace FlappyBirdGame
 		void handleEvent(const sf::Event sfevent);
 		void handleTime();
 		void draw(sf::RenderWindow* window, sf::Font* font);
-		int close();
+		int close(ICollectionScreen** screen);
 
 		const GAME_STATE& getGameState();
 		void setGameState(const GAME_STATE& state);

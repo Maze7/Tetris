@@ -1,7 +1,7 @@
 #include "FlappyBirdScreen.h"
+#include "FlappyLoader.h"
 
-FlappyBirdGame::FlappyBirdScreen::FlappyBirdScreen()
-{
+FlappyBirdGame::FlappyBirdScreen::FlappyBirdScreen() : m_state(PLAYING), m_nextScreen(nullptr) {
 	// Create pipes
 	m_pipes.push_back(Pipe(1400));
 	m_pipes.push_back(Pipe(1800));
@@ -22,19 +22,47 @@ FlappyBirdGame::FlappyBirdScreen::FlappyBirdScreen()
 	m_ceiling.setSize(sf::Vector2f(1200, 1));
 	m_ceiling.setPosition(0, -20);
 	m_ceiling.setFillColor(sf::Color::Transparent);
+
+	if (!soundBufferJump.loadFromFile("static/flappy_jump.wav")) {
+		std::cout << "flappy_jump.wav could not found \n";
+	} else {
+		jumpSound.setBuffer(soundBufferJump);
+		jumpSound.setLoop(false);
+	}
+	if (!soundBufferFail.loadFromFile("static/flappy_fail.wav")) {
+		std::cerr << "flappy_fail.wav could not found \n";
+	} else {
+		failSound.setBuffer(soundBufferFail);
+		failSound.setLoop(false);
+	}
+
 }
 
 void FlappyBirdGame::FlappyBirdScreen::handleEvent(const sf::Event sfevent)
 {
+	if (m_state == GAMEOVER) {
+		if(sfevent.key.code == sf::Keyboard::Return) {
+			m_running = false;
+			m_nextScreen = &GameCollection::Collection::getEntrys()->at(FlappyLoader::MODUL_NAME);
+		} else {
+			return;
+		}
+	}
 	switch (sfevent.key.code) {
+	case sf::Keyboard::Up:
 	case sf::Keyboard::W:
+	case sf::Keyboard::Space:
 		m_bird.flap();
+		jumpSound.play();
 		break;
 	}
 }
 
-void FlappyBirdGame::FlappyBirdScreen::handleTime()
-{
+void FlappyBirdGame::FlappyBirdScreen::handleTime() {
+
+	if (m_state == GAMEOVER) {
+		return;
+	}
 	if (!checkCollision()) {
 		sf::Time deltaTime = m_clock.restart(); // clock.restart() returns elapsed time and restarts the timer
 
@@ -60,6 +88,7 @@ void FlappyBirdGame::FlappyBirdScreen::handleTime()
 	else {
 		// Gameover
 		m_state = GAMEOVER;
+		failSound.play();
 	}
 }
 
@@ -97,9 +126,10 @@ void FlappyBirdGame::FlappyBirdScreen::draw(sf::RenderWindow* window, sf::Font* 
 	}
 }
 
-int FlappyBirdGame::FlappyBirdScreen::close()
+int FlappyBirdGame::FlappyBirdScreen::close(ICollectionScreen** screen)
 {
-	return 0;
+	*screen = *m_nextScreen;
+	return CONTINUE;
 }
 
 /*
