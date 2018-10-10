@@ -52,7 +52,7 @@ void SnakeGame::SnakeScreen::handleEvent(const sf::Event sfevent)
 	m_isDirectionChanged = true; // makes the snake move immediately in the handleTime()-method
 }
 
-void SnakeGame::SnakeScreen::handleTime()
+void SnakeGame::SnakeScreen::update()
 {
 	if (m_state == GAMEOVER) {
 		return; // no gameticks if gameover

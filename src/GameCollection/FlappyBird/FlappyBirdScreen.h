@@ -38,7 +38,7 @@ namespace FlappyBirdGame
 		~FlappyBirdScreen() {}
 
 		void handleEvent(const sf::Event sfevent);
-		void handleTime();
+		void update();
 		void draw(sf::RenderWindow* window, sf::Font* font);
 		int close(ICollectionScreen** screen);
 

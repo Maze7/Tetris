@@ -28,7 +28,7 @@ namespace SnakeGame
 		~SnakeScreen() {}
 
 		void handleEvent(const sf::Event sfevent);
-		void handleTime();
+		void update();
 		void draw(sf::RenderWindow* window, sf::Font* font);
 		int close(ICollectionScreen** screen);
 		const STATES& getGameState();

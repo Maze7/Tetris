@@ -59,7 +59,7 @@ void FlappyBirdGame::FlappyBirdScreen::handleEvent(const sf::Event sfevent)
 	}
 }
 
-void FlappyBirdGame::FlappyBirdScreen::handleTime() {
+void FlappyBirdGame::FlappyBirdScreen::update() {
 
 	if (m_state == GAMEOVER) {
 		return;
