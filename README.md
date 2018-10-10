@@ -1,5 +1,5 @@
 # GameCollection
-Firstly this project was designed to be a Tetris Remake in C++ for one of our University exams. 
+Firstly, this project was designed to be a Tetris Remake in C++ for one of our University exams. 
 We expanded it to a little GameCollection. 
 
 The main "feature" is still Tetris, but we programmed Snake and FlappyBird as well. 
