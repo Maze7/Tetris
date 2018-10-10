@@ -1,7 +1,8 @@
-#include "SnakeGame.h"
+#include "SnakeScreen.h"
+
 #include <iostream>
 
-void SnakeGame::SnakeGame::handleEvent(const sf::Event sfevent)
+void SnakeGame::SnakeScreen::handleEvent(const sf::Event sfevent)
 {
 	switch (sfevent.key.code) {
 	case sf::Keyboard::W:
@@ -21,7 +22,7 @@ void SnakeGame::SnakeGame::handleEvent(const sf::Event sfevent)
 	m_isDirectionChanged = true; // makes the snake move immediately in the handleTime()-method
 }
 
-void SnakeGame::SnakeGame::handleTime()
+void SnakeGame::SnakeScreen::handleTime()
 {
 	// If time for a new tick or player changed direction
 	if (m_clock.getElapsedTime().asMilliseconds() > 100 || m_isDirectionChanged) {
@@ -53,13 +54,13 @@ void SnakeGame::SnakeGame::handleTime()
 	}
 }
 
-void SnakeGame::SnakeGame::draw(sf::RenderWindow * window, sf::Font * font)
+void SnakeGame::SnakeScreen::draw(sf::RenderWindow * window, sf::Font * font)
 {
 	m_field.draw(window, m_snake);
 	m_score.draw(window, font);
 }
 
-int SnakeGame::SnakeGame::close()
+int SnakeGame::SnakeScreen::close()
 {
 	return 0;
 }
@@ -68,7 +69,7 @@ int SnakeGame::SnakeGame::close()
 	Checks if the snake's head collided with the border of the field or with its tail.
 	Should be called in the handleTime()-method before the snake.move()-method is called.
 */
-bool SnakeGame::SnakeGame::checkCollision()
+bool SnakeGame::SnakeScreen::checkCollision()
 {
 	// Check collision with field borders
 	if (m_snake.getSnakeHead().x < 0 || m_snake.getSnakeHead().x > Field::s_ROWS - 1 || m_snake.getSnakeHead().y < 0 || m_snake.getSnakeHead().y > Field::s_COLUMNS) {
@@ -95,7 +96,7 @@ bool SnakeGame::SnakeGame::checkCollision()
 		field.spawnRandomFood();
 	}
 */
-bool SnakeGame::SnakeGame::isEatingPossible()
+bool SnakeGame::SnakeScreen::isEatingPossible()
 { 
 	if (m_snake.getSnakeHead().x == m_field.getFood().x && m_snake.getSnakeHead().y == m_field.getFood().y) {
 		return true;

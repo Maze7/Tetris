@@ -1,6 +1,6 @@
 #pragma once
 #include "../Collection.h"
-#include "SnakeGame.h"
+#include "SnakeScreen.h"
 
 namespace SnakeGame {
 
@@ -9,7 +9,7 @@ namespace SnakeGame {
 		static constexpr char MODUL_NAME[] = "Snake";
 
 		SnakeLoader() {
-			GameCollection::Collection::addModuleEntrys(MODUL_NAME, new SnakeGame());
+			GameCollection::Collection::addModuleEntrys(MODUL_NAME, new SnakeScreen());
 		};
 		virtual ~SnakeLoader() {};
 	};

@@ -6,7 +6,7 @@
 
 namespace SnakeGame 
 {
-	class SnakeGame : public GameCollection::ICollectionEntry
+	class SnakeScreen : public GameCollection::ICollectionEntry
 	{
 	private:
 		Snake m_snake;
@@ -19,8 +19,8 @@ namespace SnakeGame
 		bool m_isDirectionChanged;
 
 	public:
-		SnakeGame() : m_isDirectionChanged(false) { m_field.spawnRandomFood(m_snake); }
-		~SnakeGame() {}
+		SnakeScreen() : m_isDirectionChanged(false) { m_field.spawnRandomFood(m_snake); }
+		~SnakeScreen() {}
 
 		void handleEvent(const sf::Event sfevent);
 		void handleTime();
