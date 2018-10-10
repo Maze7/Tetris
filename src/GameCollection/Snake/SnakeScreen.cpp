@@ -123,7 +123,7 @@ int SnakeGame::SnakeScreen::close(ICollectionScreen** screen)
 
 /*
 	Checks if the snake's head collided with the border of the field or with its tail.
-	Should be called in the handleTime()-method before the snake.move()-method is called.
+	Should be called in the update()-method before the snake.move()-method is called.
 */
 bool SnakeGame::SnakeScreen::checkCollision()
 {
@@ -144,7 +144,7 @@ bool SnakeGame::SnakeScreen::checkCollision()
 
 /*
 	Checks if the snake's head is on top of the field's food.
-	Should be called in the handleTime()-method.
+	Should be called in the update()-method.
 
 	Example usage:
 	if (isEatingPossible()) {

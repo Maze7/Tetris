@@ -1,6 +1,6 @@
 #include "FlappyBirdScore.h"
 /*
-	Increases the score and updates the corresponding sf::Text.
+	Increases the score.
 
 	Example usage:
 	if (// bird passed a pipe) {
@@ -35,8 +35,8 @@ bool FlappyBirdGame::FlappyBirdScore::isNewHighscore()
 }
 
 /*
-Adds the current score to the m_highscoreList. The current score replaces the last element
-of the m_highscoreList. Afterwards the list gets sorted.
+	Adds the current score to the m_highscoreList. The current score replaces the last element
+	of the m_highscoreList. Afterwards the list gets sorted.
 */
 void FlappyBirdGame::FlappyBirdScore::addToHighscoreList()
 {

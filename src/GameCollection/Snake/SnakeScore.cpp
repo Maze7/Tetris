@@ -8,7 +8,7 @@ void SnakeGame::SnakeScore::draw(sf::RenderWindow * window, sf::Font * font)
 }
 
 /*
-	Increases the score and the corresponding sf::Text.
+	Increases the score.
 
 	Example usage:
 	if (//player scored) 
