@@ -3,6 +3,10 @@
 namespace FlappyBirdGame {
 
 FlappyMenuScreen::FlappyMenuScreen() : m_flappyGame(nullptr) {
+
+	if (!m_background.loadFromFile("static/bg.jpeg")) {
+		std::cerr << "[ERROR] [FlappyMenuScreen] loading bg picture failed" << std::endl;
+	}
 	entryScreens[PLAY] = (ICollectionScreen**) &m_flappyGame;
 }
 
