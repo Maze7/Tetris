@@ -1,5 +1,5 @@
 #pragma once
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <vector>
 #include <algorithm>
 #include <iostream>
@@ -18,6 +18,7 @@ namespace FlappyBirdGame
 		void draw(sf::RenderWindow* window, sf::Font* font);
 
 		void update();
+		void reset();
 
 		const int& getPipesPassed() { return m_pipesPassed; }
 

@@ -10,7 +10,15 @@
 void FlappyBirdGame::FlappyBirdScore::update()
 {
 	m_pipesPassed++;
-	m_pipesPassedText.setString("Pipes passed: " + std::to_string(m_pipesPassed));
+}
+
+/*
+	Resets the score.
+	Should be called before a new game is started.
+*/
+void FlappyBirdGame::FlappyBirdScore::reset()
+{
+	m_pipesPassed = 0;
 }
 
 /*
@@ -45,13 +53,22 @@ void FlappyBirdGame::FlappyBirdScore::readHighscoreListFromFile()
 	try {
 		std::vector<std::string> v_input = FileIO::readFile("FlappyBirdHighscores.txt");
 
-		for (int i = 0; i < m_highscoreList.size(); i++) {
-			m_highscoreList.at(i) = std::stoi(v_input.at(i));
+		if (v_input.size() == m_highscoreList.size()) {
+			try {
+				for (int i = 0; i < v_input.size(); i++) {
+					m_highscoreList.at(i) = std::stoi(v_input.at(i));
+				}
+			}
+			catch (std::invalid_argument &e) {
+				std::cout << "Invalid Argument in Highscores.txt" << std::endl;
+			}
+			catch (std::out_of_range &e) {
+				std::cout << "Argument in Highscores.txt is out of range" << std::endl;
+			}
 		}
 	}
-	catch (Exceptions::FileExceptions::FileNotFoundException const &e)
-	{
-		std::cout << e.what() << std::endl;
+	catch (Exceptions::FileExceptions::FileNotFoundException const &e) {
+			std::cout << e.what() << std::endl;
 	}
 }
 
@@ -63,7 +80,7 @@ void FlappyBirdGame::FlappyBirdScore::writeHighscoreListToFile()
 {
 	std::string output;
 
-	for (int highscore : m_highscoreList) {
+	for (auto const& highscore : m_highscoreList) {
 		output += std::to_string(highscore) + "\n";
 	}
 
@@ -76,8 +93,8 @@ void FlappyBirdGame::FlappyBirdScore::writeHighscoreListToFile()
 	}
 }
 
-void FlappyBirdGame::FlappyBirdScore::draw(sf::RenderWindow * window, sf::Font * font)
-{
+void FlappyBirdGame::FlappyBirdScore::draw(sf::RenderWindow * window, sf::Font * font) {
+	m_pipesPassedText.setString("Pipes passed: " + std::to_string(m_pipesPassed));
 	m_pipesPassedText.setFont(*font);
 	window->draw(m_pipesPassedText);
 }
@@ -91,5 +108,4 @@ void FlappyBirdGame::FlappyBirdScore::init()
 	m_pipesPassedText.setCharacterSize(32);
 	m_pipesPassedText.setFillColor(sf::Color::White);
 	m_pipesPassedText.setPosition(500, 500);
-	m_pipesPassedText.setString("Pipes passed: " + std::to_string(m_pipesPassed));
 }
