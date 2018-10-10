@@ -5,7 +5,7 @@
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1200, 800), "GameCollection");
-	window.setFramerateLimit(30);
+	window.setFramerateLimit(60);
 	sf::Font font;
 
 	// Todo ioutils
