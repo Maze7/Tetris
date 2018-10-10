@@ -34,7 +34,7 @@ void TetrisGame::TetrisScore::readHighscoreListFromFile()
 			}
 			catch (std::out_of_range& e) {
 				std::cout << "Argument in Highscores.txt is out of range" << std::endl;
-			}	
+			}
 		}
 	}
 	catch (Exceptions::FileExceptions::FileNotFoundException const &e)
@@ -70,10 +70,17 @@ void TetrisGame::TetrisScore::writeHighscoreListToFile()
 */
 void TetrisGame::TetrisScore::draw(sf::RenderWindow* window, sf::Font* font)
 {
+	// Update the sf::Text's that are displayed on screen
+	m_scoreText.setString("Score: " + std::to_string(m_score));
+	m_levelText.setString("Level: " + std::to_string(m_level));
+	m_lineCountText.setString("Lines: " + std::to_string(m_lineCount));
+
+	// Set font
 	m_levelText.setFont(*font);
 	m_scoreText.setFont(*font);
 	m_lineCountText.setFont(*font);
 
+	// Draw text
 	window->draw(m_levelText);
 	window->draw(m_scoreText);
 	window->draw(m_lineCountText);
@@ -110,15 +117,10 @@ void TetrisGame::TetrisScore::update(int completedRowCount)
 	if (m_lineCount >= m_level * 10) {
 		m_level++;
 	}
-
-	// Update the sf::Text's that are displayed on screen
-	m_scoreText.setString("Score: " + std::to_string(m_score));
-	m_levelText.setString("Level: " + std::to_string(m_level));
-	m_lineCountText.setString("Lines: " + std::to_string(m_lineCount));
 }
 
 /*
-	Resets the current score. 
+	Resets the current score.
 	Has to be called before starting a new game.
 */
 void TetrisGame::TetrisScore::reset()
@@ -127,10 +129,6 @@ void TetrisGame::TetrisScore::reset()
 	m_score = 0;
 	m_level = 1;
 	m_lineCount = 0;
-	// Update the sf::Text's that are displayed on screen
-	m_scoreText.setString("Score: " + std::to_string(m_score));
-	m_levelText.setString("Level: " + std::to_string(m_level));
-	m_lineCountText.setString("Lines: " + std::to_string(m_lineCount));
 }
 
 const int& TetrisGame::TetrisScore::getScore()
@@ -167,8 +165,8 @@ void TetrisGame::TetrisScore::setPlayerName(const std::string& playerName)
 	Checks if the achieved score is a new highscore.
 
 	Example usage:
-	// gameover 
-	if (score.isNewHighscore()) 
+	// gameover
+	if (score.isNewHighscore())
 		// insert player name
 		// add the score to the list
 */
@@ -220,10 +218,6 @@ void TetrisGame::TetrisScore::init()
 	m_levelText.setPosition(500, 400);
 	m_scoreText.setPosition(500, 500);
 	m_lineCountText.setPosition(500, 600);
-
-	m_scoreText.setString("Score: " + std::to_string(m_score));
-	m_levelText.setString("Level: " + std::to_string(m_level));
-	m_lineCountText.setString("Lines: " + std::to_string(m_lineCount));
 }
 
 
