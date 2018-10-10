@@ -81,7 +81,7 @@ std::vector<int> TetrisGame::Playfield::checkForCompletedRows()
 	for (int rowIndex : completedRowsIndices)
 		playfield.deleteRow(rowIndex);
 */
-void TetrisGame::Playfield::deleteRow(uint row)
+void TetrisGame::Playfield::deleteRow(unsigned int row)
 {
 	// Start at the completed row and move one row up every iteration (decrease y-index)
 	for (int y = row; y > 0; y--)
@@ -94,7 +94,7 @@ void TetrisGame::Playfield::deleteRow(uint row)
 	}
 }
 
-sf::Color TetrisGame::Playfield::getColorOfField(uint y, uint x)
+sf::Color TetrisGame::Playfield::getColorOfField(unsigned int y, unsigned int x)
 {
 	return m_grid[y][x];
 }
@@ -104,9 +104,9 @@ sf::Color TetrisGame::Playfield::getColorOfField(uint y, uint x)
 */
 void TetrisGame::Playfield::drawGrid(sf::RenderWindow* window)
 {
-	const uint WIDTH = window->getSize().x;
-	const uint HEIGHT = window->getSize().y;
-	const uint BLOCK_SIZE{ (HEIGHT - 2 * s_OFFSET) / s_ROWS };
+	const unsigned int WIDTH = window->getSize().x;
+	const unsigned int HEIGHT = window->getSize().y;
+	const unsigned int BLOCK_SIZE{ (HEIGHT - 2 * s_OFFSET) / s_ROWS };
 
 	// build ""Fancy"" grid which shows the end of the playfield
 	sf::RectangleShape grid(sf::Vector2f(BLOCK_SIZE * s_COLUMNS, HEIGHT - 2 * s_OFFSET));
@@ -157,8 +157,8 @@ void TetrisGame::Playfield::drawGrid(sf::RenderWindow* window)
 void TetrisGame::Playfield::drawTetromino(sf::RenderWindow* window, TetrisGame::Tetromino & tetromino, bool transparency)
 {
 
-	const uint HEIGHT = window->getSize().y;
-	const uint BLOCK_SIZE{ (HEIGHT - 2 * s_OFFSET) / s_ROWS };
+	const unsigned int HEIGHT = window->getSize().y;
+	const unsigned int BLOCK_SIZE{ (HEIGHT - 2 * s_OFFSET) / s_ROWS };
 
 	// Draw tetromino
 	// Get tetromino shape

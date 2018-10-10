@@ -32,7 +32,6 @@ GameCollection_SOURCES = src/Exceptions/FileExceptions.h\
 						src/GameCollection/Tetris/TetrisScore.h\
 						src/GameCollection/Tetris/Tetromino.cpp\
 						src/GameCollection/Tetris/Tetromino.h\
-						src/GameCollection/Tetris/Typedefs.h\
 						src/GameCollection/FlappyBird/Bird.cpp\
 						src/GameCollection/FlappyBird/Bird.h\
 						src/GameCollection/FlappyBird/FlappyBirdScore.cpp\

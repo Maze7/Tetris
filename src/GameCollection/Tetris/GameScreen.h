@@ -22,7 +22,7 @@ namespace TetrisGame
 
 		TetrisScore& m_score;
 		sf::Clock m_clock;
-		uint m_tickInterval;
+		unsigned int m_tickInterval;
 		std::vector<int> m_completedRows;
 		sf::Music gameMusic;
 

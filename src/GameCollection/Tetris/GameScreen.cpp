@@ -87,7 +87,7 @@ void TetrisGame::GameScreen::draw(sf::RenderWindow* window, sf::Font* font)
 	m_score.draw(window, font);
 
 	if (m_state == GAMEOVER) {
-		const uint BLOCK_SIZE{ (window->getSize().y- 2 * Playfield::s_OFFSET) / Playfield::s_ROWS };
+		const unsigned int BLOCK_SIZE{ (window->getSize().y- 2 * Playfield::s_OFFSET) / Playfield::s_ROWS };
 		sf::Vector2f size(BLOCK_SIZE * Playfield::s_COLUMNS, window->getSize().y - 2 * Playfield::s_OFFSET);
 
 		sf::RectangleShape shape;
@@ -315,8 +315,8 @@ bool TetrisGame::GameScreen::isPosValid(Tetromino* tetromino)
 
 	// other tetrominos
 	// iterate the 4x4 tetroshape
-	for (uint y = 0; y < 4; y++) {
-		for (uint x = 0; x < 4; x++) {
+	for (unsigned int y = 0; y < 4; y++) {
+		for (unsigned int x = 0; x < 4; x++) {
 
 			// if there is something other than zero, there is one part/block of the tetromino 
 			if (currentShape[0][y][x] == 1) {

@@ -22,8 +22,8 @@ namespace TetrisGame
 		~Playfield();
 		void addTetromino(TetrisGame::Tetromino& tetromino);
 		std::vector<int> checkForCompletedRows();
-		void deleteRow(uint row);
-		sf::Color getColorOfField(uint y, uint x);
+		void deleteRow(unsigned int row);
+		sf::Color getColorOfField(unsigned int y, unsigned int x);
 
 		void drawGrid(sf::RenderWindow* window);
 		void drawTetromino(sf::RenderWindow* window, TetrisGame::Tetromino& tetromino, bool transparency);
