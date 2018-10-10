@@ -19,6 +19,7 @@ void SnakeGame::SnakeScreen::handleEvent(const sf::Event sfevent)
 {
 	if (m_state == GAMEOVER) {
 		if (sfevent.key.code == sf::Keyboard::Return) {
+			m_score.reset();
 			m_running = false;
 			m_nextScreen = &GameCollection::Collection::getEntrys()->at(SnakeLoader::MODUL_NAME);
 		} else {
