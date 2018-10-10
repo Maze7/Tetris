@@ -25,15 +25,19 @@ void SnakeGame::SnakeScreen::handleEvent(const sf::Event sfevent)
 		}
 	}
 	switch (sfevent.key.code) {
+	case sf::Keyboard::Up:
 	case sf::Keyboard::W:
 		m_snake.changeDirection(Snake::MOVE_UP);
 		break;
+	case sf::Keyboard::Left:
 	case sf::Keyboard::A:
 		m_snake.changeDirection(Snake::MOVE_LEFT);
 		break;
+	case sf::Keyboard::Down:
 	case sf::Keyboard::S:
 		m_snake.changeDirection(Snake::MOVE_DOWN);
 		break;
+	case sf::Keyboard::Right:
 	case sf::Keyboard::D:
 		m_snake.changeDirection(Snake::MOVE_RIGHT);
 		break;
