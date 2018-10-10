@@ -170,7 +170,7 @@ void TetrisGame::GameScreen::handleCollision()
 	for (int x = 0; x < Playfield::s_COLUMNS; x++) {
 		if (m_playfield.getColorOfField(1, x) != sf::Color::Black) {
 			m_state = GameScreen::GAMEOVER;
-
+			gameMusic.stop();
 			if (m_score.isNewHighscore()) {
 				TetrisLoader::erase(TetrisLoader::SCORE);
 				TetrisLoader::addScreen(TetrisLoader::SCORE, new ScoreScreen(m_score, ScoreScreen::NEW_SCORE)); // user can write his name
