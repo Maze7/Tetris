@@ -26,10 +26,6 @@ void TetrisGame::MenuScreen::handleEvent(const sf::Event sfevent)
 	int entryIndex;
 	switch (sfevent.key.code)
 	{
-	case sf::Keyboard::H:
-		if(OS_Windows)
-			system("notepad.exe Tetris\\helptext_Tetris.txt");
-		break;
 	case sf::Keyboard::W:
 	case sf::Keyboard::Up:
 		if (m_hover == 0)
@@ -63,10 +59,6 @@ void TetrisGame::MenuScreen::draw(sf::RenderWindow* window, sf::Font* font)
 {
 	sf::Text menus[END];
 	sf::Sprite sprite; // used for background and text rendering
-
-	sf::Text helpNote("Press <H> for help text", *font, 35);
-	helpNote.setPosition( 280.f, (window->getSize().y - 50) * 1.f);
-	window->draw(helpNote);
 
 	sprite.setTexture(m_background);
 	sprite.setColor(sf::Color(255, 255, 255, 150));
