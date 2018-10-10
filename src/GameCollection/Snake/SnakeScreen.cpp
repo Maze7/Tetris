@@ -4,6 +4,16 @@
 
 #include <iostream>
 
+SnakeGame::SnakeScreen::SnakeScreen() :
+		m_nextScreen(nullptr),
+		m_isDirectionChanged(false),
+		m_state(PAUSED) {
+	m_field.spawnRandomFood(m_snake);
+	soundBuffer.loadFromFile("static/snake_eat.wav");
+	eatSound.setBuffer(soundBuffer);
+	eatSound.setLoop(false);
+}
+
 void SnakeGame::SnakeScreen::handleEvent(const sf::Event sfevent)
 {
 	switch (sfevent.key.code) {
@@ -41,6 +51,7 @@ void SnakeGame::SnakeScreen::handleTime()
 
 				// Eat and generate new food
 				m_snake.eat();
+				eatSound.play();
 				m_field.spawnRandomFood(m_snake);
 
 				// Update score

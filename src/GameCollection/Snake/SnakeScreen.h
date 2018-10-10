@@ -3,6 +3,7 @@
 #include "Snake.h"
 #include "Field.h"
 #include "SnakeScore.h"
+#include <SFML/Audio.hpp>
 
 namespace SnakeGame 
 {
@@ -17,11 +18,13 @@ namespace SnakeGame
 		SnakeScore m_score;
 		ICollectionScreen*const* m_nextScreen;
 		sf::Clock m_clock;
+		sf::SoundBuffer soundBuffer;
+		sf::Sound eatSound;
 
 		bool m_isDirectionChanged;
 
 	public:
-		SnakeScreen() : m_nextScreen(nullptr), m_isDirectionChanged(false), m_state(PAUSED) { m_field.spawnRandomFood(m_snake); }
+		SnakeScreen();
 		~SnakeScreen() {}
 
 		void handleEvent(const sf::Event sfevent);

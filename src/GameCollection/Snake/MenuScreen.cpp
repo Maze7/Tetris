@@ -1,10 +1,3 @@
-/*
- * MenuScreen.cpp
- *
- *  Created on: Oct 10, 2018
- *      Author: marcel
- */
-
 #include "MenuScreen.h"
 namespace SnakeGame {
 
