@@ -11,15 +11,7 @@ namespace FlappyBirdGame
 	class FlappyBirdScreen : public GameCollection::ICollectionScreen
 	{
 	public:
-		FlappyBirdScreen();
-		~FlappyBirdScreen() {}
-
-		void handleEvent(const sf::Event sfevent);
-		void handleTime();
-		void draw(sf::RenderWindow* window, sf::Font* font);
-		int close();
-
-
+		enum STATES { PLAYING = 0, PAUSED = 1, GAMEOVER = 2 };
 
 	private:
 		Bird m_bird;
@@ -33,6 +25,16 @@ namespace FlappyBirdGame
 
 		sf::Clock m_clock;
 
+	public:
+		FlappyBirdScreen();
+		~FlappyBirdScreen() {}
+
+		void handleEvent(const sf::Event sfevent);
+		void handleTime();
+		void draw(sf::RenderWindow* window, sf::Font* font);
+		int close();
+
+	private:
 		bool checkCollision();
 		void handleCollision();
 	};
