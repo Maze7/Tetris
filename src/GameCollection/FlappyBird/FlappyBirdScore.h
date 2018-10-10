@@ -39,6 +39,6 @@ namespace FlappyBirdGame
 		void init();
 	};
 
-}
+} /* namespace FlappyBirdGame */
 
 

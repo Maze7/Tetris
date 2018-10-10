@@ -30,7 +30,7 @@ namespace SnakeGame
 	private:
 		bool isSpaceEmpty(Snake& snake);
 	};
-}
+} /* namespace SnakeGame */
 
 
 

@@ -4,7 +4,9 @@
 
 #include <iostream>
 
-SnakeGame::SnakeScreen::SnakeScreen(SnakeScore& score) :
+namespace SnakeGame {
+
+SnakeScreen::SnakeScreen(SnakeScore& score) :
 		m_score(score),
 		m_nextScreen(nullptr),
 		m_isDirectionChanged(false),
@@ -15,8 +17,7 @@ SnakeGame::SnakeScreen::SnakeScreen(SnakeScore& score) :
 	eatSound.setLoop(false);
 }
 
-void SnakeGame::SnakeScreen::handleEvent(const sf::Event sfevent)
-{
+void SnakeScreen::handleEvent(const sf::Event sfevent) {
 	if (m_state == GAMEOVER) {
 		if (sfevent.key.code == sf::Keyboard::Return) {
 			m_score.reset();
@@ -52,8 +53,7 @@ void SnakeGame::SnakeScreen::handleEvent(const sf::Event sfevent)
 	m_isDirectionChanged = true; // makes the snake move immediately in the handleTime()-method
 }
 
-void SnakeGame::SnakeScreen::update()
-{
+void SnakeScreen::update() {
 	if (m_state == GAMEOVER) {
 		return; // no gameticks if gameover
 	}
@@ -95,8 +95,7 @@ void SnakeGame::SnakeScreen::update()
 	}
 }
 
-void SnakeGame::SnakeScreen::draw(sf::RenderWindow * window, sf::Font * font)
-{
+void SnakeScreen::draw(sf::RenderWindow * window, sf::Font * font) {
 	m_field.draw(window, m_snake);
 	m_score.draw(window, font);
 	if (m_state == GAMEOVER) {
@@ -115,8 +114,7 @@ void SnakeGame::SnakeScreen::draw(sf::RenderWindow * window, sf::Font * font)
 	}
 }
 
-int SnakeGame::SnakeScreen::close(ICollectionScreen** screen)
-{
+int SnakeScreen::close(ICollectionScreen** screen) {
 	*screen = *m_nextScreen;
 	return CONTINUE;
 }
@@ -125,8 +123,7 @@ int SnakeGame::SnakeScreen::close(ICollectionScreen** screen)
 	Checks if the snake's head collided with the border of the field or with its tail.
 	Should be called in the update()-method before the snake.move()-method is called.
 */
-bool SnakeGame::SnakeScreen::checkCollision()
-{
+bool SnakeScreen::checkCollision() {
 	// Check collision with field borders
 	if (m_snake.getSnakeHead().x < 0 || m_snake.getSnakeHead().x > Field::s_ROWS - 1 || m_snake.getSnakeHead().y < 0 || m_snake.getSnakeHead().y > Field::s_COLUMNS - 1) {
 		return true;
@@ -152,8 +149,7 @@ bool SnakeGame::SnakeScreen::checkCollision()
 		field.spawnRandomFood();
 	}
 */
-bool SnakeGame::SnakeScreen::isEatingPossible()
-{ 
+bool SnakeScreen::isEatingPossible() { 
 	if (m_snake.getSnakeHead().x == m_field.getFood().x && m_snake.getSnakeHead().y == m_field.getFood().y) {
 		return true;
 	}
@@ -161,10 +157,12 @@ bool SnakeGame::SnakeScreen::isEatingPossible()
 	return false;
 }
 
-const SnakeGame::SnakeScreen::STATES& SnakeGame::SnakeScreen::getGameState() {
+const SnakeScreen::STATES& SnakeScreen::getGameState() {
 	return m_state;
 }
 
-void SnakeGame::SnakeScreen::setGameState(const STATES& newState) {
+void SnakeScreen::setGameState(const STATES& newState) {
 	m_state = newState;
 }
+
+} /* namespace SnakeGame */

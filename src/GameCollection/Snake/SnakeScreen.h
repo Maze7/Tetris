@@ -40,6 +40,6 @@ namespace SnakeGame
 		bool isEatingPossible();
 
 	};
-}
+} /* namespace SnakeGame */
 
 

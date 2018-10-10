@@ -39,6 +39,6 @@ namespace SnakeGame
 
 		void init();
 	};
-}
+} /* namespace SnakeGame */
 
 

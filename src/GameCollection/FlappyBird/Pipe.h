@@ -27,7 +27,7 @@ namespace FlappyBirdGame
 		int m_gapSize;
 		bool m_isPassed;
 	};
-}
+} /* namespace FlappyBirdGame */
 
 
 

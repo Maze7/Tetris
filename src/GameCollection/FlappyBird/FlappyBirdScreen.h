@@ -48,7 +48,7 @@ namespace FlappyBirdGame
 	private:
 		bool checkCollision();
 	};
-}
+} /* namespace FlappyBirdGame */
 
 
 

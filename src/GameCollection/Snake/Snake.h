@@ -24,7 +24,7 @@ namespace SnakeGame
 		void changeDirection(SNAKE_DIRECTION direction);
 		void move();
 	};
-}
+} /* namespace SnakeGame */
 
 
 
