@@ -3,27 +3,31 @@
 #include "TetrisLoader.h"
 #include <iostream>
 
-TetrisGame::SettingsScreen::SettingsScreen()
+namespace TetrisGame {
+
+SettingsScreen::SettingsScreen()
 {
 	// Load Background picture. Use same as tetris menu.
 	m_background = sf::Texture();
-	if (!m_background.loadFromFile(TetrisGame::MenuScreen::s_BACKGROUND_PATH))
-	{
-		std::cerr << "[ERROR] [TetrisGame::SettingsMenu] loading bg picture failed" << std::endl;
+	if (!m_background.loadFromFile(MenuScreen::s_BACKGROUND_PATH)) {
+		std::cerr << "[ERROR] [SettingsMenu] loading bg picture failed" << std::endl;
 	}
 }
 
-void TetrisGame::SettingsScreen::handleEvent(const sf::Event sfevent)
+/*
+	#Override : ICollectionScreen
+*/
+void SettingsScreen::handleEvent(const sf::Event sfevent)
 {
 	int newHover;
-	switch (sfevent.key.code)
-	{
+	switch (sfevent.key.code) {
 	case sf::Keyboard::W:
 	case sf::Keyboard::Up:
-		if (m_hover == 0)
+		if (m_hover == 0) {
 			m_hover = ENTRYS(END - 1);
-		else
+		} else {
 			m_hover = ENTRYS(m_hover - 1);
+		} 
 		break;
 
 	case sf::Keyboard::S:
@@ -52,15 +56,20 @@ void TetrisGame::SettingsScreen::handleEvent(const sf::Event sfevent)
 
 	case sf::Keyboard::D:
 	case sf::Keyboard::Right:
-		if (m_hover == SOUND_VOLUME && m_volume < MAX_VOLUME)
+		if (m_hover == SOUND_VOLUME && m_volume < MAX_VOLUME) {
 			m_volume++;
-		if (m_hover == DIFFICULTY)
+		}
+		if (m_hover == DIFFICULTY) {
 			m_difficulty = ++m_difficulty % DIFFICULTY_SIZE;
+		}
 		break;
 	}
 }
 
-void TetrisGame::SettingsScreen::draw(sf::RenderWindow* window, sf::Font* font)
+/*
+	#Override : ICollectionScreen
+*/
+void SettingsScreen::draw(sf::RenderWindow* window, sf::Font* font)
 {
 	sf::Vector2f pos(280.f, 160.f);
 	sf::Text menus[END];
@@ -92,8 +101,7 @@ void TetrisGame::SettingsScreen::draw(sf::RenderWindow* window, sf::Font* font)
 				window->draw(volumeBars[j]);
 			}
 			pos.y = pos.y + 60;
-		}
-		else if (i == DIFFICULTY)  {
+		} else if (i == DIFFICULTY)  {
 			unsigned int x = pos.x; // copy
 			for (unsigned j = 0; j < DIFFICULTY_SIZE; j++) {
 				diffTexts[j].setPosition(x, pos.y);
@@ -114,14 +122,15 @@ void TetrisGame::SettingsScreen::draw(sf::RenderWindow* window, sf::Font* font)
 	window->draw(sprite); // background opacity
 }
 
-int TetrisGame::SettingsScreen::close(ICollectionScreen** screen)
-{
+/*
+	#Override : ICollectionScreen
+*/
+int SettingsScreen::close(ICollectionScreen** screen) {
 
 	if (TetrisLoader::contains(TetrisLoader::GAME)) {
 		TetrisLoader::getGame()->setSoundVolume(getSoundVolume());
 	}
-	switch (m_hover)
-	{
+	switch (m_hover) {
 	case BACK:
 		*screen = *TetrisLoader::getScreen(TetrisLoader::MENU);
 		return CONTINUE;
@@ -132,7 +141,7 @@ int TetrisGame::SettingsScreen::close(ICollectionScreen** screen)
 	}
 }
 
-const unsigned int TetrisGame::SettingsScreen::getDifficulty() {
+const unsigned int SettingsScreen::getDifficulty() {
 	return m_difficulty * m_difficultyIntervall;
 }
 
@@ -140,6 +149,8 @@ const unsigned int TetrisGame::SettingsScreen::getDifficulty() {
  * Returns a sound volume from 0 - 100 (%)
  * Directly parse to sfml sound is possible.
  */
-float TetrisGame::SettingsScreen::getSoundVolume() {
+float SettingsScreen::getSoundVolume() {
 	return m_volume * 10.f;
 }
+
+} /* namepace TetrisGame */

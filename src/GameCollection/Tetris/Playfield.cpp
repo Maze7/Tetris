@@ -1,6 +1,7 @@
 #include "Playfield.h"
 
-TetrisGame::Playfield::~Playfield()
+namespace TetrisGame {
+Playfield::~Playfield()
 {
 }
 
@@ -14,10 +15,10 @@ TetrisGame::Playfield::~Playfield()
 	if ( // tetromino collided after moving down )
 		addTetromino(activeTetromino);
 */
-void TetrisGame::Playfield::addTetromino(TetrisGame::Tetromino& tetromino)
+void Playfield::addTetromino(Tetromino& tetromino)
 {
 	// Get the shape of the tetromino
-	const TetrisGame::Tetromino::TetroShape* tetroShape = &TetrisGame::Tetromino::SHAPE_DATA[tetromino.getType()][tetromino.getRotation()];
+	const Tetromino::TetroShape* tetroShape = &Tetromino::SHAPE_DATA[tetromino.getType()][tetromino.getRotation()];
 	sf::Vector2i gridPosition;
 
 	for (int y = 0; y < 4; y++) 
@@ -30,7 +31,7 @@ void TetrisGame::Playfield::addTetromino(TetrisGame::Tetromino& tetromino)
 				gridPosition.x = tetromino.getPosition().x + x;
 				gridPosition.y = tetromino.getPosition().y + y;
 
-				m_grid[gridPosition.y][gridPosition.x] = TetrisGame::Tetromino::SHAPE_COLORS[tetromino.getType()];
+				m_grid[gridPosition.y][gridPosition.x] = Tetromino::SHAPE_COLORS[tetromino.getType()];
 			}
 		}
 	}
@@ -45,7 +46,7 @@ void TetrisGame::Playfield::addTetromino(TetrisGame::Tetromino& tetromino)
 		std::vector<int> completedRows = playfield.checkForCompletedRows();
 		// remove the completed rows
 */
-std::vector<int> TetrisGame::Playfield::checkForCompletedRows()
+std::vector<int> Playfield::checkForCompletedRows()
 {
 	std::vector<int> completedRowsIndices;
 	bool completed = true;
@@ -81,7 +82,7 @@ std::vector<int> TetrisGame::Playfield::checkForCompletedRows()
 	for (int rowIndex : completedRowsIndices)
 		playfield.deleteRow(rowIndex);
 */
-void TetrisGame::Playfield::deleteRow(unsigned int row)
+void Playfield::deleteRow(unsigned int row)
 {
 	// Start at the completed row and move one row up every iteration (decrease y-index)
 	for (int y = row; y > 0; y--)
@@ -94,7 +95,7 @@ void TetrisGame::Playfield::deleteRow(unsigned int row)
 	}
 }
 
-sf::Color TetrisGame::Playfield::getColorOfField(unsigned int y, unsigned int x)
+sf::Color Playfield::getColorOfField(unsigned int y, unsigned int x)
 {
 	return m_grid[y][x];
 }
@@ -102,7 +103,7 @@ sf::Color TetrisGame::Playfield::getColorOfField(unsigned int y, unsigned int x)
 /*
 	Draws the Playfield's grid => m_grid to m_window
 */
-void TetrisGame::Playfield::drawGrid(sf::RenderWindow* window)
+void Playfield::drawGrid(sf::RenderWindow* window)
 {
 	const unsigned int WIDTH = window->getSize().x;
 	const unsigned int HEIGHT = window->getSize().y;
@@ -154,15 +155,14 @@ void TetrisGame::Playfield::drawGrid(sf::RenderWindow* window)
 		// in this specific case, the playfield should contain other offsets
 		// so they will be drawn alongsite eachother
 */
-void TetrisGame::Playfield::drawTetromino(sf::RenderWindow* window, TetrisGame::Tetromino & tetromino, bool transparency)
-{
+void Playfield::drawTetromino(sf::RenderWindow* window, Tetromino & tetromino, bool transparency) {
 
 	const unsigned int HEIGHT = window->getSize().y;
 	const unsigned int BLOCK_SIZE{ (HEIGHT - 2 * s_OFFSET) / s_ROWS };
 
 	// Draw tetromino
 	// Get tetromino shape
-	const TetrisGame::Tetromino::TetroShape* tetroShape = &TetrisGame::Tetromino::SHAPE_DATA[tetromino.getType()][tetromino.getRotation()];
+	const Tetromino::TetroShape* tetroShape = &Tetromino::SHAPE_DATA[tetromino.getType()][tetromino.getRotation()];
 	sf::Vector2i tetrominoBlockPosition;
 
 	// Create a sf::RectangleShape to draw the blocks
@@ -173,19 +173,15 @@ void TetrisGame::Playfield::drawTetromino(sf::RenderWindow* window, TetrisGame::
 		tetroBlock.setFillColor(sf::Color::Transparent);
 		tetroBlock.setOutlineColor(sf::Color::White);
 		tetroBlock.setOutlineThickness(1);
-	}
-	else {
-		tetroBlock.setFillColor(TetrisGame::Tetromino::SHAPE_COLORS[tetromino.getType()]);
+	} else {
+		tetroBlock.setFillColor(Tetromino::SHAPE_COLORS[tetromino.getType()]);
 	}
 
 	// Iterate over the corresponding SHAPE_DATA (sub)array
-	for (int y = 0; y < 4; y++)
-	{
-		for (int x = 0; x < 4; x++)
-		{
+	for (int y = 0; y < 4; y++) {
+		for (int x = 0; x < 4; x++) {
 			// If a block is visible (== 1), draw it
-			if (tetroShape[0][y][x] == 1)
-			{
+			if (tetroShape[0][y][x] == 1) {
 				// Calculate the on-screen position of the block
 				tetrominoBlockPosition.x = (tetromino.getPosition().x + x) * BLOCK_SIZE + s_OFFSET;
 				tetrominoBlockPosition.y = (tetromino.getPosition().y + y) * BLOCK_SIZE + s_OFFSET;
@@ -208,29 +204,25 @@ void TetrisGame::Playfield::drawTetromino(sf::RenderWindow* window, TetrisGame::
 	if (m_completedRows.size() > 0)
 		m_playfield.markCompletedRows(&m_completedRows, sf::Color::White);
 */
-void TetrisGame::Playfield::markCompletedRows(std::vector<int>* completedRows, sf::Color color)
+void Playfield::markCompletedRows(std::vector<int>* completedRows, sf::Color color)
 {
-	for (int& rowId : *completedRows) 
-	{
-		for (int x = 0; x < s_COLUMNS; x++)
-		{
+	for (int& rowId : *completedRows) {
+		for (int x = 0; x < s_COLUMNS; x++) {
 			m_grid[rowId][x] = color;
 		}
 	}
-	
 }
 
 /*
 	Clears the whole Playfield.
 	Currently unused.
 */
-void TetrisGame::Playfield::resetPlayfield()
+void Playfield::resetPlayfield()
 {
-	for (int y = 0; y < s_ROWS; y++)
-	{
-		for (int x = 0; x < s_COLUMNS; x++)
-		{
+	for (int y = 0; y < s_ROWS; y++) {
+		for (int x = 0; x < s_COLUMNS; x++)	{
 			m_grid[y][x] = sf::Color::Black;
 		}
 	}
 }
+} /* namespace TetrisGame */

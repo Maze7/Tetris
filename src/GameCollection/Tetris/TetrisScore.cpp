@@ -1,12 +1,14 @@
 #include "TetrisScore.h"
 
-TetrisGame::TetrisScore::TetrisScore()
-	: m_highscoreList(5, Highscore{"unknown", 0, 0, 0})
-	, m_playerName("unknown")
-	, m_score(0)
-	, m_level(1)
-	, m_lineCount(0)
-{
+namespace TetrisGame {
+
+TetrisScore::TetrisScore()
+		: m_highscoreList(5, Highscore{"unknown", 0, 0, 0})
+		, m_playerName("unknown")
+		, m_score(0)
+		, m_level(1)
+		, m_lineCount(0) {
+
 	init();
 	readHighscoreListFromFile();
 }
@@ -15,10 +17,8 @@ TetrisGame::TetrisScore::TetrisScore()
 	Reads the highscores from the file and saves them in the m_highscoreList
 	Should be called in the constructor of this class (TetrisScore).
 */
-void TetrisGame::TetrisScore::readHighscoreListFromFile()
-{
-	try
-	{
+void TetrisScore::readHighscoreListFromFile() {
+	try	{
 		std::vector<std::string> v_input = FileIO::readFile("Highscores.txt");
 		int i = 0;
 
@@ -28,17 +28,13 @@ void TetrisGame::TetrisScore::readHighscoreListFromFile()
 					highscore = Highscore{ v_input[i], std::stoi(v_input[i + 1]), std::stoi(v_input[i + 2]), std::stoi(v_input[i + 3]) };
 					i += 4; // 4 is the amount of lines that belong to a highscore (score, level, linecount)
 				}
-			}
-			catch (std::invalid_argument &e) {
+			} catch (std::invalid_argument &e) {
 				std::cout << "Invalid Argument in Highscores.txt" << std::endl;
-			}
-			catch (std::out_of_range& e) {
+			} catch (std::out_of_range& e) {
 				std::cout << "Argument in Highscores.txt is out of range" << std::endl;
 			}
 		}
-	}
-	catch (Exceptions::FileExceptions::FileNotFoundException const &e)
-	{
+	} catch (Exceptions::FileExceptions::FileNotFoundException const &e) {
 		std::cout << e.what() << std::endl;
 	}
 }
@@ -47,20 +43,17 @@ void TetrisGame::TetrisScore::readHighscoreListFromFile()
 	Writes the m_highscoreList to a file.
 	Should be called before closing the application.
 */
-void TetrisGame::TetrisScore::writeHighscoreListToFile()
-{
+void TetrisScore::writeHighscoreListToFile() {
 	std::string output;
 
-	for (auto const& highscore : m_highscoreList)
-	{
+	for (auto const& highscore : m_highscoreList) {
 		output += highscore.playerName + "\n" + std::to_string(highscore.score) + "\n" + std::to_string(highscore.level) + "\n" + std::to_string(highscore.lineCount) + "\n";
 	}
 
 	// Write to file
 	try {
 		FileIO::writeFile(output, "Highscores.txt");
-	}
-	catch (Exceptions::FileExceptions::FileWriteException const &e) {
+	} catch (Exceptions::FileExceptions::FileWriteException const &e) {
 		std::cout << e.what() << std::endl;
 	}
 }
@@ -68,8 +61,7 @@ void TetrisGame::TetrisScore::writeHighscoreListToFile()
 /*
 	Draws the score texts in the given window with the given font.
 */
-void TetrisGame::TetrisScore::draw(sf::RenderWindow* window, sf::Font* font)
-{
+void TetrisScore::draw(sf::RenderWindow* window, sf::Font* font) {
 	// Update the sf::Text's that are displayed on screen
 	m_scoreText.setString("Score: " + std::to_string(m_score));
 	m_levelText.setString("Level: " + std::to_string(m_level));
@@ -89,14 +81,12 @@ void TetrisGame::TetrisScore::draw(sf::RenderWindow* window, sf::Font* font)
 /*
 	Increases each score metric and the corresponding sf::Text depending on rows completed
 */
-void TetrisGame::TetrisScore::update(int completedRowCount)
-{
+void TetrisScore::update(int completedRowCount) {
 	// Update the line count
 	m_lineCount += completedRowCount;
 
 	// Increase the score depending on rows completed
-	switch (completedRowCount)
-	{
+	switch (completedRowCount) {
 	case 1:
 		m_score += 40 * m_level;
 		break;
@@ -112,7 +102,6 @@ void TetrisGame::TetrisScore::update(int completedRowCount)
 	default:
 		break;
 	}
-
 	// Increase level, if enough lines have been completed
 	if (m_lineCount >= m_level * 10) {
 		m_level++;
@@ -123,7 +112,7 @@ void TetrisGame::TetrisScore::update(int completedRowCount)
 	Resets the current score.
 	Has to be called before starting a new game.
 */
-void TetrisGame::TetrisScore::reset()
+void TetrisScore::reset()
 {
 	m_playerName = "unknown";
 	m_score = 0;
@@ -131,33 +120,27 @@ void TetrisGame::TetrisScore::reset()
 	m_lineCount = 0;
 }
 
-const int& TetrisGame::TetrisScore::getScore()
-{
+const int& TetrisScore::getScore() {
 	return m_score;
 }
 
-const int& TetrisGame::TetrisScore::getLevel()
-{
+const int& TetrisScore::getLevel() {
 	return m_level;
 }
 
-const int& TetrisGame::TetrisScore::getLineCount()
-{
+const int& TetrisScore::getLineCount() {
 	return m_lineCount;
 }
 
-void TetrisGame::TetrisScore::setStartLevel(int level)
-{
+void TetrisScore::setStartLevel(int level) {
 	m_level = level;
 }
 
-const std::string& TetrisGame::TetrisScore::getPlayerName()
-{
+const std::string& TetrisScore::getPlayerName() {
 	return m_playerName;
 }
 
-void TetrisGame::TetrisScore::setPlayerName(const std::string& playerName)
-{
+void TetrisScore::setPlayerName(const std::string& playerName) {
 	m_playerName = playerName;
 }
 
@@ -170,8 +153,7 @@ void TetrisGame::TetrisScore::setPlayerName(const std::string& playerName)
 		// insert player name
 		// add the score to the list
 */
-bool TetrisGame::TetrisScore::isNewHighscore()
-{
+bool TetrisScore::isNewHighscore() {
 	return m_score > m_highscoreList[m_highscoreList.size() - 1].score;
 }
 
@@ -186,8 +168,7 @@ bool TetrisGame::TetrisScore::isNewHighscore()
 		// insert player name
 		score.addToHighscoreList();
 */
-void TetrisGame::TetrisScore::addToHighscoreList()
-{
+void TetrisScore::addToHighscoreList() {
 	// Add new highscore as last element to the list
 	m_highscoreList[m_highscoreList.size() - 1] = Highscore{ m_playerName, m_score, m_level, m_lineCount };
 
@@ -205,8 +186,7 @@ void TetrisGame::TetrisScore::addToHighscoreList()
 	Sets up the position, color and size of the sf::Texts.
 	Should be called in the constructor of this class (TetrisScore).
 */
-void TetrisGame::TetrisScore::init()
-{
+void TetrisScore::init() {
 	m_levelText.setCharacterSize(32);
 	m_scoreText.setCharacterSize(32);
 	m_lineCountText.setCharacterSize(32);
@@ -220,4 +200,4 @@ void TetrisGame::TetrisScore::init()
 	m_lineCountText.setPosition(500, 600);
 }
 
-
+} /* namespace TetrisGame */

@@ -4,34 +4,40 @@
 #include <iostream>
 #include "TetrisLoader.h"
 
-constexpr char TetrisGame::MenuScreen::s_BACKGROUND_PATH[];
+namespace TetrisGame {
 
-TetrisGame::MenuScreen::MenuScreen() : m_score(TetrisScore())
-{
+// initialize static element
+constexpr char MenuScreen::s_BACKGROUND_PATH[];
+
+/*
+	MenuScreen is a member of ICollectionScreen and will be loaded on startup.
+	From here, all other TetrisScreen get initialized. 
+*/
+MenuScreen::MenuScreen() : m_score(TetrisScore()) {
 	//Load background. Dont do it inside the draw loop!
 	// Use the defined path to the background picture
 	m_background = sf::Texture();
 	m_currentState = PLAY;
-	if (!m_background.loadFromFile(s_BACKGROUND_PATH))
-	{
+	if (!m_background.loadFromFile(s_BACKGROUND_PATH)) {
 		std::cerr << "[ERROR] [TetrisGame::TetrisMenu] loading bg picture failed" << std::endl;
 	}
 }
 
 /*
+	#Override : ICollectionScreen
+
 	Allows to switch through the menu.
 */
-void TetrisGame::MenuScreen::handleEvent(const sf::Event sfevent)
-{
+void MenuScreen::handleEvent(const sf::Event sfevent) {
 	int entryIndex;
-	switch (sfevent.key.code)
-	{
+	switch (sfevent.key.code) {
 	case sf::Keyboard::W:
 	case sf::Keyboard::Up:
-		if (m_hover == 0)
+		if (m_hover == 0) {
 			m_hover = ENTRYS(END - 1);
-		else
+		} else {
 			m_hover = ENTRYS(m_hover - 1);
+		}
 		break;
 	case sf::Keyboard::S:
 	case sf::Keyboard::Down:
@@ -54,9 +60,10 @@ void TetrisGame::MenuScreen::handleEvent(const sf::Event sfevent)
 	}
 }
 
-
-void TetrisGame::MenuScreen::draw(sf::RenderWindow* window, sf::Font* font)
-{
+/*
+	#Override : ICollectionScreen
+*/
+void MenuScreen::draw(sf::RenderWindow* window, sf::Font* font) {
 	sf::Text menus[END];
 	sf::Sprite sprite; // used for background and text rendering
 
@@ -70,22 +77,21 @@ void TetrisGame::MenuScreen::draw(sf::RenderWindow* window, sf::Font* font)
 
 		// show different text during gameplay
 		if (i == PLAY 
-			&& TetrisLoader::contains(TetrisLoader::GAME)
-			&& (TetrisLoader::getGame()->getGameState() == GameScreen::PAUSED || TetrisLoader::getGame()->getGameState() == GameScreen::PLAYING) )
-		{
+				&& TetrisLoader::contains(TetrisLoader::GAME)
+				&& (TetrisLoader::getGame()->getGameState() == GameScreen::PAUSED || TetrisLoader::getGame()->getGameState() == GameScreen::PLAYING) )	{
+			
 			menus[PLAY] = sf::Text ("Continue", *font, 50);
 
 			sf::Text text("(press <DELETE> for reset)", *font, 20);
 			text.setPosition({ 440.f, 180.f });
 			window->draw(text);
-		}
-		else {
+		} else {
 			menus[i] = sf::Text(entry_names[i], *font, 50);
 		}
 
-		if (m_hover == i)
+		if (m_hover == i) {
 			menus[i].setFillColor(sf::Color(255, 0, 0, 255));
-
+		}
 		pos.y = pos.y + 60;
 		menus[i].setPosition(pos);
 		window->draw(menus[i]);
@@ -94,13 +100,13 @@ void TetrisGame::MenuScreen::draw(sf::RenderWindow* window, sf::Font* font)
 }
 
 /*
+	#Override : ICollectionScreen
+
 	Returns the number of selected menu entry. The selected menu entry is stored in m_currentState. 
 	In case of exit or main menu the defined codes in ICollectionEntry will be returned. 
 */
-int TetrisGame::MenuScreen::close(ICollectionScreen** screen)
-{
-	switch (m_currentState)
-	{
+int MenuScreen::close(ICollectionScreen** screen) {
+	switch (m_currentState)	{
 	case EXIT:
 		return EXIT_SUCCESS;
 		break;
@@ -122,7 +128,7 @@ int TetrisGame::MenuScreen::close(ICollectionScreen** screen)
 		*screen = *TetrisLoader::getScreen(TetrisLoader::SCORE);
 		return CONTINUE;
 	case PLAY:
-	{ // new scope, needed for gameScreen
+	{ /* private Scope */ // needed for gameScreen
 
 		if (!TetrisLoader::contains(TetrisLoader::GAME)) {
 			TetrisLoader::addScreen(TetrisLoader::GAME, new GameScreen(m_score));
@@ -136,12 +142,12 @@ int TetrisGame::MenuScreen::close(ICollectionScreen** screen)
 			TetrisLoader::getGame()->setGameState(GameScreen::PLAYING);
 		}
 		*screen = *TetrisLoader::getScreen(TetrisLoader::GAME); // open game
-	}
+	} /* scope */
 		return CONTINUE;
-
 		break;
 	default:
 		return EXIT_FAILURE;
 		break;
 	}
 }
+} /* namespace TetrisGame */

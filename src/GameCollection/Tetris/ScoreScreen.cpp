@@ -1,8 +1,19 @@
 #include "ScoreScreen.h"
 #include "TetrisLoader.h"
 
-using namespace TetrisGame;
+namespace TetrisGame {
 
+/*
+	ScoreScreen inherits from ICollectionScreen and draws highscores.
+	If param scoreState set to NEW_SCORE the user can type his name and 
+	the new score will safed to a file.
+	Params:
+		TetrisScore& - reference to TetrisScore
+		STATES - the state of the ScoreScreen. SHOW_SCORE only allows to see
+				 past scores. NEW_SCORE allows to type a name and safe a score.
+
+	NEW_SCORE should only set if m_score contains a valid highscore. 
+*/
 ScoreScreen::ScoreScreen(TetrisScore& score, STATES scoreState) :
 			m_hover(((scoreState == NEW_SCORE) ? NAME : BACK)), // focuse name field if user should type
 			m_currentState(m_hover),
@@ -11,10 +22,14 @@ ScoreScreen::ScoreScreen(TetrisScore& score, STATES scoreState) :
 			m_score(score),
 			m_background(sf::Texture()) {
 
-	if (!m_background.loadFromFile(TetrisGame::MenuScreen::s_BACKGROUND_PATH))
+	if (!m_background.loadFromFile(TetrisGame::MenuScreen::s_BACKGROUND_PATH)) {
 		std::cerr << "[ERROR] [TetrisGame::ScoreScreen] loading bg picture failed" << std::endl;
+	}
 }
 
+/*
+	#Override : ICollectionScreen
+*/
 void ScoreScreen::handleEvent(const sf::Event sfevent) {
 	// no new highscore => only back is displayed so return means go back
 	if (m_state == SHOW_SCORE && sfevent.key.code == sf::Keyboard::Return) {
@@ -75,6 +90,9 @@ void ScoreScreen::handleEvent(const sf::Event sfevent) {
 	}
 }
 
+/*
+	#Override : ICollectionScreen
+*/
 void ScoreScreen::draw(sf::RenderWindow* window, sf::Font* font) {
 
 	sf::Text highscores[4]; // show 4 recent highscores
@@ -123,8 +141,11 @@ void ScoreScreen::draw(sf::RenderWindow* window, sf::Font* font) {
 	window->draw(highscoreText);
 	window->draw(sprite);
 }
-
+/*
+	#Override : ICollectionScreen
+*/
 int ScoreScreen::close(ICollectionScreen** screen) {
 	*screen = *TetrisLoader::getScreen(TetrisLoader::SCREENS(m_nextScreen));
 	return CONTINUE; // There is no exit option in this menu
 }
+} /* namespace TetrisGame */
