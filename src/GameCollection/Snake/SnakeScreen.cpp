@@ -1,4 +1,6 @@
 #include "SnakeScreen.h"
+#include "../Collection.h"
+#include "SnakeLoader.h"
 
 #include <iostream>
 
@@ -16,6 +18,10 @@ void SnakeGame::SnakeScreen::handleEvent(const sf::Event sfevent)
 		break;
 	case sf::Keyboard::D:
 		m_snake.changeDirection(Snake::MOVE_RIGHT);
+		break;
+	case sf::Keyboard::Escape:
+		m_running=false;
+		m_nextScreen = &GameCollection::Collection::getEntrys()->at(SnakeLoader::MODUL_NAME);
 		break;
 	}
 
@@ -60,9 +66,10 @@ void SnakeGame::SnakeScreen::draw(sf::RenderWindow * window, sf::Font * font)
 	m_score.draw(window, font);
 }
 
-int SnakeGame::SnakeScreen::close()
+int SnakeGame::SnakeScreen::close(ICollectionScreen** screen)
 {
-	return 0;
+	*screen = *m_nextScreen;
+	return CONTINUE;
 }
 
 /*
@@ -103,4 +110,12 @@ bool SnakeGame::SnakeScreen::isEatingPossible()
 	}
 
 	return false;
+}
+
+const SnakeGame::SnakeScreen::STATES& SnakeGame::SnakeScreen::getGameState() {
+	return m_state;
+}
+
+void SnakeGame::SnakeScreen::setGameState(const STATES& newState) {
+	m_state = newState;
 }
