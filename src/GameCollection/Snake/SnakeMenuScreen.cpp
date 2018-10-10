@@ -29,6 +29,9 @@ void SnakeMenuScreen::handleEvent(const sf::Event sfevent) {
 		if (m_hover == PLAY) {
 			if (m_snakeGame == nullptr) {
 				m_snakeGame = new SnakeScreen();
+			} else if (m_snakeGame->getGameState() == SnakeScreen::GAMEOVER){
+				delete m_snakeGame;
+				m_snakeGame = new SnakeScreen();
 			}
 			m_snakeGame->setGameState(SnakeScreen::PLAYING);
 		}
