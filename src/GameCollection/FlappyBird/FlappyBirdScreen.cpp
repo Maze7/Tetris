@@ -42,6 +42,7 @@ void FlappyBirdGame::FlappyBirdScreen::handleEvent(const sf::Event sfevent)
 	switch (sfevent.key.code) {
 	case sf::Keyboard::Up:
 	case sf::Keyboard::W:
+	case sf::Keyboard::Space:
 		m_bird.flap();
 		jumpSound.play();
 		break;
