@@ -40,5 +40,7 @@ GameCollection_SOURCES = src/Exceptions/FileExceptions.h\
 						src/GameCollection/FlappyBird/FlappyBirdScreen.cpp\
 						src/GameCollection/FlappyBird/FlappyBirdScreen.h\
 						src/GameCollection/FlappyBird/Pipe.cpp\
-						src/GameCollection/FlappyBird/Pipe.h
+						src/GameCollection/FlappyBird/Pipe.h\
+						src/GameCollection/FlappyBird/FlappyLoader.cpp\
+						src/GameCollection/FlappyBird/FlappyLoader.h
 
