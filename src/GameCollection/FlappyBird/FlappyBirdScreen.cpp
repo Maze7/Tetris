@@ -58,7 +58,7 @@ void FlappyBirdGame::FlappyBirdScreen::handleTime()
 		m_bird.applyGravity(15.0f, deltaTime);
 	}
 	else {
-		// game over stuff
+		
 	}
 }
 
@@ -87,6 +87,22 @@ void FlappyBirdGame::FlappyBirdScreen::draw(sf::RenderWindow* window, sf::Font* 
 int FlappyBirdGame::FlappyBirdScreen::close()
 {
 	return 0;
+}
+
+/*
+	Returns the game state.
+*/
+const FlappyBirdGame::FlappyBirdScreen::GAME_STATE& FlappyBirdGame::FlappyBirdScreen::getGameState()
+{
+	return m_state;
+}
+
+/*
+	Sets the game state.
+*/
+void FlappyBirdGame::FlappyBirdScreen::setGameState(const GAME_STATE& state)
+{
+	m_state = state;
 }
 
 /*

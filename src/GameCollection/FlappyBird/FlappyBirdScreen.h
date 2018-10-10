@@ -11,9 +11,11 @@ namespace FlappyBirdGame
 	class FlappyBirdScreen : public GameCollection::ICollectionScreen
 	{
 	public:
-		enum STATES { PLAYING = 0, PAUSED = 1, GAMEOVER = 2 };
+		enum GAME_STATE { PLAYING = 0, GAMEOVER = 1, PAUSED = 2 };
 
 	private:
+		GAME_STATE m_state;
+
 		Bird m_bird;
 		std::vector<Pipe> m_pipes;
 
@@ -33,6 +35,9 @@ namespace FlappyBirdGame
 		void handleTime();
 		void draw(sf::RenderWindow* window, sf::Font* font);
 		int close();
+
+		const GAME_STATE& getGameState();
+		void setGameState(const GAME_STATE& state);
 
 	private:
 		bool checkCollision();
