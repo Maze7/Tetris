@@ -1,13 +1,14 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "Playfield.h"
 #include "Tetromino.h"
 #include "TetrisScore.h"
-#include "../ICollectionEntry.h"
+#include "../ICollectionScreen.h"
 
 namespace TetrisGame
 {
-	class Game : public GameCollection::ICollectionEntry
+	class GameScreen : public GameCollection::ICollectionScreen
 	{
 	public:
 		enum GAME_STATE { PLAYING = 0, GAMEOVER = 1, PAUSED = 2 };
@@ -23,16 +24,17 @@ namespace TetrisGame
 		sf::Clock m_clock;
 		uint m_tickInterval;
 		std::vector<int> m_completedRows;
+		sf::Music gameMusic;
 
 		int m_nextScreen = -1;
 	public:
-		Game(TetrisScore& score);
-		~Game() {}
+		GameScreen(TetrisScore& score);
+		~GameScreen() {}
 
 		void handleEvent(const sf::Event sfevent);
 		void handleTime();
 		void draw(sf::RenderWindow* window, sf::Font* font);
-		int close(ICollectionEntry** screen);
+		int close(ICollectionScreen** screen);
 
 		void setDifficulty(int difficulty);
 		bool isPosValid();
@@ -42,6 +44,7 @@ namespace TetrisGame
 		void handleCollision();
 		const GAME_STATE& getGameState();
 		void setGameState(GAME_STATE state);
+		void setSoundVolume(const float& volume);
 	};
 
 }

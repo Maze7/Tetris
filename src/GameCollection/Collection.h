@@ -1,12 +1,13 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Tetris/Game.h"
-#include "ICollectionEntry.h"
-#include "Menu/MenuEntry.h"
+
+#include "ICollectionScreen.h"
+#include "Menu/MainMenuScreen.h"
+#include "Tetris/GameScreen.h"
 
 namespace GameCollection
 {
-	typedef std::map<std::string, ICollectionEntry*> CollectionEntrys;
+	typedef std::map<std::string, ICollectionScreen*> CollectionEntrys;
 	
 	class Collection
 	{
@@ -36,6 +37,6 @@ namespace GameCollection
 		 * Used to add a new module to GameCollection. The (first) screen of each module 
 		 * needs to be set on startup. 
 		 */
-		static void addModuleEntrys(std::string modulName, ICollectionEntry* screen);
+		static void addModuleEntrys(std::string modulName, ICollectionScreen* screen);
 	};
 }

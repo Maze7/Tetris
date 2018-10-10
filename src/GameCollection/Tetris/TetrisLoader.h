@@ -1,11 +1,12 @@
 #pragma once
 #include "../Collection.h"
-#include "../ICollectionEntry.h"
-#include "TetrisMenu.h"
-#include "SettingsMenu.h"
-#include "Game.h"
+#include "../ICollectionScreen.h"
 #include "ScoreScreen.h"
 #include <string>
+
+#include "GameScreen.h"
+#include "MenuScreen.h"
+#include "SettingsScreen.h"
 
 namespace TetrisGame
 {
@@ -21,14 +22,14 @@ namespace TetrisGame
 		 * Add entrys during runtime with addScreen(SCREENS, ICollectionEntry*)
 		 * Get them with the relevant getter (game etc).
 		 */
-		static std::map<SCREENS, GameCollection::ICollectionEntry*> s_modulScreens;
+		static std::map<SCREENS, GameCollection::ICollectionScreen*> s_modulScreens;
 
 	public:
 		TetrisLoader();
 		~TetrisLoader();
-		static void addScreen(SCREENS screenType, GameCollection::ICollectionEntry* screen);
-		static GameCollection::ICollectionEntry** getScreen(SCREENS screenType);
-		static Game* getGame();
+		static void addScreen(SCREENS screenType, GameCollection::ICollectionScreen* screen);
+		static GameCollection::ICollectionScreen** getScreen(SCREENS screenType);
+		static GameScreen* getGame();
 		static bool contains(SCREENS screenType);
 		static void erase(SCREENS screenType);
 	};

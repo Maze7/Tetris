@@ -11,7 +11,7 @@ ScoreScreen::ScoreScreen(TetrisScore& score, STATES scoreState) :
 			m_score(score),
 			m_background(sf::Texture()) {
 
-	if (!m_background.loadFromFile(TetrisGame::TetrisMenu::s_BACKGROUND_PATH))
+	if (!m_background.loadFromFile(TetrisGame::MenuScreen::s_BACKGROUND_PATH))
 		std::cerr << "[ERROR] [TetrisGame::ScoreScreen] loading bg picture failed" << std::endl;
 }
 
@@ -56,6 +56,7 @@ void ScoreScreen::handleEvent(const sf::Event sfevent) {
 				userName = userName.substr(0, userName.size()-1); // delete one char
 			}
 			break;
+		case sf::Keyboard::Space:
 		case sf::Keyboard::Return:
 			if (m_hover == BACK) {
 				m_running = false; // invoke close
@@ -123,7 +124,7 @@ void ScoreScreen::draw(sf::RenderWindow* window, sf::Font* font) {
 	window->draw(sprite);
 }
 
-int ScoreScreen::close(ICollectionEntry** screen) {
+int ScoreScreen::close(ICollectionScreen** screen) {
 	*screen = *TetrisLoader::getScreen(TetrisLoader::SCREENS(m_nextScreen));
 	return CONTINUE; // There is no exit option in this menu
 }

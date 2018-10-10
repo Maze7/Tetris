@@ -1,12 +1,12 @@
 #ifndef SRC_GAMECOLLECTION_TETRIS_SCORESCREEN_H_
 #define SRC_GAMECOLLECTION_TETRIS_SCORESCREEN_H_
-#include "../ICollectionEntry.h"
 #include "TetrisScore.h"
 #include <SFML/Graphics.hpp>
+#include "../ICollectionScreen.h"
 
 namespace TetrisGame
 {
-	class ScoreScreen : public GameCollection::ICollectionEntry
+	class ScoreScreen : public GameCollection::ICollectionScreen
 	{
 	public:
 		/* 	NEW_SCORE allows to see scores and makes a textbox
@@ -37,7 +37,7 @@ namespace TetrisGame
 
 		void handleEvent(const sf::Event sfevent);
 		void draw(sf::RenderWindow* window, sf::Font* font);
-		int close(ICollectionEntry** screen);
+		int close(ICollectionScreen** screen);
 	};
 }
 #endif /* SRC_GAMECOLLECTION_TETRIS_SCORESCREEN_H_ */
