@@ -37,6 +37,10 @@ void SnakeMenuScreen::handleEvent(const sf::Event sfevent) {
 				m_snakeGame = new SnakeScreen(m_score);
 			}
 			m_snakeGame->setGameState(SnakeScreen::PLAYING);
+		} else if (m_hover == HIGHSCORES) {
+			if(m_scoreScreen == nullptr) {
+				m_scoreScreen = new SnakeScoreScreen(m_score);
+			}
 		}
 		m_running = false; // will invoke close()
 		break;
