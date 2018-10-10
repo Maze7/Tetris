@@ -10,7 +10,10 @@ namespace SnakeGame
 		enum SNAKE_DIRECTION { MOVE_LEFT = 0, MOVE_RIGHT = 1, MOVE_UP = 2, MOVE_DOWN = 3 };
 
 	private:
+		// The snakebody is stored as a Vector of positions - The actual screen position will be calculated in the Field's draw()-method
 		std::vector<sf::Vector2i> m_snakeBody;
+
+		// Current direction of the snake's head
 		SNAKE_DIRECTION m_currentDirection;
 
 	public:
@@ -24,7 +27,7 @@ namespace SnakeGame
 		void changeDirection(SNAKE_DIRECTION direction);
 		void move();
 	};
-}
+} /* namespace SnakeGame */
 
 
 

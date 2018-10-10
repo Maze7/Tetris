@@ -1,4 +1,7 @@
 #include "FlappyBirdScore.h"
+
+namespace FlappyBirdGame {
+
 /*
 	Increases the score.
 
@@ -7,8 +10,7 @@
 		score.update();
 	}
 */
-void FlappyBirdGame::FlappyBirdScore::update()
-{
+void FlappyBirdScore::update() {
 	m_pipesPassed++;
 }
 
@@ -16,8 +18,7 @@ void FlappyBirdGame::FlappyBirdScore::update()
 	Resets the score.
 	Should be called before a new game is started.
 */
-void FlappyBirdGame::FlappyBirdScore::reset()
-{
+void FlappyBirdScore::reset() {
 	m_pipesPassed = 0;
 }
 
@@ -29,8 +30,7 @@ void FlappyBirdGame::FlappyBirdScore::reset()
 	if (score.isNewHighscore())
 		// add the score to the list
 */
-bool FlappyBirdGame::FlappyBirdScore::isNewHighscore()
-{
+bool FlappyBirdScore::isNewHighscore() {
 	return m_pipesPassed > m_highscoreList[m_highscoreList.size() - 1];
 }
 
@@ -38,8 +38,7 @@ bool FlappyBirdGame::FlappyBirdScore::isNewHighscore()
 	Adds the current score to the m_highscoreList. The current score replaces the last element
 	of the m_highscoreList. Afterwards the list gets sorted.
 */
-void FlappyBirdGame::FlappyBirdScore::addToHighscoreList()
-{
+void FlappyBirdScore::addToHighscoreList() {
 	m_highscoreList.at(m_highscoreList.size() - 1) = m_pipesPassed;
 	std::sort(m_highscoreList.begin(), m_highscoreList.end(), [](int value1, int value2) {return value1 > value2; });
 }
@@ -48,8 +47,7 @@ void FlappyBirdGame::FlappyBirdScore::addToHighscoreList()
 	Reads the highscores from the file and saves them in the m_highscoreList
 	Should be called in the constructor of this class (FlappyBirdScore).
 */
-void FlappyBirdGame::FlappyBirdScore::readHighscoreListFromFile()
-{
+void FlappyBirdScore::readHighscoreListFromFile() {
 	try {
 		std::vector<std::string> v_input = FileIO::readFile("FlappyBirdHighscores.txt");
 
@@ -76,8 +74,7 @@ void FlappyBirdGame::FlappyBirdScore::readHighscoreListFromFile()
 	Writes the m_highscoreList to a file.
 	Should be called before closing the application.
 */
-void FlappyBirdGame::FlappyBirdScore::writeHighscoreListToFile()
-{
+void FlappyBirdScore::writeHighscoreListToFile() {
 	std::string output;
 
 	for (auto const& highscore : m_highscoreList) {
@@ -93,7 +90,7 @@ void FlappyBirdGame::FlappyBirdScore::writeHighscoreListToFile()
 	}
 }
 
-void FlappyBirdGame::FlappyBirdScore::draw(sf::RenderWindow * window, sf::Font * font) {
+void FlappyBirdScore::draw(sf::RenderWindow * window, sf::Font * font) {
 	m_pipesPassedText.setString("Pipes passed: " + std::to_string(m_pipesPassed));
 	m_pipesPassedText.setFont(*font);
 	window->draw(m_pipesPassedText);
@@ -103,9 +100,10 @@ void FlappyBirdGame::FlappyBirdScore::draw(sf::RenderWindow * window, sf::Font *
 	Sets up the Sf::Text's of this class.
 	Should be called in the constructor of this class (FlappyBirdScore).
 */
-void FlappyBirdGame::FlappyBirdScore::init()
-{
+void FlappyBirdScore::init() {
 	m_pipesPassedText.setCharacterSize(32);
 	m_pipesPassedText.setFillColor(sf::Color::White);
 	m_pipesPassedText.setPosition(500, 500);
 }
+
+} /* namespace FlappyBirdGame */

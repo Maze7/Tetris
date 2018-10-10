@@ -9,5 +9,5 @@ namespace Utility
 	public:
 		static std::vector<std::string> StringToVector(const std::string& str, const std::string& delimiter);
 	};
-}
+} /* namespace Utility */
 

@@ -1,4 +1,5 @@
 #include "SnakeMenuScreen.h"
+
 namespace SnakeGame {
 
 SnakeMenuScreen::SnakeMenuScreen() :

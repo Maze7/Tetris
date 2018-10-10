@@ -1,8 +1,9 @@
 #include "Snake.h"
 #include <iostream>
 
-SnakeGame::Snake::Snake() : m_currentDirection(MOVE_LEFT)
-{
+namespace SnakeGame {
+
+Snake::Snake() : m_currentDirection(MOVE_LEFT) {
 	// Add initial parts of the snake
 	m_snakeBody.push_back(sf::Vector2i(13, 14));
 	m_snakeBody.push_back(sf::Vector2i(14, 14));
@@ -19,8 +20,7 @@ SnakeGame::Snake::Snake() : m_currentDirection(MOVE_LEFT)
 	if (// snake head is on food)
 		snake.eat();
 */
-void SnakeGame::Snake::eat()
-{
+void Snake::eat() {
 	// Create a new Vector2i to store the new position
 	sf::Vector2i newPart(0, 0);
 	
@@ -57,8 +57,7 @@ void SnakeGame::Snake::eat()
 			break;
 	}
 */
-void SnakeGame::Snake::changeDirection(SNAKE_DIRECTION direction)
-{
+void Snake::changeDirection(SNAKE_DIRECTION direction) {
 	// Only allow the change to happen, if it's not the opposite of the current direction
 	switch (direction) {
 	case MOVE_LEFT:
@@ -93,8 +92,7 @@ void SnakeGame::Snake::changeDirection(SNAKE_DIRECTION direction)
 	if (clock.getElapsedTime().asMilliseconds() > tickInterval) 
 		snake.move();
 */
-void SnakeGame::Snake::move()
-{
+void Snake::move() {
 	// Iterate over the snakeBody: Begin with last element and exlude head (0-element)
 	for (int i = m_snakeBody.size() - 1; i > 0; i--) {
 
@@ -119,3 +117,5 @@ void SnakeGame::Snake::move()
 		break;
 	}
 }
+
+} /* namespace SnakeGame */

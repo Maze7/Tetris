@@ -1,8 +1,7 @@
 #include "Bird.h"
-#include <iostream>
+namespace FlappyBirdGame {
 
-FlappyBirdGame::Bird::Bird() : m_currentSpeed(-10.0f)
-{
+Bird::Bird() : m_currentSpeed(-10.0f) {
 	// Create the bird
 	m_birdBox.setSize(sf::Vector2f(20, 20));
 	m_birdBox.setPosition(250, 250);
@@ -21,8 +20,7 @@ FlappyBirdGame::Bird::Bird() : m_currentSpeed(-10.0f)
 		bird.flap();
 		break;
 */
-void FlappyBirdGame::Bird::flap()
-{
+void Bird::flap() {
 	m_currentSpeed = -5.0f;
 }
 
@@ -30,13 +28,13 @@ void FlappyBirdGame::Bird::flap()
 	Moves the bird downwards by the given force and indepent of framerate.
 	Should be called in the update()-method.
 */
-void FlappyBirdGame::Bird::applyGravity(float force, sf::Time deltaTime)
-{
+void Bird::applyGravity(float force, sf::Time deltaTime) {
 	m_currentSpeed += force * deltaTime.asSeconds();
 	m_birdBox.move(0, m_currentSpeed);
 }
 
-void FlappyBirdGame::Bird::draw(sf::RenderWindow * window)
-{
+void Bird::draw(sf::RenderWindow * window) {
 	window->draw(m_birdBox);
 }
+
+} /* namespace FlappyBirdGame */

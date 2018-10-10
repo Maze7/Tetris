@@ -31,14 +31,18 @@ namespace FlappyBirdGame
 		void writeHighscoreListToFile();
 
 	private:
+		// List with the Top 5 highscores
 		std::vector<int> m_highscoreList;
 
+		// Score metric
 		int m_pipesPassed;
+
+		// sf::Text to display m_pipesPassed
 		sf::Text m_pipesPassedText;
 		
 		void init();
 	};
 
-}
+} /* namespace FlappyBirdGame */
 
 

@@ -1,6 +1,8 @@
 #include "SnakeScore.h"
 
-void SnakeGame::SnakeScore::draw(sf::RenderWindow * window, sf::Font * font)
+namespace SnakeGame {
+
+void SnakeScore::draw(sf::RenderWindow * window, sf::Font * font)
 {
 	m_scoreText.setString("Score: " + std::to_string(m_score));
 	m_scoreText.setFont(*font);
@@ -14,7 +16,7 @@ void SnakeGame::SnakeScore::draw(sf::RenderWindow * window, sf::Font * font)
 	if (//player scored) 
 		score.update();
 */
-void SnakeGame::SnakeScore::update()
+void SnakeScore::update()
 {
 	m_score++;
 }
@@ -23,7 +25,7 @@ void SnakeGame::SnakeScore::update()
 	Resets the current score.
 	Should be called before a new game is started.
 */
-void SnakeGame::SnakeScore::reset()
+void SnakeScore::reset()
 {
 	m_score = 0;
 }
@@ -36,7 +38,7 @@ void SnakeGame::SnakeScore::reset()
 	if (m_score.isNewHighscore())
 		// add the score to the list
 */
-bool SnakeGame::SnakeScore::isNewHighscore()
+bool SnakeScore::isNewHighscore()
 {
 	return m_score > m_highscoreList[m_highscoreList.size() - 1];;
 }
@@ -45,7 +47,7 @@ bool SnakeGame::SnakeScore::isNewHighscore()
 	Adds the current score to the m_highscoreList. The current score replaces the last element
 	of the m_highscoreList. Afterwards the list gets sorted.
 */
-void SnakeGame::SnakeScore::addToHighscoreList()
+void SnakeScore::addToHighscoreList()
 {
 	m_highscoreList.at(m_highscoreList.size() - 1) = m_score;
 	std::sort(m_highscoreList.begin(), m_highscoreList.end(), [](int value1, int value2) {return value1 > value2; });
@@ -55,7 +57,7 @@ void SnakeGame::SnakeScore::addToHighscoreList()
 	Reads the highscores from the file and saves them in the m_highscoreList
 	Should be called in the constructor of this class (SnakeScore).
 */
-void SnakeGame::SnakeScore::readHighscoreListFromFile()
+void SnakeScore::readHighscoreListFromFile()
 {
 	try {
 		std::vector<std::string> v_input = FileIO::readFile("SnakeHighscores.txt");
@@ -83,7 +85,7 @@ void SnakeGame::SnakeScore::readHighscoreListFromFile()
 	Writes the m_highscoreList to a file.
 	Should be called before closing the application.
 */
-void SnakeGame::SnakeScore::writeHighscoreListToFile()
+void SnakeScore::writeHighscoreListToFile()
 {
 	std::string output;
 
@@ -104,9 +106,11 @@ void SnakeGame::SnakeScore::writeHighscoreListToFile()
 	Sets up the position, color and size of the sf::Texts.
 	Should be called in the constructor of this class (SnakeScore).
 */
-void SnakeGame::SnakeScore::init()
+void SnakeScore::init()
 {
 	m_scoreText.setCharacterSize(32);
 	m_scoreText.setFillColor(sf::Color::White);
 	m_scoreText.setPosition(220, 520);
 }
+
+} /* namespace SnakeGame */

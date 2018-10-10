@@ -13,6 +13,6 @@ namespace SnakeGame {
 		};
 		virtual ~SnakeLoader() {};
 	};
-}
+} /* namespace SnakeGame */
 
 

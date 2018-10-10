@@ -1,7 +1,10 @@
 #include "FlappyBirdScreen.h"
 #include "FlappyLoader.h"
 
-FlappyBirdGame::FlappyBirdScreen::FlappyBirdScreen() : m_state(PLAYING), m_nextScreen(nullptr) {
+namespace FlappyBirdGame {
+
+
+FlappyBirdScreen::FlappyBirdScreen() : m_state(PLAYING), m_nextScreen(nullptr) {
 	// Create pipes
 	m_pipes.push_back(Pipe(1400));
 	m_pipes.push_back(Pipe(1800));
@@ -39,8 +42,7 @@ FlappyBirdGame::FlappyBirdScreen::FlappyBirdScreen() : m_state(PLAYING), m_nextS
 
 }
 
-void FlappyBirdGame::FlappyBirdScreen::handleEvent(const sf::Event sfevent)
-{
+void FlappyBirdScreen::handleEvent(const sf::Event sfevent) {
 	if (m_state == GAMEOVER) {
 		if(sfevent.key.code == sf::Keyboard::Return) {
 			m_running = false;
@@ -59,7 +61,7 @@ void FlappyBirdGame::FlappyBirdScreen::handleEvent(const sf::Event sfevent)
 	}
 }
 
-void FlappyBirdGame::FlappyBirdScreen::update() {
+void FlappyBirdScreen::update() {
 
 	if (m_state == GAMEOVER) {
 		return;
@@ -95,8 +97,7 @@ void FlappyBirdGame::FlappyBirdScreen::update() {
 	}
 }
 
-void FlappyBirdGame::FlappyBirdScreen::draw(sf::RenderWindow* window, sf::Font* font)
-{
+void FlappyBirdScreen::draw(sf::RenderWindow* window, sf::Font* font) {
 	// Draw background
 	window->draw(m_background);
 
@@ -129,8 +130,7 @@ void FlappyBirdGame::FlappyBirdScreen::draw(sf::RenderWindow* window, sf::Font* 
 	}
 }
 
-int FlappyBirdGame::FlappyBirdScreen::close(ICollectionScreen** screen)
-{
+int FlappyBirdScreen::close(ICollectionScreen** screen) {
 	*screen = *m_nextScreen;
 	return CONTINUE;
 }
@@ -138,16 +138,14 @@ int FlappyBirdGame::FlappyBirdScreen::close(ICollectionScreen** screen)
 /*
 	Returns the game state.
 */
-const FlappyBirdGame::FlappyBirdScreen::GAME_STATE& FlappyBirdGame::FlappyBirdScreen::getGameState()
-{
+const FlappyBirdScreen::GAME_STATE& FlappyBirdGame::FlappyBirdScreen::getGameState() {
 	return m_state;
 }
 
 /*
 	Sets the game state.
 */
-void FlappyBirdGame::FlappyBirdScreen::setGameState(const GAME_STATE& state)
-{
+void FlappyBirdScreen::setGameState(const GAME_STATE& state) {
 	m_state = state;
 }
 
@@ -155,8 +153,7 @@ void FlappyBirdGame::FlappyBirdScreen::setGameState(const GAME_STATE& state)
 	Checks if the bird collided with a pipe or the ground.
 	Should be called in the handleTime()-method, since positions are updated continiously.
 */
-bool FlappyBirdGame::FlappyBirdScreen::checkCollision()
-{
+bool FlappyBirdScreen::checkCollision() {
 	// Check collision with pipe
 	for (auto& pipe : m_pipes) {
 		if (pipe.checkBirdCollision(&m_bird)) {
@@ -177,3 +174,4 @@ bool FlappyBirdGame::FlappyBirdScreen::checkCollision()
 	return false;
 }
 
+} /* namespace FlappyBirdGame */

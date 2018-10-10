@@ -1,8 +1,10 @@
 #include "Pipe.h"
 #include <iostream>
 
-FlappyBirdGame::Pipe::Pipe(int offsetX) : m_gapSize(85), m_isPassed(false)
-{
+namespace FlappyBirdGame {
+
+
+Pipe::Pipe(int offsetX) : m_gapSize(85), m_isPassed(false) {
 	// Add the RectangleShapes, that make up the pipe
 	m_pipeShapes.push_back(sf::RectangleShape());
 	m_pipeShapes.push_back(sf::RectangleShape());
@@ -23,8 +25,7 @@ FlappyBirdGame::Pipe::Pipe(int offsetX) : m_gapSize(85), m_isPassed(false)
 	Moves the pipe to the left, creating the effect of a camera/bird moving to the right.
 	Should be called in the update()-method.
 */
-void FlappyBirdGame::Pipe::move(float speed, sf::Time deltaTime)
-{
+void Pipe::move(float speed, sf::Time deltaTime) {
 	for (auto& pipe : m_pipeShapes) {
 		pipe.move(speed * -deltaTime.asSeconds(), 0);
 	}
@@ -34,8 +35,7 @@ void FlappyBirdGame::Pipe::move(float speed, sf::Time deltaTime)
 	Checks if a bird collided with the pipe.
 	Should be called in the update()-method.
 */
-bool FlappyBirdGame::Pipe::checkBirdCollision(Bird* bird)
-{
+bool Pipe::checkBirdCollision(Bird* bird) {
 	bool is_collided = false;
 
 	for (auto& pipe : m_pipeShapes) {
@@ -57,8 +57,7 @@ bool FlappyBirdGame::Pipe::checkBirdCollision(Bird* bird)
 		// Increase score
 	}
 */
-bool FlappyBirdGame::Pipe::isPassedByBird(Bird * bird)
-{
+bool Pipe::isPassedByBird(Bird * bird) {
 	// If pipe has not been passed yet
 	if (!m_isPassed) {
 		// If right end of the pipe is behind the left end of the bird
@@ -81,8 +80,7 @@ bool FlappyBirdGame::Pipe::isPassedByBird(Bird * bird)
 		pipe.createRandomGap();
 	}
 */
-bool FlappyBirdGame::Pipe::isOutOfWindow()
-{
+bool Pipe::isOutOfWindow() {
 	return m_pipeShapes.at(0).getPosition().x + m_pipeShapes.at(0).getSize().x < 0;
 }
 
@@ -95,8 +93,7 @@ bool FlappyBirdGame::Pipe::isOutOfWindow()
 		pipe.createRandomGap();
 	}
 */
-void FlappyBirdGame::Pipe::resetPosition(int offsetX)
-{
+void Pipe::resetPosition(int offsetX) {
 	for (auto& pipe : m_pipeShapes) {
 		pipe.setPosition(offsetX, 0);
 	}
@@ -114,8 +111,7 @@ void FlappyBirdGame::Pipe::resetPosition(int offsetX)
 		pipe.createRandomGap();
 	}
 */
-void FlappyBirdGame::Pipe::createRandomGap()
-{
+void Pipe::createRandomGap() {
 	int sizeTop = rand() % (300 - 100 + 1) + 100;
 	int sizeBottom = 500 - sizeTop - m_gapSize;
 
@@ -124,10 +120,11 @@ void FlappyBirdGame::Pipe::createRandomGap()
 	m_pipeShapes.at(1).move(0, sizeTop + m_gapSize);
 }
 
-void FlappyBirdGame::Pipe::draw(sf::RenderWindow* window)
-{
+void Pipe::draw(sf::RenderWindow* window) {
 	// Draw all parts of the pipe
 	for (auto& pipe : m_pipeShapes) {
 		window->draw(pipe);
 	}
 }
+
+} /* namespace FlappyBirdGame */

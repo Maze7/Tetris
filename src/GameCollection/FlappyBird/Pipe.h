@@ -23,11 +23,16 @@ namespace FlappyBirdGame
 
 
 	private:
+		// Contains pipe top and bottom
 		std::vector<sf::RectangleShape> m_pipeShapes;
+
+		// Gap between top and bottom part of the pipe
 		int m_gapSize;
+
+		// Bool that is set to true, when a bird passes the pipe
 		bool m_isPassed;
 	};
-}
+} /* namespace FlappyBirdGame */
 
 
 

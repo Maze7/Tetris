@@ -1,7 +1,8 @@
 #include "Field.h"
 
-SnakeGame::Field::Field()
-{
+namespace SnakeGame {
+
+Field::Field() {
 	// Set up the background
 	m_background.setSize(sf::Vector2f(20 * s_ROWS, 20 * s_COLUMNS));
 	m_background.setPosition(s_OFFSET, s_OFFSET);
@@ -17,8 +18,7 @@ SnakeGame::Field::Field()
 		snake.eat();
 		field.spawnRandomFood();
 */
-void SnakeGame::Field::spawnRandomFood(Snake& snake)
-{
+void Field::spawnRandomFood(Snake& snake) {
 	do {
 		m_food.x = rand() % (s_ROWS - 1);
 		m_food.y = rand() % (s_COLUMNS - 1);
@@ -29,8 +29,7 @@ void SnakeGame::Field::spawnRandomFood(Snake& snake)
 	Checks if the the m_food is not placed in the snake.
 	Private helper function for spawnRandomFood().
 */
-bool SnakeGame::Field::isSpaceEmpty(Snake& snake)
-{
+bool Field::isSpaceEmpty(Snake& snake) {
 	for (auto const& snakePos : *snake.getSnakeBody()) {
 		if (snakePos.x == m_food.x && snakePos.y == m_food.y) {
 			return false;
@@ -40,8 +39,7 @@ bool SnakeGame::Field::isSpaceEmpty(Snake& snake)
 	return true;
 }
 
-void SnakeGame::Field::draw(sf::RenderWindow* window, Snake& snake)
-{
+void Field::draw(sf::RenderWindow* window, Snake& snake) {
 	// Draw Background
 	window->draw(m_background);
 
@@ -63,3 +61,4 @@ void SnakeGame::Field::draw(sf::RenderWindow* window, Snake& snake)
 	}
 }
 
+} /* namespace SnakeGame */

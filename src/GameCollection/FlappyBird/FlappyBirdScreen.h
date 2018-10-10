@@ -17,17 +17,24 @@ namespace FlappyBirdGame
 	private:
 		GAME_STATE m_state;
 		ICollectionScreen*const* m_nextScreen;
+		
+		// Bird that the player controls
 		Bird m_bird;
+
+		// Vector of pipes: These are the obstacles the bird has to pass
 		std::vector<Pipe> m_pipes;
 
 		sf::RectangleShape m_ground;
 		sf::RectangleShape m_ceiling;
 		sf::RectangleShape m_background;
 
+		// Contains current score and highscores
 		FlappyBirdScore m_score;
 
+		// sf::Clock (required for smooth movement)
 		sf::Clock m_clock;
 
+		// Sound variables
 		sf::SoundBuffer soundBufferJump;
 		sf::SoundBuffer soundBufferFail;
 		sf::Sound failSound;
@@ -48,7 +55,7 @@ namespace FlappyBirdGame
 	private:
 		bool checkCollision();
 	};
-}
+} /* namespace FlappyBirdGame */
 
 
 

@@ -32,13 +32,17 @@ namespace SnakeGame
 
 
 	private:
+		// List of the top 5 highscores
 		std::vector<int> m_highscoreList;
 
+		// Current score
 		int m_score;
+
+		// sf::Text to display m_score
 		sf::Text m_scoreText;
 
 		void init();
 	};
-}
+} /* namespace SnakeGame */
 
 

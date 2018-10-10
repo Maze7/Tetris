@@ -1,10 +1,11 @@
 #include "Encryption.h"
 
+namespace Utility {
+
 /*
 	XOR-Encryption
 */
-std::string Utility::Encryption::XORencryption(const std::string& toEncrypt)
-{
+std::string Encryption::XORencryption(const std::string& toEncrypt) {
 
 	char key[4] = { 'A', 'B', 'C', 'D' };
 	std::string output = toEncrypt;
@@ -14,3 +15,5 @@ std::string Utility::Encryption::XORencryption(const std::string& toEncrypt)
 
 	return output;
 }
+
+} /* namespace Utility */
