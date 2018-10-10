@@ -28,7 +28,7 @@ void FlappyBirdGame::Bird::flap()
 
 /*
 	Moves the bird downwards by the given force and indepent of framerate.
-	Should be called in the handleTime()-method.
+	Should be called in the update()-method.
 */
 void FlappyBirdGame::Bird::applyGravity(float force, sf::Time deltaTime)
 {

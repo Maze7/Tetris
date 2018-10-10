@@ -23,6 +23,7 @@ FlappyBirdGame::FlappyBirdScreen::FlappyBirdScreen() : m_state(PLAYING), m_nextS
 	m_ceiling.setPosition(0, -20);
 	m_ceiling.setFillColor(sf::Color::Transparent);
 
+	// Load sounds
 	if (!soundBufferJump.loadFromFile("static/flappy_jump.wav")) {
 		std::cout << "flappy_jump.wav could not found \n";
 	} else {
@@ -89,6 +90,8 @@ void FlappyBirdGame::FlappyBirdScreen::handleTime() {
 		// Gameover
 		m_state = GAMEOVER;
 		failSound.play();
+
+		m_score.reset(); // TODO Write highscore
 	}
 }
 

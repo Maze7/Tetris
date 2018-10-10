@@ -48,7 +48,7 @@ void SnakeGame::Snake::eat()
 
 /*
 	Changes the direction the snake moves. 
-	This will take effect in the next "tick" of this game's  handleTime()-method.
+	This will take effect in the next "tick" of this game's  update()-method.
 
 	Example usage:
 	switch (sfevent.key.code) {

@@ -10,6 +10,7 @@ std::vector<std::string> Utility::Converter::StringToVector(const std::string& s
 
 	std::vector<std::string> result;
 
+	// Iterate over the string, build substrings and push them to the result vector
 	while ((pos = str.find(delimiter, prev)) != std::string::npos) {
 		result.push_back(str.substr(prev, pos - prev));
 		prev = pos + delimiter.size();

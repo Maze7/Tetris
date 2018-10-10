@@ -21,7 +21,7 @@ FlappyBirdGame::Pipe::Pipe(int offsetX) : m_gapSize(85), m_isPassed(false)
 
 /*
 	Moves the pipe to the left, creating the effect of a camera/bird moving to the right.
-	Should be called in the handleTime()-method.
+	Should be called in the update()-method.
 */
 void FlappyBirdGame::Pipe::move(float speed, sf::Time deltaTime)
 {
@@ -32,7 +32,7 @@ void FlappyBirdGame::Pipe::move(float speed, sf::Time deltaTime)
 
 /*
 	Checks if a bird collided with the pipe.
-	Should be called in the handleTime()-method.
+	Should be called in the update()-method.
 */
 bool FlappyBirdGame::Pipe::checkBirdCollision(Bird* bird)
 {
@@ -50,7 +50,7 @@ bool FlappyBirdGame::Pipe::checkBirdCollision(Bird* bird)
 /*
 	Checks if a bird passed the pipe.
 	Only returns true, if pipe has not been passed yet.
-	Should be called in the handleTime()-method.
+	Should be called in the update()-method.
 
 	Example usage:
 	if (pipe.isPassedByBird(&bird)) {
@@ -73,7 +73,7 @@ bool FlappyBirdGame::Pipe::isPassedByBird(Bird * bird)
 /*
 	Checks if the pipe is out of the window, meaning it's no longer displayed on the screen,
 	requiring a reset of position.
-	Should be called in the handleTime()-method.
+	Should be called in the update()-method.
 
 	Example usage:
 	if (pipe.isOutOfWindow()) {
@@ -126,6 +126,7 @@ void FlappyBirdGame::Pipe::createRandomGap()
 
 void FlappyBirdGame::Pipe::draw(sf::RenderWindow* window)
 {
+	// Draw all parts of the pipe
 	for (auto& pipe : m_pipeShapes) {
 		window->draw(pipe);
 	}

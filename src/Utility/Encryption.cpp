@@ -1,7 +1,7 @@
 #include "Encryption.h"
 
 /*
-XOR-Encryption
+	XOR-Encryption
 */
 std::string Utility::Encryption::XORencryption(const std::string& toEncrypt)
 {

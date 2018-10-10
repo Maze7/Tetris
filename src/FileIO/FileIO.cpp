@@ -50,5 +50,4 @@ void FileIO::writeFile(const std::string& output, const std::string& filename)
 	catch (std::ofstream::failure const &e) {
 		throw Exceptions::FileExceptions::FileWriteException("FileWriteException");
 	}
-
 }
