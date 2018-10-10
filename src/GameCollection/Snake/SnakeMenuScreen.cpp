@@ -1,15 +1,15 @@
-#include "MenuScreen.h"
+#include "SnakeMenuScreen.h"
 namespace SnakeGame {
 
-MenuScreen::MenuScreen() : m_snakeGame(nullptr) {
+SnakeMenuScreen::SnakeMenuScreen() : m_snakeGame(nullptr) {
 	entryScreens[PLAY] = (ICollectionScreen**) &m_snakeGame;
 }
 
-MenuScreen::~MenuScreen() {
+SnakeMenuScreen::~SnakeMenuScreen() {
 	delete m_snakeGame;
 }
 
-void MenuScreen::handleEvent(const sf::Event sfevent) {
+void SnakeMenuScreen::handleEvent(const sf::Event sfevent) {
 	int entryIndex;
 	switch (sfevent.key.code) {
 	case sf::Keyboard::W:
@@ -45,7 +45,7 @@ void MenuScreen::handleEvent(const sf::Event sfevent) {
 	}
 
 }
-void MenuScreen::draw(sf::RenderWindow* window, sf::Font* font) {
+void SnakeMenuScreen::draw(sf::RenderWindow* window, sf::Font* font) {
 		sf::Text menus[END];
 		sf::Sprite sprite; // used for background and text rendering
 
@@ -81,7 +81,7 @@ void MenuScreen::draw(sf::RenderWindow* window, sf::Font* font) {
 		window->draw(sprite);
 }
 
-int MenuScreen::close(ICollectionScreen** screen) {
+int SnakeMenuScreen::close(ICollectionScreen** screen) {
 	switch (m_hover) {
 	case MAINMENU:
 		return MAIN_MENU;

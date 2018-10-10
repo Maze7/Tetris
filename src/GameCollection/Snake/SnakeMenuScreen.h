@@ -5,7 +5,7 @@
 
 namespace SnakeGame {
 
-class MenuScreen : public GameCollection::ICollectionScreen {
+class SnakeMenuScreen : public GameCollection::ICollectionScreen {
 private:
 	/*
 	 * Specify the menu entrys.
@@ -29,8 +29,8 @@ private:
 public:
 	static constexpr char s_BACKGROUND_PATH[] = "static/bg.jpeg";
 
-	MenuScreen();
-	virtual ~MenuScreen();
+	SnakeMenuScreen();
+	virtual ~SnakeMenuScreen();
 
 	void handleEvent(const sf::Event sfevent);
 	void draw(sf::RenderWindow* window, sf::Font* font);
