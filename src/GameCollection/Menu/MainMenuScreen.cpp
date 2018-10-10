@@ -14,8 +14,8 @@ MainMenuScreen::MainMenuScreen()
 	for (auto const& i : *allEntrys) 
 		m_entryNames.push_back(i.first);
 
-	if (!m_background.loadFromFile("bg.png")) {
-		std::cerr << "[ERROR] [MenuEntry] loading bg picture failed" << std::endl;
+	if (!m_background.loadFromFile("static/bg.jpeg")) {
+		std::cerr << "[ERROR] [MainMenuScreen] loading bg picture failed" << std::endl;
 	}
 
 	m_entryNames.push_back("Exit");

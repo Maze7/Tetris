@@ -43,7 +43,7 @@ namespace TetrisGame
 		TetrisScore m_score;
 
 	public:
-		static constexpr char s_BACKGROUND_PATH[] = "test.jpeg";
+		static constexpr char s_BACKGROUND_PATH[] = "static/bg.jpeg";
 
 		MenuScreen();
 		~MenuScreen() {};

@@ -4,11 +4,16 @@ namespace SnakeGame {
 SnakeMenuScreen::SnakeMenuScreen() :
 			m_snakeGame(nullptr),
 			m_score(SnakeScore()) {
+
+	if (!m_background.loadFromFile("static/bg.jpeg")) {
+		std::cerr << "[ERROR] [SnakeMenuScreen] loading bg picture failed" << std::endl;
+	}
 	entryScreens[PLAY] = (ICollectionScreen**) &m_snakeGame;
 	entryScreens[HIGHSCORES] = (ICollectionScreen**) &m_scoreScreen;
 }
 
 SnakeMenuScreen::~SnakeMenuScreen() {
+	delete m_scoreScreen;
 	delete m_snakeGame;
 }
 
