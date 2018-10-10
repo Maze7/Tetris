@@ -48,7 +48,7 @@ bool SnakeGame::SnakeScore::isNewHighscore()
 void SnakeGame::SnakeScore::addToHighscoreList()
 {
 	m_highscoreList.at(m_highscoreList.size() - 1) = m_score;
-	std::sort(m_highscoreList.begin(), m_highscoreList.end());
+	std::sort(m_highscoreList.begin(), m_highscoreList.end(), [](int value1, int value2) {return value1 > value2; });
 }
 
 /*

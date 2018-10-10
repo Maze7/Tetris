@@ -12,7 +12,7 @@ namespace SnakeGame
 	class SnakeScore
 	{
 	public:
-		SnakeScore() : m_score(0), m_highscoreList(5, 0) { init(); }
+		SnakeScore() : m_score(0), m_highscoreList(5, 0) { init(); readHighscoreListFromFile(); }
 		~SnakeScore(){}
 
 		void draw(sf::RenderWindow* window, sf::Font* font);
