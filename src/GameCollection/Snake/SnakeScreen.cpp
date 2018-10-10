@@ -26,15 +26,19 @@ void SnakeGame::SnakeScreen::handleEvent(const sf::Event sfevent)
 		}
 	}
 	switch (sfevent.key.code) {
+	case sf::Keyboard::Up:
 	case sf::Keyboard::W:
 		m_snake.changeDirection(Snake::MOVE_UP);
 		break;
+	case sf::Keyboard::Left:
 	case sf::Keyboard::A:
 		m_snake.changeDirection(Snake::MOVE_LEFT);
 		break;
+	case sf::Keyboard::Down:
 	case sf::Keyboard::S:
 		m_snake.changeDirection(Snake::MOVE_DOWN);
 		break;
+	case sf::Keyboard::Right:
 	case sf::Keyboard::D:
 		m_snake.changeDirection(Snake::MOVE_RIGHT);
 		break;
@@ -116,7 +120,7 @@ int SnakeGame::SnakeScreen::close(ICollectionScreen** screen)
 bool SnakeGame::SnakeScreen::checkCollision()
 {
 	// Check collision with field borders
-	if (m_snake.getSnakeHead().x < 0 || m_snake.getSnakeHead().x > Field::s_ROWS - 1 || m_snake.getSnakeHead().y < 0 || m_snake.getSnakeHead().y > Field::s_COLUMNS) {
+	if (m_snake.getSnakeHead().x < 0 || m_snake.getSnakeHead().x > Field::s_ROWS - 1 || m_snake.getSnakeHead().y < 0 || m_snake.getSnakeHead().y > Field::s_COLUMNS - 1) {
 		return true;
 	}
 	
