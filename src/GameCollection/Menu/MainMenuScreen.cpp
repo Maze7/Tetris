@@ -28,9 +28,9 @@ void MainMenuScreen::handleEvent(const sf::Event sfevent)
 	{
 	case sf::Keyboard::H:
 		if(OS_Windows) {
-			system("notepad.exe static\\helptext_Tetris.txt");
+			system("notepad.exe static\\helptext.txt");
 		} else {
-			system("xdp-open static/helptext_Tetris.txt");
+			system("xdp-open static/helptext.txt");
 		}
 		break;
 	case sf::Keyboard::W:
