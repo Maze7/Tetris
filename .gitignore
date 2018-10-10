@@ -8,3 +8,7 @@
 /Tetris.vcxproj
 /Tetris.vcxproj.user
 /Tetris.vcxproj.filters
+/sfml
+/.gitattributes
+/big_noodle_titling.ttf
+/Highscores.txt
