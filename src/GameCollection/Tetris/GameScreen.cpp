@@ -47,6 +47,7 @@ void TetrisGame::GameScreen::update()
 			}
 
 			m_completedRows.clear();
+			updateCollisionPreview(); // Update Preview after completed lines are removed
 		}
 		else {
 			m_currentTetromino.move(Tetromino::DOWN);
