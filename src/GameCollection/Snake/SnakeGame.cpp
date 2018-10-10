@@ -18,12 +18,14 @@ void SnakeGame::SnakeGame::handleEvent(const sf::Event sfevent)
 		break;
 	}
 
-	m_isDirectionChanged = true;
+	m_isDirectionChanged = true; // makes the snake move immediately in the handleTime()-method
 }
 
 void SnakeGame::SnakeGame::handleTime()
 {
+	// If time for a new tick or player changed direction
 	if (m_clock.getElapsedTime().asMilliseconds() > 100 || m_isDirectionChanged) {
+
 		// Check if snake head is in a valid position
 		if (!checkCollision()) {
 
@@ -73,7 +75,7 @@ bool SnakeGame::SnakeGame::checkCollision()
 		return true;
 	}
 	
-	// Check collision of snake head with its tail
+	// Check collision of snake head with its tail (Start at 1, because head is at index 0)
 	for (int i = 1; i < m_snake.getSnakeBody()->size(); i++) {
 		if (m_snake.getSnakeHead().x == m_snake.getSnakeBody()->at(i).x && m_snake.getSnakeHead().y == m_snake.getSnakeBody()->at(i).y) {
 			return true;

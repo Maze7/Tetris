@@ -18,6 +18,7 @@ namespace SnakeGame
 		void draw(sf::RenderWindow* window, sf::Font* font);
 
 		void update();
+		void reset();
 
 		const int& getSnakeSize() { return m_score; }
 
