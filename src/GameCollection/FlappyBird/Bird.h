@@ -16,7 +16,10 @@ namespace FlappyBirdGame
 		void draw(sf::RenderWindow* window);
 
 	private:
+		// sf::RectangleShape that defines the bird
 		sf::RectangleShape m_birdBox;
+
+		// Current velocity of the bird (negativ value = bird moves up, positive value = bird moves down)
 		float m_currentSpeed;
 
 	};

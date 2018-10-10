@@ -9,7 +9,10 @@ namespace SnakeGame
 	{
 
 	private:
+		// Position of the food that spawns in the field
 		sf::Vector2i m_food;
+
+		// Background 
 		sf::RectangleShape m_background;
 
 	public: 
