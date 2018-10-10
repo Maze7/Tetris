@@ -16,6 +16,14 @@ SnakeGame::SnakeScreen::SnakeScreen() :
 
 void SnakeGame::SnakeScreen::handleEvent(const sf::Event sfevent)
 {
+	if (m_state == GAMEOVER) {
+		if (sfevent.key.code == sf::Keyboard::Return) {
+			m_running = false;
+			m_nextScreen = &GameCollection::Collection::getEntrys()->at(SnakeLoader::MODUL_NAME);
+		} else {
+			return;
+		}
+	}
 	switch (sfevent.key.code) {
 	case sf::Keyboard::W:
 		m_snake.changeDirection(Snake::MOVE_UP);
@@ -40,6 +48,9 @@ void SnakeGame::SnakeScreen::handleEvent(const sf::Event sfevent)
 
 void SnakeGame::SnakeScreen::handleTime()
 {
+	if (m_state == GAMEOVER) {
+		return; // no gameticks if gameover
+	}
 	// If time for a new tick or player changed direction
 	if (m_clock.getElapsedTime().asMilliseconds() > 100 || m_isDirectionChanged) {
 
@@ -66,7 +77,7 @@ void SnakeGame::SnakeScreen::handleTime()
 			m_clock.restart();
 		}
 		else {
-			// game over stuff
+			m_state = GAMEOVER;
 		}
 	}
 }
@@ -75,6 +86,20 @@ void SnakeGame::SnakeScreen::draw(sf::RenderWindow * window, sf::Font * font)
 {
 	m_field.draw(window, m_snake);
 	m_score.draw(window, font);
+	if (m_state == GAMEOVER) {
+		//const uint BLOCK_SIZE{ (window->getSize().y- 2 * m_field.s_OFFSET) / m_field.s_ROWS };
+		sf::Vector2f size(m_field.s_BLOCK_SIZE * m_field.s_COLUMNS, window->getSize().y - 2 * m_field.s_OFFSET);
+
+		sf::RectangleShape shape;
+		shape.setSize(size);
+		shape.setPosition(m_field.s_OFFSET, m_field.s_OFFSET);
+		shape.setFillColor(sf::Color(255, 150, 150, 150));
+		window->draw(shape);
+
+		sf::Text gameoverText("\t \t \t  GameOver! \n      \t Press <RETURN>", *font, 50);
+		gameoverText.setPosition(50.f, 250.f);
+		window->draw(gameoverText);
+	}
 }
 
 int SnakeGame::SnakeScreen::close(ICollectionScreen** screen)
