@@ -8,4 +8,4 @@ namespace Utility
 	public:
 		static std::string XORencryption(const std::string& toEncrypt);
 	};
-}
+} /* namespace Utility */

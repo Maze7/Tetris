@@ -1,10 +1,11 @@
 #include "Converter.h"
 
+namespace Utility {
+
 /*
 	Returns a vector filled by the substrings of the given string divided with the given delimiter.
 */
-std::vector<std::string> Utility::Converter::StringToVector(const std::string& str, const std::string& delimiter)
-{
+std::vector<std::string> Converter::StringToVector(const std::string& str, const std::string& delimiter) {
 	std::string::size_type pos = 0;
 	std::string::size_type prev = 0;
 
@@ -18,3 +19,5 @@ std::vector<std::string> Utility::Converter::StringToVector(const std::string& s
 
 	return result;
 }
+
+} /* namespace Utility */

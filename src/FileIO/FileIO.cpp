@@ -3,8 +3,7 @@
 /*
 	Returns a string-vector containing the content of the given file.
 */
-std::vector<std::string> FileIO::readFile(const std::string& filename)
-{
+std::vector<std::string> FileIO::readFile(const std::string& filename) {
 	std::string line;
 	std::string input;
 
@@ -35,8 +34,7 @@ std::vector<std::string> FileIO::readFile(const std::string& filename)
 /*
 	Writes the given string to the given file
 */
-void FileIO::writeFile(const std::string& output, const std::string& filename)
-{
+void FileIO::writeFile(const std::string& output, const std::string& filename) {
 	std::ofstream fileOut;
 	fileOut.exceptions(std::ofstream::failbit | std::ofstream::badbit);
 
