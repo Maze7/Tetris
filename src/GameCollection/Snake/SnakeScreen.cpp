@@ -82,7 +82,14 @@ void SnakeGame::SnakeScreen::handleTime()
 			m_clock.restart();
 		}
 		else {
+			// Gameover
 			m_state = GAMEOVER;
+
+			// Check if new highscore 
+			if (m_score.isNewHighscore()) {
+				m_score.addToHighscoreList();
+				m_score.writeHighscoreListToFile();
+			}
 		}
 	}
 }
