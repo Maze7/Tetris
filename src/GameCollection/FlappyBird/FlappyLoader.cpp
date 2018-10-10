@@ -1,5 +1,7 @@
 #include "FlappyLoader.h"
 
+constexpr char FlappyBirdGame::FlappyLoader::MODUL_NAME[];
+
 namespace {
 using namespace FlappyBirdGame;
 struct Loader {
