@@ -3,7 +3,8 @@ namespace SnakeGame {
 
 SnakeMenuScreen::SnakeMenuScreen() :
 			m_snakeGame(nullptr),
-			m_score(SnakeScore()) {
+			m_score(SnakeScore()),
+			m_scoreScreen(nullptr) {
 
 	if (!m_background.loadFromFile("static/bg.jpeg")) {
 		std::cerr << "[ERROR] [SnakeMenuScreen] loading bg picture failed" << std::endl;
