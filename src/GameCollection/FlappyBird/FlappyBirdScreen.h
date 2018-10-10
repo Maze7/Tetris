@@ -1,5 +1,5 @@
 #pragma once
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <vector>
 #include "../ICollectionEntry.h"
 #include "Bird.h"
@@ -8,11 +8,11 @@
 
 namespace FlappyBirdGame
 {
-	class FlappyBirdGame : public GameCollection::ICollectionEntry
+	class FlappyBirdScreen : public GameCollection::ICollectionEntry
 	{
 	public:
-		FlappyBirdGame();
-		~FlappyBirdGame() {}
+		FlappyBirdScreen();
+		~FlappyBirdScreen() {}
 
 		void handleEvent(const sf::Event sfevent);
 		void handleTime();

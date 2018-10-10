@@ -1,6 +1,6 @@
-#include "FlappyBirdGame.h"
+#include "FlappyBirdScreen.h"
 
-FlappyBirdGame::FlappyBirdGame::FlappyBirdGame()
+FlappyBirdGame::FlappyBirdScreen::FlappyBirdScreen()
 {
 	// Create pipes
 	m_pipes.push_back(Pipe(1400));
@@ -24,7 +24,7 @@ FlappyBirdGame::FlappyBirdGame::FlappyBirdGame()
 	m_ceiling.setFillColor(sf::Color::Transparent);
 }
 
-void FlappyBirdGame::FlappyBirdGame::handleEvent(const sf::Event sfevent)
+void FlappyBirdGame::FlappyBirdScreen::handleEvent(const sf::Event sfevent)
 {
 	switch (sfevent.key.code) {
 	case sf::Keyboard::W:
@@ -33,7 +33,7 @@ void FlappyBirdGame::FlappyBirdGame::handleEvent(const sf::Event sfevent)
 	}
 }
 
-void FlappyBirdGame::FlappyBirdGame::handleTime()
+void FlappyBirdGame::FlappyBirdScreen::handleTime()
 {
 	if (!checkCollision()) {
 		sf::Time deltaTime = m_clock.restart(); // clock.restart() returns elapsed time and restarts the timer
@@ -62,7 +62,7 @@ void FlappyBirdGame::FlappyBirdGame::handleTime()
 	}
 }
 
-void FlappyBirdGame::FlappyBirdGame::draw(sf::RenderWindow* window, sf::Font* font)
+void FlappyBirdGame::FlappyBirdScreen::draw(sf::RenderWindow* window, sf::Font* font)
 {
 	// Draw background
 	window->draw(m_background);
@@ -84,7 +84,7 @@ void FlappyBirdGame::FlappyBirdGame::draw(sf::RenderWindow* window, sf::Font* fo
 	m_score.draw(window, font);
 }
 
-int FlappyBirdGame::FlappyBirdGame::close()
+int FlappyBirdGame::FlappyBirdScreen::close()
 {
 	return 0;
 }
@@ -93,7 +93,7 @@ int FlappyBirdGame::FlappyBirdGame::close()
 	Checks if the bird collided with a pipe or the ground.
 	Should be called in the handleTime()-method, since positions are updated continiously.
 */
-bool FlappyBirdGame::FlappyBirdGame::checkCollision()
+bool FlappyBirdGame::FlappyBirdScreen::checkCollision()
 {
 	// Check collision with pipe
 	for (auto& pipe : m_pipes) {
@@ -115,7 +115,7 @@ bool FlappyBirdGame::FlappyBirdGame::checkCollision()
 	return false;
 }
 
-void FlappyBirdGame::FlappyBirdGame::handleCollision()
+void FlappyBirdGame::FlappyBirdScreen::handleCollision()
 {
 }
 
