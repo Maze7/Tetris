@@ -28,6 +28,8 @@ void MainMenuScreen::handleEvent(const sf::Event sfevent)
 	case sf::Keyboard::H:
 		if(OS_Windows) {
 			system("notepad.exe static\\helptext.txt");
+		} else if(OS_Mac) {
+			system("open static/helptext.txt");
 		} else {
 			system("xdp-open static/helptext.txt");
 		}
