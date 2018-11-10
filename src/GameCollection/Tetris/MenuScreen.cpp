@@ -53,6 +53,7 @@ void MenuScreen::handleEvent(const sf::Event sfevent) {
 		if (m_hover == PLAY) {
 			m_currentState = ENTRYS(m_hover);
 			TetrisLoader::erase(TetrisLoader::GAME);
+			m_score.reset();
 		}
 		break;
 	default:
