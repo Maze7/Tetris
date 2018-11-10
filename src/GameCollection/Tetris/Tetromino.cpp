@@ -1,5 +1,8 @@
 #include "Tetromino.h"
 
+constexpr int TetrisGame::Tetromino::PLAYFIELD_POS[];
+constexpr int TetrisGame::Tetromino::PREVIEW_POS[];
+
 // 	enum TETROMINO_TYPE { I=0, J=1, L=2, O=3, S=4, T=5, Z=6, END=7 };
 /*
 

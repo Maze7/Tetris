@@ -10,8 +10,13 @@
  */
 #ifdef __unix__
 	constexpr bool OS_Windows = 0;
+	constexpr bool OS_Mac = 0;
 #elif defined(_WIN32) || defined(WIN32)
 	constexpr bool OS_Windows = 1;
+	constexpr bool OS_Mac = 0;
+#elif __APPLE__
+	constexpr bool OS_Windows = 0;
+	constexpr bool OS_Mac = 1;
 #endif
 
 /*

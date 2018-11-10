@@ -52,16 +52,16 @@ int Collection::run(sf::RenderWindow& window, sf::Font& font) {
 			
 			// check which action needs to perform depends on return value of close()
 			switch (returnValue) {
-			case currentScreen->MAIN_MENU:
+			case ICollectionScreen::MAIN_MENU:
 				currentScreen = &mainMenu;
 				currentScreen->setRunning();
 				break;
 
-			case currentScreen->CONTINUE:
+			case ICollectionScreen::CONTINUE:
 				currentScreen->setRunning();
 				break;
 
-			case currentScreen->EXIT_APP:
+			case ICollectionScreen::EXIT_APP:
 			default:
 				return returnValue;
 				break;
