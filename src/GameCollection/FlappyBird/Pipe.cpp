@@ -3,7 +3,6 @@
 
 namespace FlappyBirdGame {
 
-
 Pipe::Pipe(int offsetX) : m_gapSize(85), m_isPassed(false) {
 	// Add the RectangleShapes, that make up the pipe
 	m_pipeShapes.push_back(sf::RectangleShape());
@@ -43,7 +42,6 @@ bool Pipe::checkBirdCollision(Bird* bird) {
 			is_collided = true;
 		}
 	}
-
 	return is_collided;
 }
 
@@ -97,7 +95,6 @@ void Pipe::resetPosition(int offsetX) {
 	for (auto& pipe : m_pipeShapes) {
 		pipe.setPosition(offsetX, 0);
 	}
-
 	m_isPassed = false;
 }
 

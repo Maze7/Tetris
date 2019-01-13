@@ -7,8 +7,7 @@
 #include "../Utility/Encryption.h"
 #include "../Exceptions/FileExceptions.h"
 
-class FileIO
-{
+class FileIO {
 public:
 	FileIO() {}
 	~FileIO() {}

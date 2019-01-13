@@ -3,7 +3,6 @@
 
 namespace FlappyBirdGame {
 
-
 FlappyBirdScreen::FlappyBirdScreen() : m_state(PLAYING), m_nextScreen(nullptr) {
 	// Create pipes
 	m_pipes.push_back(Pipe(1400));

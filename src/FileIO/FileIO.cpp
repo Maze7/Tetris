@@ -9,11 +9,9 @@ std::vector<std::string> FileIO::readFile(const std::string& filename) {
 
 	std::ifstream fileIn(filename);
 
-	if (fileIn.is_open())
-	{
+	if (fileIn.is_open()) {
 		// Add each line of the file to the input-string
-		while (std::getline(fileIn, line))
-		{
+		while (std::getline(fileIn, line)) {
 			input += line + "\n";
 		}
 
@@ -21,9 +19,7 @@ std::vector<std::string> FileIO::readFile(const std::string& filename) {
 
 		// Decrypt the string
 		input = Utility::Encryption::XORencryption(input);
-	}
-	else
-	{
+	} else {
 		throw Exceptions::FileExceptions::FileNotFoundException("FileNotFoundException");
 	}
 
@@ -44,8 +40,7 @@ void FileIO::writeFile(const std::string& output, const std::string& filename) {
 
 		std::cout << "Writing\n" << output << std::endl;
 		fileOut.close();
-	}
-	catch (std::ofstream::failure const &e) {
+	} catch (std::ofstream::failure const &e) {
 		throw Exceptions::FileExceptions::FileWriteException("FileWriteException");
 	}
 }

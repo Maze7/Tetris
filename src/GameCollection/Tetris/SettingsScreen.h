@@ -7,53 +7,53 @@
 #include "GameScreen.h"
 #include "MenuScreen.h"
 
-namespace TetrisGame
-{
-	class SettingsScreen : public GameCollection::ICollectionScreen
-	{
-	private:
-		/*
-		 * Specify the menu entrys.
-		 */
-		enum ENTRYS {DIFFICULTY = 0, SOUND_VOLUME = 1, BACK = 2, END = 3 };
-		const std::string entryNames[END] = {"Difficulty", "Sound Volume", "Back"};
+namespace TetrisGame {
 
-		/*
-		 * Specify the menu entry which is currently focused.
-		 * On "startup" ist the first entry  (DIFFICULTY) focused
-		 */
-		ENTRYS m_hover = ENTRYS::DIFFICULTY;
+class SettingsScreen : public GameCollection::ICollectionScreen {
+private:
+	/*
+		* Specify the menu entrys.
+		*/
+	enum ENTRYS {DIFFICULTY = 0, SOUND_VOLUME = 1, BACK = 2, END = 3 };
+	const std::string entryNames[END] = {"Difficulty", "Sound Volume", "Back"};
 
-		/*
-		 * 0 = DEFAULT
-		 * 1 = 5
-		 * 2 = 10
-		 * 3 = 15
-		 */
-		unsigned int m_difficulty = 0;
+	/*
+		* Specify the menu entry which is currently focused.
+		* On "startup" ist the first entry  (DIFFICULTY) focused
+		*/
+	ENTRYS m_hover = ENTRYS::DIFFICULTY;
 
-		/*
-		 * m_difficulty * m_difficultyIntervall = the real start level
-		 */
-		const unsigned int m_difficultyIntervall = 5;
+	/*
+		* 0 = DEFAULT
+		* 1 = 5
+		* 2 = 10
+		* 3 = 15
+		*/
+	unsigned int m_difficulty = 0;
 
-		unsigned int m_volume = 5;
-		sf::Texture m_background;
+	/*
+		* m_difficulty * m_difficultyIntervall = the real start level
+		*/
+	const unsigned int m_difficultyIntervall = 5;
 
-	public:
-		SettingsScreen();
-		~SettingsScreen() {};
+	unsigned int m_volume = 5;
+	sf::Texture m_background;
 
-		void handleEvent(const sf::Event sfevent);
-		void draw(sf::RenderWindow* window, sf::Font* font);
-		int close(ICollectionScreen** screen);
+public:
+	SettingsScreen();
+	~SettingsScreen() {};
 
-		const unsigned int getDifficulty();
-		float getSoundVolume();
+	void handleEvent(const sf::Event sfevent);
+	void draw(sf::RenderWindow* window, sf::Font* font);
+	int close(ICollectionScreen** screen);
 
-	private:
-		// helpers
-		static constexpr int DIFFICULTY_SIZE = 4; // difficulty options
-		static constexpr unsigned int MAX_VOLUME = 10;
-	};
-}
+	const unsigned int getDifficulty();
+	float getSoundVolume();
+
+private:
+	// helpers
+	static constexpr int DIFFICULTY_SIZE = 4; // difficulty options
+	static constexpr unsigned int MAX_VOLUME = 10;
+};
+
+} /* namespace TetrisGame */

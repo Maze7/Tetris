@@ -19,10 +19,11 @@ void FlappyMenuScreen::handleEvent(const sf::Event sfevent) {
 	switch (sfevent.key.code) {
 	case sf::Keyboard::W:
 	case sf::Keyboard::Up:
-		if (m_hover == 0)
+		if (m_hover == 0) {
 			m_hover = ENTRYS(END - 1);
-		else
+		} else {
 			m_hover = ENTRYS(m_hover - 1);
+		}
 		break;
 	case sf::Keyboard::S:
 	case sf::Keyboard::Down:
@@ -51,8 +52,8 @@ void FlappyMenuScreen::handleEvent(const sf::Event sfevent) {
 	default:
 		break;
 	}
-
 }
+
 void FlappyMenuScreen::draw(sf::RenderWindow* window, sf::Font* font) {
 		sf::Text menus[END];
 		sf::Sprite sprite; // used for background and text rendering

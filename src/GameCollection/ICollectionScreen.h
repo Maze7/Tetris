@@ -1,14 +1,12 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-namespace GameCollection
-{
+namespace GameCollection {
 	/*
 	 *	Every screen which should be displayed, need to implement this inferface-like class. 
 	 *	Each module can have multiple screens. See GameCollection::Collection. 
 	 */
-	class ICollectionScreen
-	{
+	class ICollectionScreen {
 	protected:
 		bool m_running = true;
 

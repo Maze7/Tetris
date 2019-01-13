@@ -2,32 +2,32 @@
 #include <SFML/Graphics.hpp>
 #include "Tetromino.h"
 
-namespace TetrisGame 
-{
-	class Playfield
-	{
+namespace TetrisGame {
 
-	private:
-		std::vector<std::vector<sf::Color>> m_grid;
+class Playfield {
 
-	public:
-		static constexpr int s_ROWS = 20;
-		static constexpr int s_COLUMNS = 10;
-		static constexpr int s_OFFSET = 10;
+private:
+	std::vector<std::vector<sf::Color>> m_grid;
 
-	public:
-		Playfield() : m_grid(s_ROWS, std::vector<sf::Color>(s_COLUMNS, sf::Color::Black)) {};
+public:
+	static constexpr int s_ROWS = 20;
+	static constexpr int s_COLUMNS = 10;
+	static constexpr int s_OFFSET = 10;
 
-		~Playfield();
-		void addTetromino(TetrisGame::Tetromino& tetromino);
-		std::vector<int> checkForCompletedRows();
-		void deleteRow(unsigned int row);
-		sf::Color getColorOfField(unsigned int y, unsigned int x);
+public:
+	Playfield() : m_grid(s_ROWS, std::vector<sf::Color>(s_COLUMNS, sf::Color::Black)) {};
 
-		void drawGrid(sf::RenderWindow* window);
-		void drawTetromino(sf::RenderWindow* window, TetrisGame::Tetromino& tetromino, bool transparency);
+	~Playfield();
+	void addTetromino(TetrisGame::Tetromino& tetromino);
+	std::vector<int> checkForCompletedRows();
+	void deleteRow(unsigned int row);
+	sf::Color getColorOfField(unsigned int y, unsigned int x);
 
-		void markCompletedRows(std::vector<int>* completedRows, sf::Color color);
-		void resetPlayfield();
-	};
-}
+	void drawGrid(sf::RenderWindow* window);
+	void drawTetromino(sf::RenderWindow* window, TetrisGame::Tetromino& tetromino, bool transparency);
+
+	void markCompletedRows(std::vector<int>* completedRows, sf::Color color);
+	void resetPlayfield();
+};
+
+} /* namespace TetrisGame */

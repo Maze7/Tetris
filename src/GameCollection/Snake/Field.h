@@ -3,36 +3,36 @@
 #include <SFML/Graphics.hpp>
 #include "Snake.h"
 
-namespace SnakeGame
-{
-	class Field
-	{
+namespace SnakeGame {
 
-	private:
-		// Position of the food that spawns in the field
-		sf::Vector2i m_food;
+class Field {
 
-		// Background 
-		sf::RectangleShape m_background;
+private:
+	// Position of the food that spawns in the field
+	sf::Vector2i m_food;
 
-	public: 
-		static constexpr int s_ROWS = 25;
-		static constexpr int s_COLUMNS = 25;
-		static constexpr int s_OFFSET = 10;
-		static constexpr int s_BLOCK_SIZE = 20;
+	// Background 
+	sf::RectangleShape m_background;
 
-	public:
-		Field();
-		~Field(){}
+public: 
+	static constexpr int s_ROWS = 25;
+	static constexpr int s_COLUMNS = 25;
+	static constexpr int s_OFFSET = 10;
+	static constexpr int s_BLOCK_SIZE = 20;
 
-		sf::Vector2i& getFood() { return m_food; }
+public:
+	Field();
+	~Field(){}
 
-		void spawnRandomFood(Snake& snake);
-		void draw(sf::RenderWindow* window, Snake& snake);
+	sf::Vector2i& getFood() { return m_food; }
 
-	private:
-		bool isSpaceEmpty(Snake& snake);
-	};
+	void spawnRandomFood(Snake& snake);
+	void draw(sf::RenderWindow* window, Snake& snake);
+
+private:
+	bool isSpaceEmpty(Snake& snake);
+};
+
 } /* namespace SnakeGame */
 
 

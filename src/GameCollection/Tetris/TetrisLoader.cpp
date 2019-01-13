@@ -1,6 +1,7 @@
 #include "TetrisLoader.h"
 
 namespace TetrisGame {
+
 // allocate memory (static elements)
 constexpr char TetrisLoader::MODUL_NAME[];
 std::map <TetrisLoader::SCREENS, GameCollection::ICollectionScreen*> TetrisLoader::s_modulScreens;

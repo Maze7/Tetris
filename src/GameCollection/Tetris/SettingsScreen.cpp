@@ -5,8 +5,7 @@
 
 namespace TetrisGame {
 
-SettingsScreen::SettingsScreen()
-{
+SettingsScreen::SettingsScreen() {
 	// Load Background picture. Use same as tetris menu.
 	m_background = sf::Texture();
 	if (!m_background.loadFromFile(MenuScreen::s_BACKGROUND_PATH)) {
@@ -17,8 +16,7 @@ SettingsScreen::SettingsScreen()
 /*
 	#Override : ICollectionScreen
 */
-void SettingsScreen::handleEvent(const sf::Event sfevent)
-{
+void SettingsScreen::handleEvent(const sf::Event sfevent) {
 	int newHover;
 	switch (sfevent.key.code) {
 	case sf::Keyboard::W:
@@ -48,10 +46,11 @@ void SettingsScreen::handleEvent(const sf::Event sfevent)
 	
 	case sf::Keyboard::A:
 	case sf::Keyboard::Left:
-		if (m_hover == SOUND_VOLUME && m_volume > 0)
+		if (m_hover == SOUND_VOLUME && m_volume > 0) {
 			m_volume--;
-		else if (m_hover == DIFFICULTY) 
+		} else if (m_hover == DIFFICULTY) {
 			m_difficulty = --m_difficulty % DIFFICULTY_SIZE;
+		}
 		break;
 
 	case sf::Keyboard::D:
@@ -75,10 +74,10 @@ void SettingsScreen::draw(sf::RenderWindow* window, sf::Font* font)
 	sf::Text menus[END];
 	sf::RectangleShape volumeBars[MAX_VOLUME];
 	sf::Text diffTexts[DIFFICULTY_SIZE] = {
-			sf::Text("0", *font, 35),
-			sf::Text(std::to_string(m_difficultyIntervall),*font, 35),
-			sf::Text(std::to_string((2*m_difficultyIntervall)), *font, 35),
-			sf::Text(std::to_string((3*m_difficultyIntervall)), *font, 35)
+		sf::Text("0", *font, 35),
+		sf::Text(std::to_string(m_difficultyIntervall),*font, 35),
+		sf::Text(std::to_string((2*m_difficultyIntervall)), *font, 35),
+		sf::Text(std::to_string((3*m_difficultyIntervall)), *font, 35)
 	};
 
 	for (unsigned int i = 0; i < END; i++) {
@@ -126,7 +125,6 @@ void SettingsScreen::draw(sf::RenderWindow* window, sf::Font* font)
 	#Override : ICollectionScreen
 */
 int SettingsScreen::close(ICollectionScreen** screen) {
-
 	if (TetrisLoader::contains(TetrisLoader::GAME)) {
 		TetrisLoader::getGame()->setSoundVolume(getSoundVolume());
 	}

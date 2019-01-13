@@ -6,13 +6,12 @@
 	It puts all keywords (strings) of s_entrys into m_entryNames. 
 	This vector will needed to display the names of the different module to the main menu. 
 */
-MainMenuScreen::MainMenuScreen()
-{
+MainMenuScreen::MainMenuScreen() {
 	const GameCollection::CollectionEntrys* const allEntrys = GameCollection::Collection::getEntrys();
 
-	for (auto const& i : *allEntrys) 
+	for (auto const& i : *allEntrys) {
 		m_entryNames.push_back(i.first);
-
+	}
 	if (!m_background.loadFromFile("static/bg.jpeg")) {
 		std::cerr << "[ERROR] [MainMenuScreen] loading bg picture failed" << std::endl;
 	}
@@ -21,10 +20,8 @@ MainMenuScreen::MainMenuScreen()
 	m_hover = 0;
 }
 
-void MainMenuScreen::handleEvent(const sf::Event sfevent)
-{
-	switch (sfevent.key.code)
-	{
+void MainMenuScreen::handleEvent(const sf::Event sfevent) {
+	switch (sfevent.key.code) {
 	case sf::Keyboard::H:
 		if(OS_Windows) {
 			system("notepad.exe static\\helptext.txt");
@@ -54,9 +51,7 @@ void MainMenuScreen::handleEvent(const sf::Event sfevent)
 	}
 }
 
-
-void MainMenuScreen::draw(sf::RenderWindow* window, sf::Font* font)
-{
+void MainMenuScreen::draw(sf::RenderWindow* window, sf::Font* font) {
 	sf::Sprite sprite; // used for background and text rendering
 	sprite.setTexture(m_background);
 	sprite.setColor(sf::Color(255, 255, 255, 150));
@@ -85,17 +80,14 @@ void MainMenuScreen::draw(sf::RenderWindow* window, sf::Font* font)
 	window->draw(sprite);
 }
 
-const std::string& MainMenuScreen::getCurrentName()
-{
+const std::string& MainMenuScreen::getCurrentName() {
 	return m_currentName;
 }
 
-int MainMenuScreen::close(ICollectionScreen** screen)
-{
+int MainMenuScreen::close(ICollectionScreen** screen) {
 	if (m_currentName == "Exit") {
-	return EXIT_APP;
-	}
-	else {
+		return EXIT_APP;
+	} else {
 		*screen = GameCollection::Collection::getEntrys()->at(m_currentName);
 		return CONTINUE;
 	}

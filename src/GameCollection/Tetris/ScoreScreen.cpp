@@ -94,7 +94,6 @@ void ScoreScreen::handleEvent(const sf::Event sfevent) {
 	#Override : ICollectionScreen
 */
 void ScoreScreen::draw(sf::RenderWindow* window, sf::Font* font) {
-
 	sf::Text highscores[4]; // show 4 recent highscores
 	sf::Vector2f pos(280.f, 230.f);
 	std::string scoreString = std::to_string(m_score.getHighscoreList()[0][0].score);
@@ -148,4 +147,5 @@ int ScoreScreen::close(ICollectionScreen** screen) {
 	*screen = *TetrisLoader::getScreen(TetrisLoader::SCREENS(m_nextScreen));
 	return CONTINUE; // There is no exit option in this menu
 }
+
 } /* namespace TetrisGame */

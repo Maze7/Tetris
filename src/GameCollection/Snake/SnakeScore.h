@@ -7,10 +7,8 @@
 #include <string>
 #include "../../FileIO/FileIO.h"
 
-namespace SnakeGame
-{
-	class SnakeScore
-	{
+namespace SnakeGame {
+	class SnakeScore {
 	public:
 		SnakeScore() : m_score(0), m_highscoreList(5, 0) { init(); readHighscoreListFromFile(); }
 		~SnakeScore(){}

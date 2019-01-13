@@ -153,7 +153,6 @@ bool SnakeScreen::isEatingPossible() {
 	if (m_snake.getSnakeHead().x == m_field.getFood().x && m_snake.getSnakeHead().y == m_field.getFood().y) {
 		return true;
 	}
-
 	return false;
 }
 

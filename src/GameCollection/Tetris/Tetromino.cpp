@@ -1,15 +1,15 @@
 #include "Tetromino.h"
-
-constexpr int TetrisGame::Tetromino::PLAYFIELD_POS[];
-constexpr int TetrisGame::Tetromino::PREVIEW_POS[];
+namespace TetrisGame { 
+constexpr int Tetromino::PLAYFIELD_POS[];
+constexpr int Tetromino::PREVIEW_POS[];
 
 // 	enum TETROMINO_TYPE { I=0, J=1, L=2, O=3, S=4, T=5, Z=6, END=7 };
 /*
 
 */
-const TetrisGame::Tetromino::TetroShape TetrisGame::Tetromino::SHAPE_DATA[TetrisGame::Tetromino::END][4] =
+const Tetromino::TetroShape Tetromino::SHAPE_DATA[Tetromino::END][4] =
 {
-	{ // TetrisGame::Tetromino::I
+	{ // Tetromino::I
 		{
 			{0, 0, 0, 0},
 			{1, 1, 1, 1},
@@ -22,7 +22,7 @@ const TetrisGame::Tetromino::TetroShape TetrisGame::Tetromino::SHAPE_DATA[Tetris
 			{0, 1, 0, 0}
 		}
 	}, 
-	{ // TetrisGame::Tetromino::J
+	{ // Tetromino::J
 		{
 			{0, 0, 0, 0},
 			{1, 1, 1, 0},
@@ -45,7 +45,7 @@ const TetrisGame::Tetromino::TetroShape TetrisGame::Tetromino::SHAPE_DATA[Tetris
 			{0, 0, 0, 0}
 		}
 	},
-	{ // TetrisGame::Tetromino::L
+	{ // Tetromino::L
 		{
 			{0, 0, 0, 0},
 			{1, 1, 1, 0},
@@ -68,7 +68,7 @@ const TetrisGame::Tetromino::TetroShape TetrisGame::Tetromino::SHAPE_DATA[Tetris
 			{0, 0, 0, 0}
 		}
 	},
-	{ // TetrisGame::Tetromino::O
+	{ // Tetromino::O
 		{
 			{0, 0, 0, 0},
 			{0, 1, 1, 0},
@@ -76,7 +76,7 @@ const TetrisGame::Tetromino::TetroShape TetrisGame::Tetromino::SHAPE_DATA[Tetris
 			{0, 0, 0, 0}
 		}
 	}, 
-	{ // TetrisGame::Tetromino::S
+	{ // Tetromino::S
 		{
 			{0, 0, 0, 0},
 			{0, 1, 1, 0},
@@ -89,7 +89,7 @@ const TetrisGame::Tetromino::TetroShape TetrisGame::Tetromino::SHAPE_DATA[Tetris
 			{0, 0, 0, 0},
 		}
 	},
-	{ // TetrisGame::Tetromino::T
+	{ // Tetromino::T
 		{
 			{0, 0, 0, 0},
 			{0, 1, 0, 0},
@@ -112,7 +112,7 @@ const TetrisGame::Tetromino::TetroShape TetrisGame::Tetromino::SHAPE_DATA[Tetris
 			{0, 1, 0, 0}
 		}
 	},
-	{ // TetrisGame::Tetromino::Z
+	{ // Tetromino::Z
 		{
 			{0, 0, 0, 0},
 			{1, 1, 0, 0},
@@ -133,10 +133,10 @@ const TetrisGame::Tetromino::TetroShape TetrisGame::Tetromino::SHAPE_DATA[Tetris
 	it in the Playfield. 
 
 	Example usage:
-	sf::Color color = TetrisGame::Tetromino::SHAPE_COLORS[tetromino.getType()];
+	sf::Color color = Tetromino::SHAPE_COLORS[tetromino.getType()];
 
 */
-const sf::Color TetrisGame::Tetromino::SHAPE_COLORS[TETROMINO_TYPE::END] =
+const sf::Color Tetromino::SHAPE_COLORS[TETROMINO_TYPE::END] =
 {
 	sf::Color::Cyan,				// I
 	sf::Color::Blue,				// J
@@ -160,7 +160,7 @@ const sf::Color TetrisGame::Tetromino::SHAPE_COLORS[TETROMINO_TYPE::END] =
 		// it is not valid to rotate. There aren't even more arrays for 
 		// this tetromino type
 */
-const int TetrisGame::Tetromino::SHAPE_SIZE[TetrisGame::Tetromino::END] =
+const int Tetromino::SHAPE_SIZE[Tetromino::END] = 
 {
 	2,	// I
 	4,	// J
@@ -171,23 +171,19 @@ const int TetrisGame::Tetromino::SHAPE_SIZE[TetrisGame::Tetromino::END] =
 	2	// Z
 };
 
-TetrisGame::Tetromino::~Tetromino()
-{
+Tetromino::~Tetromino() {
 }
 
 
-const TetrisGame::Tetromino::TETROMINO_TYPE& TetrisGame::Tetromino::getType()
-{
+const Tetromino::TETROMINO_TYPE& Tetromino::getType() {
 	return m_type;
 }
 
-const sf::Vector2i& TetrisGame::Tetromino::getPosition()
-{
+const sf::Vector2i& Tetromino::getPosition() {
 	return m_position;
 }
 
-const int& TetrisGame::Tetromino::getRotation()
-{
+const int& Tetromino::getRotation() {
 	return m_rotation;
 }
 
@@ -200,8 +196,7 @@ const int& TetrisGame::Tetromino::getRotation()
 		currentTetromino.rotate(Tetromino::FORWARD);
 		// clockwise rotation of current tetromino 
 */
-void TetrisGame::Tetromino::rotate(ROTATION_ACTION action)
-{
+void Tetromino::rotate(ROTATION_ACTION action) {
 	switch (action) {
 	
 	case Tetromino::FORWARD: // right rotation => m_rotation + 1
@@ -228,8 +223,7 @@ void TetrisGame::Tetromino::rotate(ROTATION_ACTION action)
 		// Moves the current tetromino one position down. 
 		// It increases the Y-coordinate by one.
 */
-void TetrisGame::Tetromino::move(MOVE_ACTION action)
-{
+void Tetromino::move(MOVE_ACTION action) {
 	switch (action) {
 	case RIGHT:
 		this->m_position.x++;
@@ -245,3 +239,5 @@ void TetrisGame::Tetromino::move(MOVE_ACTION action)
 		break;
 	}
 }
+
+} /* namespace TetrisGame */

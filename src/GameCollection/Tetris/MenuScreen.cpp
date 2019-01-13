@@ -129,21 +129,21 @@ int MenuScreen::close(ICollectionScreen** screen) {
 		*screen = *TetrisLoader::getScreen(TetrisLoader::SCORE);
 		return CONTINUE;
 	case PLAY:
-	{ /* private Scope */ // needed for gameScreen
+		{ // private Scope - needed for gameScreen
 
-		if (!TetrisLoader::contains(TetrisLoader::GAME)) {
-			TetrisLoader::addScreen(TetrisLoader::GAME, new GameScreen(m_score));
-		}
-		ICollectionScreen** gameScreen = TetrisLoader::getScreen(TetrisLoader::GAME);
+			if (!TetrisLoader::contains(TetrisLoader::GAME)) {
+				TetrisLoader::addScreen(TetrisLoader::GAME, new GameScreen(m_score));
+			}
+			ICollectionScreen** gameScreen = TetrisLoader::getScreen(TetrisLoader::GAME);
 
-		if (TetrisLoader::getGame()->getGameState() == GameScreen::GAMEOVER) { // if game is not running right now, create a new one and starts to play
-			delete *gameScreen;
-			m_score.reset();
-			*gameScreen = new GameScreen(m_score); // let pointer point to a new game
-			TetrisLoader::getGame()->setGameState(GameScreen::PLAYING);
-		}
-		*screen = *TetrisLoader::getScreen(TetrisLoader::GAME); // open game
-	} /* scope */
+			if (TetrisLoader::getGame()->getGameState() == GameScreen::GAMEOVER) { // if game is not running right now, create a new one and starts to play
+				delete *gameScreen;
+				m_score.reset();
+				*gameScreen = new GameScreen(m_score); // let pointer point to a new game
+				TetrisLoader::getGame()->setGameState(GameScreen::PLAYING);
+			}
+			*screen = *TetrisLoader::getScreen(TetrisLoader::GAME); // open game
+		} /* anonymous scope */
 		return CONTINUE;
 		break;
 	default:

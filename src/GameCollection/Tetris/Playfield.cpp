@@ -1,9 +1,8 @@
 #include "Playfield.h"
 
 namespace TetrisGame {
-Playfield::~Playfield()
-{
-}
+
+Playfield::~Playfield() {}
 
 /*
 	Saves the colors of the tetromino blocks in the Playfield's grid 
@@ -15,19 +14,15 @@ Playfield::~Playfield()
 	if ( // tetromino collided after moving down )
 		addTetromino(activeTetromino);
 */
-void Playfield::addTetromino(Tetromino& tetromino)
-{
+void Playfield::addTetromino(Tetromino& tetromino) {
 	// Get the shape of the tetromino
 	const Tetromino::TetroShape* tetroShape = &Tetromino::SHAPE_DATA[tetromino.getType()][tetromino.getRotation()];
 	sf::Vector2i gridPosition;
 
-	for (int y = 0; y < 4; y++) 
-	{
-		for (int x = 0; x < 4; x++)
-		{
+	for (int y = 0; y < 4; y++) {
+		for (int x = 0; x < 4; x++) {
 			// If the block is visible (== 1), add the corresponding color to the m_grid
-			if (tetroShape[0][y][x] == 1)
-			{
+			if (tetroShape[0][y][x] == 1) {
 				gridPosition.x = tetromino.getPosition().x + x;
 				gridPosition.y = tetromino.getPosition().y + y;
 
@@ -46,28 +41,22 @@ void Playfield::addTetromino(Tetromino& tetromino)
 		std::vector<int> completedRows = playfield.checkForCompletedRows();
 		// remove the completed rows
 */
-std::vector<int> Playfield::checkForCompletedRows()
-{
+std::vector<int> Playfield::checkForCompletedRows() {
 	std::vector<int> completedRowsIndices;
 	bool completed = true;
 
 	// Iterate over the grid
-	for (int y = 0; y < s_ROWS; y++)
-	{
-		for (int x = 0; x < s_COLUMNS; x++)
-		{
+	for (int y = 0; y < s_ROWS; y++) {
+		for (int x = 0; x < s_COLUMNS; x++)	{
 			// If a row contains a black block, it's not completed
-			if (m_grid[y][x] == sf::Color::Black)
-			{
+			if (m_grid[y][x] == sf::Color::Black) {
 				completed = false;
 			}
 		}
 
-		if (completed)
-		{
+		if (completed) {
 			completedRowsIndices.push_back(y);
 		}
-
 		completed = true;
 	}
 
@@ -82,21 +71,17 @@ std::vector<int> Playfield::checkForCompletedRows()
 	for (int rowIndex : completedRowsIndices)
 		playfield.deleteRow(rowIndex);
 */
-void Playfield::deleteRow(unsigned int row)
-{
+void Playfield::deleteRow(unsigned int row) {
 	// Start at the completed row and move one row up every iteration (decrease y-index)
-	for (int y = row; y > 0; y--)
-	{
-		for (int x = 0; x < s_COLUMNS; x++)
-		{
+	for (int y = row; y > 0; y--) {
+		for (int x = 0; x < s_COLUMNS; x++) {
 			// Set current block color to the color of the block above it
 			m_grid[y][x] = m_grid[y - 1][x];
 		}
 	}
 }
 
-sf::Color Playfield::getColorOfField(unsigned int y, unsigned int x)
-{
+sf::Color Playfield::getColorOfField(unsigned int y, unsigned int x) {
 	return m_grid[y][x];
 }
 
@@ -123,10 +108,8 @@ void Playfield::drawGrid(sf::RenderWindow* window)
 	block.setOutlineThickness(1);
 
 	// Draw color  grid
-	for (int y = 0; y < s_ROWS; y++)
-	{
-		for (int x = 0; x < s_COLUMNS; x++)
-		{
+	for (int y = 0; y < s_ROWS; y++) {
+		for (int x = 0; x < s_COLUMNS; x++) {
 			if (m_grid[y][x] != sf::Color::Black) {
 				// Create the blocks as sf::RectangleShape's and assign color and position
 				block.setFillColor(m_grid[y][x]);
@@ -225,4 +208,5 @@ void Playfield::resetPlayfield()
 		}
 	}
 }
+
 } /* namespace TetrisGame */

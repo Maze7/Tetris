@@ -47,9 +47,9 @@ GameScreen::GameScreen(TetrisScore& score)
 	It is the place where the collision check happen. 
 */
 void GameScreen::update() {
-	if (m_state == GAMEOVER)
+	if (m_state == GAMEOVER) {
 		return; // no need for game ticks anymore
-
+	}
 	if (m_clock.getElapsedTime().asMilliseconds() > m_tickInterval) {
 		if (gameMusic.getStatus() == sf::Music::Status::Paused) {
 			gameMusic.play();
@@ -153,9 +153,9 @@ void GameScreen::updateCollisionPreview() {
 	m_collisionPreview = m_currentTetromino;
 
 	// Move the preview until it collides with the ground or a block
-	do
+	do {
 		m_collisionPreview.move(Tetromino::DOWN);
-	while (isPosValid(&m_collisionPreview));
+	}  while (isPosValid(&m_collisionPreview));
 	m_collisionPreview.move(Tetromino::UP); // Move tetromino back into a valid position
 }
 
@@ -225,7 +225,6 @@ void GameScreen::handleCollision() {
 
 */
 void GameScreen::handleEvent(const sf::Event sfevent) {
-
 	// if game is gameover only allow to press return
 	if (m_state == GAMEOVER) {
 		if (sfevent.key.code == sf::Keyboard::Return) {
@@ -285,7 +284,6 @@ void GameScreen::handleEvent(const sf::Event sfevent) {
 	default:
 		break;
 	}
-
 	if (!isPosValid()) {
 		m_currentTetromino.move(Tetromino::UP);
 		handleCollision();
