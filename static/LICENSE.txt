@@ -1,0 +1,21 @@
+######################################################################
+Some of the content in this directory is not owned by the owner of this
+software and/or is published under a different license than this project.
+Please read the following sections for further informations. 
+#######################################################################
+
+---------------------------
+Files with other licenses:
+--------------------------
+< currently nothing>
+
+-------------------------------------------------------------------------
+For the use of the following files, the owner have to be mentioned.
+-------------------------------------------------------------------------:
+- flappy_fail.wav
+- flappy_jump.wav
+- snake_eat.wav
+Published with: "Copyright FREE 8-Bit Retro Video Game Sound Effects.Please Credit 
+this channel if you use this sample." 
+Credits: https://www.youtube.com/channel/UCA8luKdJ7MAFj4-LB3gFjXQ
+Source: https://www.youtube.com/watch?v=nzjtkaLCn60 (partial)
