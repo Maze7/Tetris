@@ -23,7 +23,6 @@ git clone https://github.com/Maze7/Tetris
 cd Tetris
 ./autogen.sh && make all
 ```
-Copy the content of "static" from our fileserver into your local static directory. 
 Run it with `./GameCollection`. You need xdg to open the help file. 
 
 **MAC OS**
@@ -54,6 +53,3 @@ We do not provide an buildfile (like cmake) for windows. But it is fully compati
 
 # Contribution
 Follows // TODO
-
-# Site note
-Due to an unclear copyright situation, most files in "static" directory wasn't published. Maybe one day they will be uploaded. 
