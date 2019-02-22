@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{22C93BB9-8A50-4B58-9FB0-689B7F9A3F9D}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <ReferencePath>$(SolutionDir)bin</ReferencePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir)SFML32\include</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>
+      </AdditionalUsingDirectories>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>NotSet</SubSystem>
+      <AdditionalLibraryDirectories>$(SolutionDir)SFML32\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-system-d.lib;sfml-graphics-d.lib;sfml-audio-d.lib;sfml-network-d.lib;sfml-window-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>$(SolutionDir)SFML32\include</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir)SFML32\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-system.lib;sfml-graphics.lib;sfml-audio.lib;sfml-network.lib;sfml-window.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\FileIO\FileIO.cpp" />
+    <ClCompile Include="src\GameCollection\Collection.cpp" />
+    <ClCompile Include="src\GameCollection\FlappyBird\Bird.cpp" />
+    <ClCompile Include="src\GameCollection\FlappyBird\FlappyBirdScore.cpp" />
+    <ClCompile Include="src\GameCollection\FlappyBird\FlappyBirdScreen.cpp" />
+    <ClCompile Include="src\GameCollection\FlappyBird\FlappyLoader.cpp" />
+    <ClCompile Include="src\GameCollection\FlappyBird\FlappyMenuScreen.cpp" />
+    <ClCompile Include="src\GameCollection\FlappyBird\Pipe.cpp" />
+    <ClCompile Include="src\GameCollection\Menu\MainMenuScreen.cpp" />
+    <ClCompile Include="src\GameCollection\Snake\Field.cpp" />
+    <ClCompile Include="src\GameCollection\Snake\Snake.cpp" />
+    <ClCompile Include="src\GameCollection\Snake\SnakeLoader.cpp" />
+    <ClCompile Include="src\GameCollection\Snake\SnakeMenuScreen.cpp" />
+    <ClCompile Include="src\GameCollection\Snake\SnakeScore.cpp" />
+    <ClCompile Include="src\GameCollection\Snake\SnakeScoreScreen.cpp" />
+    <ClCompile Include="src\GameCollection\Snake\SnakeScreen.cpp" />
+    <ClCompile Include="src\GameCollection\Tetris\GameScreen.cpp" />
+    <ClCompile Include="src\GameCollection\Tetris\MenuScreen.cpp" />
+    <ClCompile Include="src\GameCollection\Tetris\Playfield.cpp" />
+    <ClCompile Include="src\GameCollection\GameCollection.cpp" />
+    <ClCompile Include="src\GameCollection\Tetris\ScoreScreen.cpp" />
+    <ClCompile Include="src\GameCollection\Tetris\SettingsScreen.cpp" />
+    <ClCompile Include="src\GameCollection\Tetris\TetrisLoader.cpp" />
+    <ClCompile Include="src\GameCollection\Tetris\TetrisScore.cpp" />
+    <ClCompile Include="src\GameCollection\Tetris\Tetromino.cpp" />
+    <ClCompile Include="src\Utility\Converter.cpp" />
+    <ClCompile Include="src\Utility\Encryption.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Exceptions\FileExceptions.h" />
+    <ClInclude Include="src\FileIO\FileIO.h" />
+    <ClInclude Include="src\GameCollection\Collection.h" />
+    <ClInclude Include="src\GameCollection\Exceptions.h" />
+    <ClInclude Include="src\GameCollection\FlappyBird\Bird.h" />
+    <ClInclude Include="src\GameCollection\FlappyBird\FlappyBirdScore.h" />
+    <ClInclude Include="src\GameCollection\FlappyBird\FlappyBirdScreen.h" />
+    <ClInclude Include="src\GameCollection\FlappyBird\FlappyLoader.h" />
+    <ClInclude Include="src\GameCollection\FlappyBird\FlappyMenuScreen.h" />
+    <ClInclude Include="src\GameCollection\FlappyBird\Pipe.h" />
+    <ClInclude Include="src\GameCollection\ICollectionEntry.h" />
+    <ClInclude Include="src\GameCollection\ICollectionScreen.h" />
+    <ClInclude Include="src\GameCollection\Menu\MainMenuScreen.h" />
+    <ClInclude Include="src\GameCollection\Snake\Field.h" />
+    <ClInclude Include="src\GameCollection\Snake\Snake.h" />
+    <ClInclude Include="src\GameCollection\Snake\SnakeLoader.h" />
+    <ClInclude Include="src\GameCollection\Snake\SnakeMenuScreen.h" />
+    <ClInclude Include="src\GameCollection\Snake\SnakeScore.h" />
+    <ClInclude Include="src\GameCollection\Snake\SnakeScoreScreen.h" />
+    <ClInclude Include="src\GameCollection\Snake\SnakeScreen.h" />
+    <ClInclude Include="src\GameCollection\Tetris\GameScreen.h" />
+    <ClInclude Include="src\GameCollection\Tetris\MenuScreen.h" />
+    <ClInclude Include="src\GameCollection\Tetris\Playfield.h" />
+    <ClInclude Include="src\GameCollection\Tetris\ScoreScreen.h" />
+    <ClInclude Include="src\GameCollection\Tetris\SettingsScreen.h" />
+    <ClInclude Include="src\GameCollection\Tetris\TetrisGame.h" />
+    <ClInclude Include="src\GameCollection\Tetris\TetrisLoader.h" />
+    <ClInclude Include="src\GameCollection\Tetris\TetrisScore.h" />
+    <ClInclude Include="src\GameCollection\Tetris\Tetromino.h" />
+    <ClInclude Include="src\GameCollection\Tetris\Typedefs.h" />
+    <ClInclude Include="src\Utility\Converter.h" />
+    <ClInclude Include="src\Utility\Encryption.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
