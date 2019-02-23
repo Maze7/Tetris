@@ -4,20 +4,17 @@ We expanded it to a little GameCollection.
 
 The main "feature" is still Tetris, but we programmed Snake and FlappyBird as well. 
 
-You can add your own games to it, see "Contribution"for more explanation.
+You can add your own games to it, see "Contribution" for more explanation.
 
 ## Build
 
-**Linux**
+###Linux
 
-You have to install sfml first.
+Most package manager does have sfml in repositorys (warning, debian-stretch SFML version is too old)
 
 ArchLinux: `pacman -S sfml`¸
 
 Ubuntu: `apt install libsfml-dev`
-
-*Sample Ubuntu 14.04 explanation: http://seriousitguy.blogspot.com/2014/05/how-to-setup-sfml-on-ubuntu-1404-lts.html*
-
 ```
 git clone https://github.com/Maze7/Tetris
 cd Tetris
@@ -25,7 +22,7 @@ cd Tetris
 ```
 Run it with `./GameCollection`. You need xdg to open the help file. 
 
-**MAC OS**
+###MAC OS
 
 Install sfml with brew:
 ```
@@ -38,18 +35,26 @@ The last command should't work and you will asked if you want to install XCode. 
 Now you can clone this repo and compile it. 
 
 ```
-git clone https://github.com/Maze7/Tetris
-cd Tetris
 ./autogen-mac.sh && make all
 ```
 
-**Windows**
+###Windows
+1. Import project into Visual Studio (2017) with given Tetris.sln and Tetris.vcxproj. 
+2. Download SFML 32bit matching your visual studio version (ex. https://www.sfml-dev.org/files/SFML-2.5.1-windows-vc15-32-bit.zip) and copy it to your solution directory and name it SFML32.
+3. Copy all .dll from SFML32/bin to your solution directory
+Compile with release mode (Windows Subsystem) or in debug mode (Console Application).
 
-We do not provide an buildfile (like cmake) for windows. But it is fully compatible. 
-- Clone this repo and import files as a "new project from existing code" in Visual Studio.
-- Install SFML-32 (sample tutorial: https://www.youtube.com/watch?v=axIgxBQVBg0) 
-- Change your subsystem to None/Console
-- compile
+## Installation 
+You can download the release files from our archive. In every platform you need to download the static directory and put it along with the GameCollection binary.
+In Windows, the DLL files (which are included in release archive) needs to be in the same directory too. 
 
-# Contribution
-Follows // TODO
+Currently we does not have an installer for windows and no PKGBUILDS for linux, but maybe one day :)
+
+## Contribution
+TODO
+
+## Credits
+TODO
+
+## License
+TODO
