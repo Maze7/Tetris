@@ -10,14 +10,14 @@ You can add your own games to it, see "Contribution" for more explanation.
 
 **Linux**
 
-Most package manager does have sfml in repositorys (warning, debian-stretch SFML version is too old)
+Most package manager does have sfml in repositorys (warning, debian-stretch SFML version is too old, use SDK instead).
 
-ArchLinux: `pacman -S sfml`¸
+ArchLinux: `pacman -S sfml automake autoconf`¸
 
-Ubuntu: `apt install libsfml-dev`
+Ubuntu: `apt install libsfml-dev pkg-config dh-autoreconf`
+
+Build dependencies for Debian/Ubuntu
 ```
-git clone https://github.com/Maze7/Tetris
-cd Tetris
 ./autogen.sh && make all
 ```
 Run it with `./GameCollection`. You need xdg to open the help file. 
