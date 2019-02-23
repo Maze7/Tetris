@@ -1,0 +1,33 @@
+GameCollection - HELP
+###################################################
+
+Menu:	
+W, Up:		Navigate up
+S, Down:	Navigate down
+A, Left:	Decrease difficulty/volume
+D, Right: 	Increse difficulty/volume
+Enter:		Enter Game/Submenu
+
+###################################################
+
+Tetris:
+W, Up:		Rotate the tetromino
+S, Down:	Move tetromino down
+A, Left:	Move tetromino to the left
+D, Right: 	Move tetromino to the right
+Space:		Drop the tetromino
+Enter:		Enter Game/Submenu
+ESC:		Pause the game
+
+###################################################
+
+Flappy Bird:
+W, Up, Space:		Make the bird flap (move upwards)
+
+###################################################
+
+Snake:
+W, Up:		Change snake's direction to: up
+S, Down:	Change snake's direction to: down
+A, Left:	Change snake's direction to: left
+D, Right: 	Change snake's direction to: right
