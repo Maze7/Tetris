@@ -8,7 +8,7 @@ You can add your own games to it, see "Contribution" for more explanation.
 
 ## Build
 
-###Linux
+**Linux**
 
 Most package manager does have sfml in repositorys (warning, debian-stretch SFML version is too old)
 
@@ -22,7 +22,7 @@ cd Tetris
 ```
 Run it with `./GameCollection`. You need xdg to open the help file. 
 
-###MAC OS
+**MAC OS**
 
 Install sfml with brew:
 ```
@@ -38,7 +38,7 @@ Now you can clone this repo and compile it.
 ./autogen-mac.sh && make all
 ```
 
-###Windows
+**Windows**
 1. Import project into Visual Studio (2017) with given Tetris.sln and Tetris.vcxproj. 
 2. Download SFML 32bit matching your visual studio version (ex. https://www.sfml-dev.org/files/SFML-2.5.1-windows-vc15-32-bit.zip) and copy it to your solution directory and name it SFML32.
 3. Copy all .dll from SFML32/bin to your solution directory
