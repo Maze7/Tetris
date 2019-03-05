@@ -50,6 +50,8 @@ In Windows, the DLL files (which are included in release archive) needs to be in
 
 Currently we does not have an installer for windows and no PKGBUILDS for linux, but maybe one day :)
 
+(Additional Dependencies for minimal Server: libopenal1 libvorbis-dev)
+
 ## Contribution
 TODO
 

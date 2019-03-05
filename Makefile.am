@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS = foreign
 AM_CPPFLAGS = -std=c++11
-AM_LDFLAGS = $(shell pkg-config sfml-all --libs)
+AM_LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio 
 bin_PROGRAMS = GameCollection
 GameCollection_SOURCES = src/Exceptions/FileExceptions.h\
 						src/FileIO/FileIO.cpp\
